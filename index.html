@@ -830,9 +830,8 @@ async function rastaCheckGitHubVersion(){
   const res=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/commits/main',{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
   if(!res.ok)return;
   const data=await res.json();
-  const seen=localStorage.getItem('rasta-last-seen-github-commit');
-  if(seen&&seen!==data.sha){const b=$('rasta-reload-version');if(b)b.style.display='block';status.textContent='نسخه جدیدی در GitHub پیدا شد. برای بارگذاری کد جدید، دکمه «بارگذاری نسخه جدید از GitHub» را بزن؛ اطلاعات محلی حفظ می‌شود.'}
-  else if(!seen)localStorage.setItem('rasta-last-seen-github-commit',data.sha);
+  const committedAt=Date.parse(data.commit?.committer?.date||data.commit?.author?.date||'');
+  if(Number.isFinite(committedAt)&&committedAt>performance.timeOrigin+5000){const b=$('rasta-reload-version');if(b)b.style.display='block';status.textContent='نسخه جدیدی در GitHub پس از بازشدن این صفحه ثبت شده است. برای بارگذاری کد جدید، دکمه «بارگذاری نسخه جدید از GitHub» را بزن؛ اطلاعات محلی حفظ می‌شود.'}
  }catch(e){}
 }
 if(!window.__rastaAutoRefreshStarted){
