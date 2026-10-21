@@ -17,6 +17,11 @@ permissions:
 jobs:
   build-apk:
     runs-on: ubuntu-latest
+    env:
+      RASTA_KEYSTORE_BASE64: ${{ secrets.RASTA_KEYSTORE_BASE64 }}
+      RASTA_KEYSTORE_PASSWORD: ${{ secrets.RASTA_KEYSTORE_PASSWORD }}
+      RASTA_KEY_PASSWORD: ${{ secrets.RASTA_KEY_PASSWORD }}
+      RASTA_KEY_ALIAS: ${{ vars.RASTA_KEY_ALIAS }}
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -55,7 +60,7 @@ jobs:
           npx cap sync android
 
       - name: Prepare stable Android signing key
-        if: ${{ secrets.RASTA_KEYSTORE_BASE64 != '' && secrets.RASTA_KEYSTORE_PASSWORD != '' && secrets.RASTA_KEY_PASSWORD != '' && vars.RASTA_KEY_ALIAS != '' }}
+        if: ${{ env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
         env:
           RASTA_KEYSTORE_BASE64: ${{ secrets.RASTA_KEYSTORE_BASE64 }}
           RASTA_KEYSTORE_PASSWORD: ${{ secrets.RASTA_KEYSTORE_PASSWORD }}
@@ -92,7 +97,7 @@ jobs:
         shell: bash
 
       - name: Build signed release APK
-        if: ${{ secrets.RASTA_KEYSTORE_BASE64 != '' && secrets.RASTA_KEYSTORE_PASSWORD != '' && secrets.RASTA_KEY_PASSWORD != '' && vars.RASTA_KEY_ALIAS != '' }}
+        if: ${{ env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
         working-directory: android
         env:
           RASTA_KEYSTORE_PATH: ${{ runner.temp }}/rasta-upload-key.jks
@@ -104,7 +109,7 @@ jobs:
           ./gradlew assembleRelease
 
       - name: Build debug APK (temporary, not published as latest)
-        if: ${{ secrets.RASTA_KEYSTORE_BASE64 == '' || secrets.RASTA_KEYSTORE_PASSWORD == '' || secrets.RASTA_KEY_PASSWORD == '' || vars.RASTA_KEY_ALIAS == '' }}
+        if: ${{ env.RASTA_KEYSTORE_BASE64 == '' || env.RASTA_KEYSTORE_PASSWORD == '' || env.RASTA_KEY_PASSWORD == '' || env.RASTA_KEY_ALIAS == '' }}
         working-directory: android
         run: |
           chmod +x gradlew
@@ -130,7 +135,7 @@ jobs:
           retention-days: 30
 
       - name: Publish latest signed APK release
-        if: ${{ secrets.RASTA_KEYSTORE_BASE64 != '' && secrets.RASTA_KEYSTORE_PASSWORD != '' && secrets.RASTA_KEY_PASSWORD != '' && vars.RASTA_KEY_ALIAS != '' }}
+        if: ${{ env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
