@@ -1189,8 +1189,7 @@ async function rastaNutritionLoadAssessment(){
  if(a){nutritionFillForm({...rastaNutritionDefault,...a});nutritionStatus('پرونده تغذیه‌ای قبلی بارگذاری شد. پس از تغییر اطلاعات، ذخیره را بزن.')}
 }
 function nutritionRisk(a){
- const conditions=(a.health_conditions||[]).join(' ').toLowerCase();
- const highRisk=/(دیابت|diabetes|کلیو|kidney|قلب|heart|فشار خون|hypertension|گوارش|gastro|اختلال خوردن|eating disorder|سرطان|cancer|دارو|medication|باریاتریک|بارداری|pregnan|شیردهی)/i.test(conditions)||a.pregnant_or_breastfeeding;
+ const highRisk=(a.health_conditions||[]).length>0||a.pregnant_or_breastfeeding;
  if(highRisk)return 'به دلیل شرایط سلامت ثبت‌شده، این نسخه رژیم و هدف کالری خودکار نمی‌سازد. لطفاً برنامه را با پزشک یا متخصص تغذیه هماهنگ کن.';
  if((a.allergies||[]).length)return 'بانک فعلی رستا هنوز برچسب آلرژنِ تأییدشده برای تمام ترکیب‌های غذا ندارد؛ برای جلوگیری از خطر، تولید خودکار متوقف شد. تا تکمیل بررسی مواد تشکیل‌دهنده، از برنامه خودکار استفاده نکن.';
  if((a.intolerances||[]).length)return 'اطلاعات مواد تشکیل‌دهنده و میزان لاکتوز/ترکیبات حساسیت‌زا در همه غذاهای بانک تأیید نشده است؛ برای جلوگیری از پیشنهاد نامناسب، فعلاً برنامه خودکار متوقف شد.';
