@@ -49,7 +49,7 @@ function scoreExercise(e,focus,p,used,all){
  if(text(p.level)==text(e.level))score+=2;
  else if(text(p.level).includes('مبتدی') && text(e.level).includes('پیشرفته'))score-=9;
  if(text(e.place)===text(p.place)||p.place==='هر دو')score+=1;
- if(used.has(e.id))score-=7;
+ if(used.has(e.id))score-=1000;
  if(includes(p.priorityMuscle,['سینه'])&&includes(m,['سینه']))score+=5;
  if(includes(p.priorityMuscle,['پشت'])&&includes(m,['پشت']))score+=5;
  if(includes(p.priorityMuscle,['سرشانه'])&&includes(m,['سرشانه']))score+=5;
