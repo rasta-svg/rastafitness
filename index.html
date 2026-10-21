@@ -148,9 +148,10 @@ const clearNotice=()=>{const n=byId('auth-notice');n.textContent='';n.className=
 const setBusy=(busy,label)=>{const b=byId('auth-submit');b.disabled=busy;b.textContent=busy?'لطفاً صبر کن…':label};
 const setMode=(next)=>{
  mode=next;clearNotice();
- byId('auth-tabs').style.display=next==='forgot'?'none':'grid';
+ byId('auth-tabs').style.display='grid';
  byId('auth-name-field').hidden=next!=='signup';
- byId('auth-phone-field').hidden=next==='forgot';
+ byId('auth-phone-field').hidden=next!=='signup';
+ if(next!=='signup')byId('auth-phone').value='';
  byId('auth-email-field').hidden=false;
  byId('auth-password-field').hidden=next==='forgot';
  byId('auth-inline').style.display=next==='login'?'flex':'none';
