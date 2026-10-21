@@ -61,13 +61,21 @@ function scoreExercise(e,focus,p,used,all){
  if(includes(p.goal,['چربی'])) score+=t.includes('هوازی')?5:0;
  if(includes(p.goal,['انعطاف','تحرک'])) score+=includes(t,['انعطاف','یوگا','پیلاتس'])?7:0;
  if(includes(p.adaptation,['تنوع'])&&!used.has(e.id))score+=2;
- if(includes(p.adaptation,['حرکات ثابت'])&&used.has(e.id))score+=2;
+ if(includes(p.adaptation,['ثبات'])&&used.has(e.id))score+=2;
  if(includes(p.exercisePreference,['ساده']))score+=includes(e.level,['مبتدی'])?2:0;
  return score;
 }
 function chooseForFocus(exercises,focus,p,used,count){
  let candidates=exercises.filter(e=>equipmentAllowed(e,p)&&safeForLimit(e,p));
- if(focus==='هوازی')candidates=candidates.filter(e=>includes(e.type,['هوازی','استقامتی','HIIT'])||includes(e.muscle,['قلب','تنفس']));
+ if(focus==='هوازی'){
+  candidates=candidates.filter(e=>includes(e.type,['هوازی','استقامتی','HIIT'])||includes(e.muscle,['قلب','تنفس']));
+  const cardio=text(p.cardioType||'');
+  if(includes(cardio,['پیاده‌روی'])){const preferred=candidates.filter(e=>includes(e.name,['پیاده‌روی','راه‌رفتن','راه رفتن']));if(preferred.length)candidates=preferred}
+  else if(includes(cardio,['دوچرخه'])){const preferred=candidates.filter(e=>includes(e.name,['دوچرخه','cycle']));if(preferred.length)candidates=preferred}
+  else if(includes(cardio,['دویدن'])){const preferred=candidates.filter(e=>includes(e.name,['دویدن','جاگینگ','run']));if(preferred.length)candidates=preferred}
+  else if(includes(cardio,['اینتروال'])){const preferred=candidates.filter(e=>includes(e.type,['HIIT'])||includes(e.name,['اینتروال','تناوبی']));if(preferred.length)candidates=preferred}
+  if(includes(cardio,['کم‌فشار'])){const preferred=candidates.filter(e=>!includes(e.name,['پرش','جامپ','برپی','دویدن سریع']));if(preferred.length)candidates=preferred}
+ }
  else if(focus==='تحرک')candidates=candidates.filter(e=>includes(e.type,['انعطاف','یوگا','پیلاتس','تحرک'])||includes(e.name,['کشش','گربه','چرخش آرام']));
  else if(focus==='میان تنه')candidates=candidates.filter(e=>includes(e.muscle,['میان‌تنه','شکم','پهلو'])||includes(e.type,['میان‌تنه']));
  else if(focus==='بالاتنه')candidates=candidates.filter(e=>includes(e.muscle,['سینه','پشت','سرشانه','بازو']));
@@ -102,6 +110,7 @@ function prescription(e,p){
  const isCardio=includes(e.type,['هوازی','استقامتی','HIIT']),isMobility=includes(e.type,['انعطاف','یوگا','پیلاتس','تحرک']);
  let sets=Number(e.sets)||3, reps=String(e.reps||'8–12'), rir=3, rest=60;
  if(includes(level,['مبتدی'])){sets=Math.min(3,sets);rir=3}
+ if(includes(p.progression,['تکنیک','ثابت']))rir=Math.max(rir,4);
  if(includes(level,['پیشرفته'])){sets=Math.min(5,sets+1);rir=1}
  if(includes(intensity,['سبک'])){sets=Math.max(1,sets-1);rir=4}
  if(includes(intensity,['چالش‌برانگیز']))rir=Math.max(1,rir-1);
@@ -109,7 +118,7 @@ function prescription(e,p){
  else if(isMobility){sets=Math.min(3,Math.max(2,sets));reps=String(e.reps||'8–12 تکرار یا 20–30 ثانیه');rest=30}
  else if(includes(p.restTime,['30–45']))rest=40;
  else if(includes(p.restTime,['90–120']))rest=105;
- else if(includes(p.restTime,['2–3']))rest=150;
+ else if(includes(p.restTime,['2–3','120–180']))rest=150;
  else if(includes(p.restTime,['خودتنظیم']))rest=90;
  else rest=75;
  return {sets,reps,restSeconds:rest,rir,tempo:'کنترل‌شده؛ بخش پایین‌رفتن حدود ۲ ثانیه',warmupMinutes:clamp(faNum(p.warmup)||8,0,20),cooldownMinutes:clamp(faNum(p.cooldown)||5,0,20)};
@@ -119,12 +128,13 @@ function buildProgram({profile={},exercises=[],durationMinutes=30}){
  const focuses=sessionFocuses(profile,days),used=new Set(),out=[];
  const requestedFocus=text(profile.sessionFocus||'متعادل');
  if(requestedFocus!=='متعادل'&&focuses.length){const mapped=requestedFocus==='میان تنه'?'میان تنه':requestedFocus;focuses[0]=mapped;}
+ if(includes(profile.cardioType,['بدون هوازی']))for(let i=0;i<focuses.length;i++)if(focuses[i]==='هوازی')focuses[i]='تحرک';
  const blocked=includes(profile.limitations,['ابتدا با متخصص','مشورت با متخصص','مشورت']);
  if(blocked)return {blocked:true,warning:'با توجه به گزینه محدودیت انتخاب‌شده، برنامه خودکار ساخته نشد. ابتدا با پزشک یا فیزیوتراپیست/متخصص واجد صلاحیت مشورت کن.',days:[]};
  for(let i=0;i<days;i++){
   const focus=focuses[i],mins=clamp(Number(durationMinutes)||30,10,150);
-  const count=focus==='تحرک'?3:focus==='هوازی'?2:Math.max(4,Math.min(7,Math.floor((mins-(faNum(profile.warmup)||8)-(faNum(profile.cooldown)||5))/5)));
-  const dayProfile={...profile};if(includes(profile.intensity,['متغیر']))dayProfile.intensity=i%3===0?'چالش‌برانگیز':i%3===1?'سبک':'متوسط';
+  const count=focus==='تحرک'?3:focus==='هوازی'?2:includes(profile.adaptation,['زمان محدود'])||includes(profile.exercisePreference,['کوتاه'])?3:Math.max(4,Math.min(7,Math.floor((mins-(faNum(profile.warmup)||8)-(faNum(profile.cooldown)||5))/5)));
+  const dayProfile={...profile};if(includes(profile.intensity,['متغیر']))dayProfile.intensity=i%4===3?'چالش‌برانگیز':i%2===1?'سبک':'متوسط';
   const chosen=chooseForFocus(exercises,focus,dayProfile,used,count);
   if(!chosen.length)return {blocked:true,warning:'با تجهیزات و محدودیت‌های انتخاب‌شده حرکت ایمن کافی در کتابخانه پیدا نشد. تنظیمات را بازبینی کن یا از متخصص راهنمایی بگیر.',days:[]};
   const type=focus==='هوازی'?'هوازی':focus==='تحرک'?'بازیابی':'قدرتی';
@@ -161,9 +171,12 @@ function analyzeProgress({adherence='medium',sleep='medium',protein='maybe',plat
  advice.push('افزایش وزنه یا تکرار فقط وقتی انجام شود که تمام ست‌ها با دامنه و فرم مناسب و بدون درد غیرعادی کامل شده‌اند.');
  return advice;
 }
-function nextLoad({weight=0,repsCompleted=0,repsTarget=12,setsCompleted=0,setsTarget=3,goodForm=true,pain=false}={}){
+function nextLoad({weight=0,repsCompleted=0,repsTarget=12,setsCompleted=0,setsTarget=3,goodForm=true,pain=false,progression='تکرار'}={}){
  if(pain)return {action:'stop',message:'به دلیل درد تمرین را متوقف کن؛ در صورت تداوم یا شدت درد از متخصص کمک بگیر.'};
  if(!goodForm)return {action:'hold',message:'وزنه را افزایش نده؛ ابتدا فرم و کنترل حرکت را بهتر کن.'};
+ if(includes(progression,['ثابت']))return {action:'hold',message:'روش پیشرفت انتخابی حفظ بار است؛ فعلاً وزنه یا حجم را افزایش نده.'};
+ if(includes(progression,['تکنیک']))return {action:'hold',message:'روش انتخابی اولویت تکنیک است؛ تا تثبیت فرم، بار را افزایش نده.'};
+ if(includes(progression,['حجم']))return {action:'consider_sets',message:'اگر ریکاوری خوب است، به‌جای افزایش وزنه فقط یک ست به یک حرکت اضافه کن و واکنش را پایش کن.'};
  if(setsCompleted>=setsTarget&&repsCompleted>=repsTarget)return {action:'small_increase',weightSuggestion:weight>0?Math.round(weight*1.025*2)/2:null,message:'اگر این عملکرد در جلسه بعد هم با فرم مناسب تکرار شد، افزایش کوچک وزنه را بررسی کن.'};
  return {action:'hold',message:'تا کامل شدن هدف تکرار با فرم مناسب، بار فعلی را حفظ کن.'};
 }
