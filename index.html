@@ -52,7 +52,7 @@
       <form id="rasta-auth-form" novalidate>
         <div class="auth-field" id="auth-name-field" hidden><label for="auth-name">نام نمایشی</label><div class="auth-input-wrap"><span class="auth-field-icon">✧</span><input class="auth-input with-icon" id="auth-name" autocomplete="name" placeholder="مثلاً سارا احمدی"></div></div>
         <div class="auth-field" id="auth-phone-field"><label for="auth-phone">شماره تلفن</label><div class="auth-input-wrap"><span class="auth-field-icon">☎</span><input class="auth-input with-icon" id="auth-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="مثلاً 0912 123 4567"></div></div>
-        <div class="auth-field" id="auth-email-field"><label for="auth-email">ایمیل</label><div class="auth-input-wrap"><span class="auth-field-icon">✉</span><input class="auth-input with-icon" id="auth-email" type="email" autocomplete="email" placeholder="name@example.com"></div></div>
+        <div class="auth-field" id="auth-email-field"><label for="auth-email">ایمیل (برای ورود با ایمیل)</label><div class="auth-input-wrap"><span class="auth-field-icon">✉</span><input class="auth-input with-icon" id="auth-email" type="email" autocomplete="email" placeholder="name@example.com"></div></div>
         <div class="auth-field" id="auth-password-field"><label for="auth-password">رمز عبور</label><div class="auth-input-wrap"><span class="auth-field-icon">⌑</span><input class="auth-input with-icon" id="auth-password" type="password" autocomplete="current-password" placeholder="حداقل ۸ نویسه"></div></div>
         <div class="auth-inline" id="auth-inline"><label style="display:flex;align-items:center;gap:7px;color:#7a8278;font-weight:500"><input id="auth-remember" type="checkbox" checked style="accent-color:#294e3b"> مرا وارد نگه دار</label><button type="button" class="auth-link" id="auth-forgot">رمز عبور را فراموش کرده‌ام</button></div>
         <button class="auth-submit" id="auth-submit" type="submit">ورود امن به رَستا <span aria-hidden="true">←</span></button>
@@ -78,7 +78,7 @@
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
-<header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="auth-userbar" id="rasta-userbar" style="display:none"><div class="auth-user-chip"><span class="auth-user-avatar" id="rasta-user-avatar">ر</span><span class="auth-user-email" id="rasta-user-email"></span></div><button class="auth-logout" id="rasta-logout" type="button">خروج</button><div class="datepill" id="todaydate"></div></div><div class="datepill" id="todaydate"></div></header>
+<header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="auth-userbar" id="rasta-userbar" style="display:none"><div class="auth-user-chip"><span class="auth-user-avatar" id="rasta-user-avatar">ر</span><span class="auth-user-email" id="rasta-user-email"></span></div><button class="auth-logout" id="rasta-logout" type="button">خروج</button><div class="datepill" id="todaydate"></div></div></header>
 <section class="view active" id="view-today">
 <div class="hero"><div><small>به برنامه شخصی رَستا خوش آمدی</small><h2>بدن تو، مسیر تو.<br>امروز از کجا شروع می‌کنی؟</h2><p>یک تجربه یکپارچه برای تمرین، غذاهای ایرانی و عادت‌های روزانه؛ با امکان انتخاب دستی یا دریافت پیشنهاد متناسب با هدفت.</p><div class="actions"><button class="btn primary" data-goto="training">شروع تمرین</button><button class="btn ghost" data-goto="nutrition">چیدن وعده‌های امروز</button></div></div><div class="hero-art">🏋️‍♀️🥗</div></div>
 <div class="stats"><div class="stat"><label>کالری برنامه‌ریزی‌شده</label><strong id="statcal">۰</strong><small>از هدف روزانه</small><div class="bar"><span id="barcal"></span></div></div><div class="stat"><label>پروتئین برنامه غذایی</label><strong id="statprotein">۰ گرم</strong><small>از غذاهای انتخاب‌شده</small><div class="bar"><span id="barprotein"></span></div></div><div class="stat"><label>تمرین‌های انجام‌شده</label><strong id="statworkouts">۰</strong><small>جلسه ثبت‌شده امروز</small><div class="bar"><span id="barworkouts"></span></div></div><div class="stat"><label>مدت تحرک امروز</label><strong id="statmins">۰ دقیقه</strong><small>از تمرین‌های ثبت‌شده</small><div class="bar"><span id="barmins"></span></div></div></div>
@@ -215,11 +215,12 @@ const handleSubmit=async(e)=>{
    notice('حسابت ثبت شد. برای فعال‌سازی، ایمیل تأیید را باز کن و سپس وارد شو.','success');
    setMode('login');byId('auth-email').value=email;return;
   }
-  if(!email){notice('ایمیل یا شماره تلفن را وارد کن.');return}
+  const identifier=email||phone;
+  if(!identifier){notice('ایمیل یا شماره تلفن را وارد کن.');return}
   if(!password){notice('رمز عبور را وارد کن.');return}
   setBusy(true,'در حال ورود…');
-  const isEmail=email.includes('@');
-  const credentials=isEmail?{email,password}:{phone:email.replace(/[\s()-]/g,''),password};
+  const isEmail=identifier.includes('@');
+  const credentials=isEmail?{email:identifier,password}:{phone:identifier.replace(/[\s()-]/g,''),password};
   const {data,error}=await client.auth.signInWithPassword(credentials);
   if(error)throw error;
   await showApp(data.user);
@@ -477,9 +478,6 @@ profileLoad();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR',{weekda
 
 
 </script>
-
-
-</body></html></script>
 
 
 </body></html>
