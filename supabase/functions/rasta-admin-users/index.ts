@@ -29,15 +29,28 @@ Deno.serve(async (req: Request) => {
   const { data, error } = await adminClient.auth.admin.listUsers({ page: 1, perPage: 1000 });
   if (error) return new Response(JSON.stringify({ error: "دریافت کاربران انجام نشد." }), { status: 500, headers: cors });
 
-  const users = (data.users || []).map((u) => ({
-    id: u.id,
-    email: u.email || "",
-    phone: u.phone || u.user_metadata?.phone || "",
-    name: u.user_metadata?.full_name || u.user_metadata?.name || "",
-    created_at: u.created_at,
-    last_sign_in_at: u.last_sign_in_at || null,
-    email_confirmed_at: u.email_confirmed_at || null,
-  }));
+  const { data: presenceRows } = await adminClient
+    .from("user_presence")
+    .select("user_id,last_seen,app_state");
+  const presenceByUser = new Map((presenceRows || []).map((p) => [p.user_id, p]));
+  const nowMs = Date.now();
+  const users = (data.users || []).map((u) => {
+    const presence = presenceByUser.get(u.id);
+    const lastSeen = presence?.last_seen || u.last_sign_in_at || null;
+    const freshHeartbeat = Boolean(presence?.last_seen) &&
+      (nowMs - new Date(presence.last_seen).getTime()) <= 90000;
+    return {
+      id: u.id,
+      email: u.email || "",
+      phone: u.phone || u.user_metadata?.phone || "",
+      name: u.user_metadata?.full_name || u.user_metadata?.name || "",
+      created_at: u.created_at,
+      last_sign_in_at: u.last_sign_in_at || null,
+      last_seen: lastSeen,
+      online: freshHeartbeat && presence?.app_state === "active",
+      email_confirmed_at: u.email_confirmed_at || null,
+    };
+  });
 
   const [plansResult, subscriptionsResult, paymentsResult] = await Promise.all([
     adminClient.from("subscription_plans").select("id,is_active"),
