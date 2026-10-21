@@ -78,6 +78,7 @@ self.addEventListener('fetch',event=>{
  if(request.method!=='GET')return;
  const url=new URL(request.url);
  if(request.mode==='navigate'&&url.origin===self.location.origin){event.respondWith(networkFirst(request));return;}
+ if(url.origin===self.location.origin&&url.pathname.endsWith('/version.json')){event.respondWith(networkFirst(request));return;}
  if(url.origin===self.location.origin){
   // Same-origin app shell/assets can be served offline; API writes and reads are not cached.
   if(url.pathname.includes('/rest/v1/')||url.pathname.includes('/auth/v1/')||url.pathname.includes('/functions/v1/'))return;
