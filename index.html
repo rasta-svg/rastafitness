@@ -535,7 +535,7 @@ const setMode=(next)=>{
  byId('auth-password').autocomplete=(next==='signup'||next==='reset')?'new-password':'current-password';
  byId('auth-password').placeholder=next==='reset'?'رمز جدید، حداقل ۸ نویسه':'حداقل ۸ نویسه';
  document.querySelector('label[for="auth-password"]').textContent=next==='reset'?'رمز عبور جدید':'رمز عبور';
- byId('auth-legal').innerHTML=next==='signup'?'۱) نام و شماره تلفن را وارد کن. ۲) ایمیل معتبر و در دسترس خودت را بنویس. ۳) یک رمز حداقل ۸ نویسه‌ای بساز و همان را در «تکرار رمز عبور» وارد کن. ۴) دکمه «ایجاد حساب شخصی» را بزن. اگر ایمیل تأیید رسید، پوشه هرزنامه را هم بررسی کن و روی لینک تأیید بزن؛ سپس از همین صفحه با ایمیل و رمز وارد شو.':'(next===\'forgot\'||next===\'reset\')?'برای امنیت حساب، رمز عبور خود را فقط در همین صفحه امن تغییر بده.':'با ورود به رَستا، اطلاعات و برنامه‌های شخصی‌ات در حساب خودت نگهداری می‌شود.<br><strong>حساب امن · فضای شخصی · مسیر اختصاصی</strong>';
+ byId('auth-legal').innerHTML=next==='signup'?'۱) نام و شماره تلفن را وارد کن. ۲) ایمیل معتبر و در دسترس خودت را بنویس. ۳) یک رمز حداقل ۸ نویسه‌ای بساز و همان را در «تکرار رمز عبور» وارد کن. ۴) دکمه «ایجاد حساب شخصی» را بزن. اگر ایمیل تأیید رسید، پوشه هرزنامه را هم بررسی کن و روی لینک تأیید بزن؛ سپس از همین صفحه با ایمیل و رمز وارد شو.':(next==='forgot'||next==='reset')?'برای امنیت حساب، رمز عبور خود را فقط در همین صفحه امن تغییر بده.':'با ورود به رَستا، اطلاعات و برنامه‌های شخصی‌ات در حساب خودت نگهداری می‌شود.<br><strong>حساب امن · فضای شخصی · مسیر اختصاصی</strong>';
  document.querySelectorAll('[data-auth-mode]').forEach(b=>b.classList.toggle('active',b.dataset.authMode===next));
 };
 document.querySelectorAll('[data-auth-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.authMode)));
