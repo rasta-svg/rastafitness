@@ -232,7 +232,8 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <button data-view="history"><span class="ico">📈</span>گزارش و سابقه</button>
 <button data-view="plans"><span class="ico">💎</span>اشتراک و تعرفه‌ها</button>
 <button data-view="profile"><span class="ico">⚙️</span>تنظیمات شخصی</button>
-<button data-view="guide"><span class="ico">📘</span>راهنمای استفاده</button></nav>
+<button data-view="guide"><span class="ico">📘</span>راهنمای استفاده</button>
+<button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button></nav>
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
@@ -309,7 +310,16 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <div class="sectionhead"><div><h2>گزارش و سابقه</h2><p>جلسه‌های تمرینی و ست‌هایی که ثبت کرده‌ای</p></div><button class="btn ghost" id="exportdata">خروجی گرفتن از اطلاعات</button></div><div class="stats"><div class="stat"><label>جلسه‌های ثبت‌شده</label><strong id="histcount">۰</strong><small>در کل</small></div><div class="stat"><label>دقایق تمرین</label><strong id="histmins">۰</strong><small>در کل</small></div><div class="stat"><label>ست‌های تکمیل‌شده</label><strong id="histsets">۰</strong><small>ثبت‌شده</small></div><div class="stat"><label>غذاهای امروز</label><strong id="histfoods">۰</strong><small>آیتم غذایی</small></div></div><div class="panel"><h3>تاریخچه جلسات</h3><div class="history" id="historylist"></div></div>
 </section>
 <section class="view" id="view-profile">
-<div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small><div class="tip" style="margin-top:10px"><b>🔄 بررسی و به‌روزرسانی رَستا</b><span id="auto-sync-status">برای بررسی انتشار نسخه جدید، دکمه زیر را بزن. نسخه وب در صورت نیاز تازه‌سازی می‌شود؛ در نسخه اندروید، لینک دریافت APK جدید نمایش داده می‌شود.</span><button class="btn dark" id="rasta-check-version-now" type="button" style="width:100%;margin-top:8px">🔄 بررسی نسخه جدید</button><button class="btn" id="rasta-reload-version" type="button" style="display:none;width:100%;margin-top:8px">دریافت نسخه جدید</button><small style="display:block;margin-top:8px;line-height:1.8">توجه: به‌روزرسانی نسخه اندروید پس از دانلود، نیازمند تأیید نصب توسط خودت است.</small></div></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
+<div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small><div class="tip" style="margin-top:10px"><b>🔄 بررسی و به‌روزرسانی رَستا</b><span id="auto-sync-status">برای بررسی انتشار نسخه جدید، دکمه زیر را بزن. فایل‌های بدون تغییر از حافظهٔ کش استفاده می‌کنند؛ نسخه وب در صورت نیاز تازه‌سازی می‌شود و نسخه اندروید، APK جدید را برای دانلود آماده می‌کند.</span><button class="btn dark" id="rasta-check-version-now" type="button" style="width:100%;margin-top:8px">🔄 بررسی نسخه جدید</button><button class="btn" id="rasta-reload-version" type="button" style="display:none;width:100%;margin-top:8px">دریافت نسخه جدید</button><small style="display:block;margin-top:8px;line-height:1.8">توجه: به‌روزرسانی نسخه اندروید پس از دانلود، نیازمند تأیید نصب توسط خودت است.</small></div></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
+<section class="view" id="view-contact">
+<div class="sectionhead"><div><h2>✉️ ارتباط با ما</h2><p>پیامت مستقیم در صندوق پیام‌های مدیر ثبت می‌شود؛ پاسخ مدیر را نیز همین‌جا می‌بینی.</p></div></div>
+<div class="panel"><div class="tip"><b>پشتیبانی رستا</b>برای گزارش خطا، پیشنهاد، پرسش درباره برنامه یا اشتراک از این فرم استفاده کن. رمز عبور، کد تأیید و اطلاعات بانکی محرمانه را در پیام ننویس.</div>
+<form id="rasta-contact-form" style="display:grid;gap:12px;margin-top:14px">
+<label class="field" style="margin:0">موضوع پیام<input id="rasta-contact-subject" maxlength="120" required placeholder="مثلاً مشکل ورود یا پیشنهاد برای برنامه"></label>
+<label class="field" style="margin:0">متن پیام<textarea id="rasta-contact-message" maxlength="5000" required rows="5" placeholder="پیامت را اینجا بنویس…" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;resize:vertical"></textarea></label>
+<button class="btn primary" id="rasta-contact-send" type="submit">ارسال پیام به مدیر</button><p id="rasta-contact-status" role="status" style="margin:0;color:var(--muted);line-height:1.8"></p></form></div>
+<div class="sectionhead"><div><h2>پیام‌های من</h2><p>پیام‌های قبلی و پاسخ‌های مدیر در این قسمت می‌مانند.</p></div><button class="btn ghost" type="button" id="rasta-contact-refresh">به‌روزرسانی پیام‌ها</button></div>
+<div id="rasta-contact-history" class="panel"><p class="muted">در حال دریافت پیام‌ها…</p></div></section>
 <section class="view" id="view-plans">
 <div class="sectionhead"><div><h2>اشتراک و تعرفه‌های رستا</h2><p>طرح مناسب خودت را برای امکانات بیشتر انتخاب کن.</p></div><span class="pill">پرداخت کارت‌به‌کارت</span></div>
 <div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>اشتراک پریمیوم ۳۰ روزه، دسترسی به ۴۰ مسیر هدف‌محور ورزش و تغذیه را باز می‌کند؛ هر مسیر شامل تمرین‌های عملی و الگوی غذایی مرتبط است. برنامه‌های پایه و کتابخانه عمومی همچنان رایگان می‌مانند.</p><div class="rasta-hero-points"><button type="button" data-plan-request="premium" style="cursor:pointer">🔒 برنامه‌های تمرینی ویژه · مشاهده قیمت</button><span>✦ پرداخت یک‌باره برای ۳۰ روز</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>پریمیوم</strong><small>۳۰ روز دسترسی</small></div></div>
@@ -566,6 +576,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
    <button data-view="plans"><span>💳</span>اشتراک و تعرفه‌ها</button>
    <button data-view="profile"><span>⚙️</span>تنظیمات شخصی</button>
    <button data-view="guide"><span>📘</span>راهنمای استفاده</button>
+   <button data-view="contact"><span>✉️</span>ارتباط با ما</button>
   </div>
  </section>
 </div>
@@ -892,7 +903,33 @@ function save(){localStorage.setItem('rasta-training-mode',JSON.stringify(traini
 function toast(s){let t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),2300)}
 function modal(title,html){$('modaltitle').textContent=title;$('modalbody').innerHTML=html;$('modalback').classList.add('open')}
 function closemodal(){$('modalback').classList.remove('open')}
-function goto(v,skipHistory=false){if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();scrollTo({top:0,behavior:'smooth'})}
+async function renderContactMessages(){
+ const box=$('rasta-contact-history');if(!box)return;const client=window.__rastaSupabaseClient;
+ if(!client){box.innerHTML='<p class="muted">سرویس حساب در دسترس نیست. اتصال اینترنت را بررسی کن.</p>';return}
+ try{
+  const {data:{user},error:userError}=await client.auth.getUser();if(userError)throw userError;
+  if(!user){box.innerHTML='<p class="muted">برای ارسال و مشاهده پیام‌ها ابتدا وارد حساب رستا شو.</p>';return}
+  const {data,error}=await client.from('contact_messages').select('id,subject,message,status,admin_reply,replied_at,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(50);
+  if(error)throw error;const statuses={new:'در انتظار بررسی مدیر',read:'در حال بررسی',replied:'پاسخ داده شده',closed:'بسته شده'};
+  box.innerHTML=data?.length?data.map(m=>'<article style="padding:14px 0;border-bottom:1px solid var(--line)"><div class="split" style="gap:8px;align-items:flex-start"><h3 style="margin:0 0 8px">'+escapeHtml(m.subject)+'</h3><span class="pill">'+escapeHtml(statuses[m.status]||m.status)+'</span></div><p style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.9;margin:8px 0">'+escapeHtml(m.message)+'</p><small class="muted">ارسال: '+escapeHtml(new Date(m.created_at).toLocaleString('fa-IR'))+'</small>'+(m.admin_reply?'<div style="margin-top:12px;padding:12px;background:#eaf2e4;border-radius:10px"><b>پاسخ مدیر</b><p style="white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.9;margin:6px 0">'+escapeHtml(m.admin_reply)+'</p><small class="muted">'+(m.replied_at?'پاسخ در '+escapeHtml(new Date(m.replied_at).toLocaleString('fa-IR')):'')+'</small></div>':'<p class="muted" style="margin:8px 0 0">پاسخ مدیر هنوز ثبت نشده است.</p>')+'</article>').join(''):'<p class="muted">هنوز پیامی ارسال نکرده‌ای. از فرم بالا پیام جدید بفرست.</p>';
+ }catch(e){box.innerHTML='<p style="color:var(--red)">دریافت پیام‌ها ناموفق بود: '+escapeHtml(e.message||'خطای ارتباط')+'</p>'}
+}
+const contactForm=$('rasta-contact-form');
+if(contactForm)contactForm.addEventListener('submit',async e=>{
+ e.preventDefault();const btn=$('rasta-contact-send'),status=$('rasta-contact-status'),client=window.__rastaSupabaseClient;
+ if(!client){status.textContent='اتصال به سرویس برقرار نیست. اینترنت را بررسی کن.';return}
+ const subject=$('rasta-contact-subject').value.trim(),message=$('rasta-contact-message').value.trim();
+ if(!subject||!message){status.textContent='موضوع و متن پیام را کامل کن.';return}
+ btn.disabled=true;btn.textContent='در حال ارسال…';status.textContent='';
+ try{const {data:{user},error:userError}=await client.auth.getUser();if(userError)throw userError;if(!user)throw new Error('برای ارسال پیام ابتدا وارد حساب رستا شو.');
+  const {error}=await client.from('contact_messages').insert({user_id:user.id,subject,message});if(error)throw error;
+  $('rasta-contact-message').value='';status.textContent='پیامت با موفقیت برای مدیر ارسال شد. پاسخ را در همین بخش می‌بینی.';await renderContactMessages();toast('پیام برای مدیر ارسال شد.');
+ }catch(err){status.textContent='ارسال پیام انجام نشد: '+(err?.message||'خطای ارتباط');}
+ finally{btn.disabled=false;btn.textContent='ارسال پیام به مدیر'}
+});
+const contactRefresh=$('rasta-contact-refresh');if(contactRefresh)contactRefresh.addEventListener('click',renderContactMessages);
+
+function goto(v,skipHistory=false){if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();scrollTo({top:0,behavior:'smooth'})}
 async function renderPlans(){
  const box=$('rasta-plan-cards'),status=$('rasta-plan-status');
  if(!box||!status)return;
@@ -1347,6 +1384,17 @@ async function rastaSaveUiStateAndReload(){
 function rastaIsNativeApp(){
  try{return !!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform())}catch(e){return false}
 }
+async function rastaDownloadLatestApk(){
+ const status=$('auto-sync-status');
+ try{const response=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/releases/latest?check='+Date.now(),{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+  if(!response.ok)throw new Error('انتشار APK جدید پیدا نشد یا هنوز آماده نیست.');
+  const release=await response.json(),asset=(release.assets||[]).find(x=>x.name==='Rasta-Fitness.apk');
+  if(!asset)throw new Error('فایل APK مستقیم هنوز در انتشار موجود نیست. پس از پایان ساخت نسخه، دوباره بررسی کن.');
+  const button=$('rasta-reload-version');if(button){button.style.display='block';button.textContent='⬇ دانلود APK نسخه '+(release.tag_name||'جدید');button.dataset.downloadUrl=asset.browser_download_url;}
+  if(status)status.textContent='نسخه اندروید جدید آماده است ('+(release.name||release.tag_name||'نسخه جدید')+'). با زدن دکمه دانلود، فایل APK دریافت می‌شود؛ نصب نسخه باید در اندروید تأیید شود.';return true;
+ }catch(e){if(status)status.textContent=e.message||'دریافت اطلاعات انتشار ناموفق بود.';return false}
+}
+
 async function rastaCheckDeployedBuild(manual=false){
  const status=$('auto-sync-status');
  try{
@@ -1397,22 +1445,13 @@ document.addEventListener('click',async e=>{
   return;
  }
  if(e.target.closest('#rasta-check-version-now')){
-  const b=$('rasta-check-version-now'),status=$('auto-sync-status');
-  if(b){b.disabled=true;b.textContent='در حال بررسی نسخه…'}
-  try{
-   if(rastaIsNativeApp()){
-    if(status)status.textContent='برای به‌روزرسانی کد APK، نسخه جدید را از GitHub Releases دریافت و با تأیید اندروید نصب کن.';
-    window.open('https://github.com/rasta-svg/rastafitness/releases/latest','_blank');
-   }else{
-    if(status)status.textContent='در حال دریافت اجباری آخرین نسخه منتشرشده…';
-    await rastaSaveUiStateAndReload();
-   }
-  }finally{if(b){b.disabled=false;b.textContent='🔄 بررسی نسخه جدید'}}
-  return;
+  const b=$('rasta-check-version-now'),status=$('auto-sync-status');if(b){b.disabled=true;b.textContent='در حال بررسی نسخه…'}
+  try{if(rastaIsNativeApp()){await rastaCheckDeployedBuild(true);await rastaDownloadLatestApk();}
+  else{if(status)status.textContent='در حال بررسی نسخه و فایل‌های تغییرکرده…';const reg='serviceWorker' in navigator?await navigator.serviceWorker.getRegistration('./'):null;if(reg)await reg.update().catch(()=>{});const changed=await rastaCheckDeployedBuild(true);if(!changed&&status)status.textContent='رستا به‌روز است. فایل‌های ثابتِ بدون تغییر از حافظهٔ کش استفاده می‌کنند؛ فایل تغییرکرده هنگام انتشار دریافت می‌شود.';}}
+  finally{if(b){b.disabled=false;b.textContent='🔄 بررسی نسخه جدید'}}return;
  }
  if(e.target.closest('#rasta-reload-version')){
-  if(rastaIsNativeApp()){window.open('https://github.com/rasta-svg/rastafitness/releases/latest','_blank');return}
-  await rastaSaveUiStateAndReload();
+  const b=$('rasta-reload-version');if(rastaIsNativeApp()){const url=b?.dataset.downloadUrl;if(url){window.open(url,'_blank');return}await rastaDownloadLatestApk();return;}await rastaSaveUiStateAndReload();
  }
 });
 
