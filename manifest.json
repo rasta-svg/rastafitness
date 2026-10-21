@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "رستا فیتنس | تمرین و تغذیه",
+  "short_name": "رستا فیتنس",
+  "description": "برنامه تمرین، تغذیه و ثبت پیشرفت با پشتیبانی از استفاده آفلاین",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3f1e8",
+  "theme_color": "#0b3a2b",
+  "icons": [
+    {
+      "src": "./assets/rasta-icon.png?v=65fa264",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
