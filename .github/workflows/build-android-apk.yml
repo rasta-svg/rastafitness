@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "index.html"
+      - "admin.html"
       - "capacitor.config.json"
       - "package.json"
       - "assets/**"
@@ -38,6 +39,7 @@ jobs:
         run: |
           mkdir -p www resources
           cp index.html www/index.html
+          cp admin.html www/admin.html
           rsvg-convert -w 1024 -h 1024 assets/rasta-icon.svg > resources/icon.png
           cp assets/rasta-icon.svg www/rasta-icon.svg
 
