@@ -525,7 +525,42 @@ async function renderPlans(){
   const activeUntil=active?.ends_at?new Date(active.ends_at).toLocaleDateString('fa-IR'):'';
   status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>'+(active?'اشتراک فعال: '+activePlanName:'در حال حاضر اشتراک پولی فعالی ثبت نشده است.')+'</p>'+(active?.plan_id==='premium'&&activeUntil?'<p class="rasta-payment-note">اعتبار پریمیوم تا '+escapeHtml(activeUntil)+' است؛ تمدید خودکار انجام نمی‌شود.</p>':'')+(pendingPayment?'<p class="pill">یک درخواست کارت‌به‌کارت در انتظار بررسی است.</p>':'');
   const premiumBox=$('rasta-premium-content');
-  if(premiumBox){if(active?.plan_id==='premium'){premiumBox.style.display='block';premiumBox.innerHTML='<div class="split"><h3>💎 فضای ویژه ورزشکاران</h3><span class="pill">اشتراک فعال</span></div><p>دسترسی ویژه تا '+escapeHtml(new Date(active.ends_at).toLocaleDateString('fa-IR'))+' فعال است.</p><div class="grid3"><article class="workoutcard"><div class="wemoji">💪</div><h3>برنامه قدرت پیشرفته</h3><p>جلسه ساختاریافته بالاتنه و پایین‌تنه با ثبت ست و تکرار.</p><span class="pill">ویژه اعضا</span></article><article class="workoutcard"><div class="wemoji">📈</div><h3>پیگیری پیشرفت</h3><p>ثبت منظم شاخص‌های تمرین و بازبینی روند پیشرفت.</p><span class="pill">ویژه اعضا</span></article><article class="workoutcard"><div class="wemoji">🗓️</div><h3>برنامه ماهانه</h3><p>الگوی چهار هفته‌ای تمرین همراه با روزهای بازیابی.</p><span class="pill">ویژه اعضا</span></article></div>';}else{premiumBox.style.display='none';premiumBox.innerHTML='';}}
+  if(premiumBox){
+   premiumBox.style.display='none';
+   premiumBox.innerHTML='';
+   if(active?.plan_id==='premium'){
+    const {data:premiumPrograms,error:premiumProgramsError}=await client.from('premium_programs')
+     .select('id,title,description,duration_weeks,content')
+     .eq('is_published',true).order('created_at',{ascending:true});
+    if(premiumProgramsError){
+     premiumBox.style.display='block';
+     premiumBox.innerHTML='<div class="tip"><b>بارگذاری برنامه‌های ویژه انجام نشد</b>لطفاً اتصال را بررسی کن و دوباره تلاش کن.</div>';
+     console.error('Rasta premium content load error',premiumProgramsError);
+    }else if((premiumPrograms||[]).length){
+     const cards=(premiumPrograms||[]).map(program=>{
+      const content=program.content&&typeof program.content==='object'?program.content:{};
+      const weeks=Array.isArray(content.weeks)?content.weeks:[];
+      const weekMarkup=weeks.map(week=>{
+       const days=Array.isArray(week.days)?week.days:[];
+       const dayMarkup=days.map(day=>{
+        const exercises=Array.isArray(day.exercises)?day.exercises:[];
+        const exerciseMarkup=exercises.map(exercise=>'<li>'+escapeHtml(exercise.name||'حرکت')+' — '+escapeHtml(exercise.sets||'')+' ست × '+escapeHtml(exercise.reps||'')+'</li>').join('');
+        return '<div style="border-top:1px solid var(--line);padding:9px 0"><b>'+escapeHtml(day.day||'جلسه تمرین')+' · '+escapeHtml(day.focus||'تمرین عمومی')+'</b><ul style="margin:6px 0 0;padding-right:18px;line-height:2;font-size:11px">'+exerciseMarkup+'</ul></div>';
+       }).join('');
+       return '<section style="margin-top:10px"><h4 style="margin:0 0 6px">هفته '+escapeHtml(week.week||'۱')+'</h4>'+dayMarkup+'</section>';
+      }).join('');
+      const guidance=Array.isArray(content.guidance)?content.guidance:[];
+      const guidanceMarkup=guidance.length?'<div class="tip" style="margin-top:10px"><b>نکات اجرای برنامه</b><ul style="margin:6px 0 0;padding-right:18px">'+guidance.map(item=>'<li>'+escapeHtml(item)+'</li>').join('')+'</ul></div>':'';
+      return '<article class="panel" style="min-width:0"><div class="split" style="gap:8px;flex-wrap:wrap"><h3>'+escapeHtml(program.title)+'</h3><span class="pill">'+escapeHtml(program.duration_weeks)+' هفته</span></div><p>'+escapeHtml(program.description||'')+'</p><p class="rasta-payment-note">سطح: '+escapeHtml(content.level||'عمومی')+' · تعداد جلسات پیشنهادی در هفته: '+escapeHtml(content.days_per_week||'—')+'</p>'+weekMarkup+guidanceMarkup+'</article>';
+     }).join('');
+     premiumBox.style.display='block';
+     premiumBox.innerHTML='<div class="split" style="gap:8px;flex-wrap:wrap"><h3>💎 برنامه‌های تمرینی ویژه</h3><span class="pill">دسترسی تأییدشده</span></div><p class="rasta-payment-note">این محتوا از Supabase بارگیری می‌شود و دسترسی آن در سمت سرور با وضعیت اشتراک کنترل می‌شود.</p><div class="grid3">'+cards+'</div>';
+    }else{
+     premiumBox.style.display='block';
+     premiumBox.innerHTML='<div class="empty">هنوز برنامه منتشرشده‌ای برای اشتراک پریمیوم ثبت نشده است.</div>';
+    }
+   }
+  }
   const toman=n=>Math.round(Number(n||0)/10).toLocaleString('fa-IR');
   box.innerHTML=(plans||[]).map(p=>{
    const isPremium=p.id==='premium',isFree=p.id==='free';
