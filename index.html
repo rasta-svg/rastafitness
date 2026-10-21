@@ -61,7 +61,7 @@
         <button class="auth-submit" id="auth-submit" type="submit">ورود امن به رَستا <span aria-hidden="true">←</span></button>
       </form>
       <div class="auth-divider" id="auth-divider">فضای اختصاصی هر کاربر</div>
-      <div class="auth-legal" id="auth-legal">با ورود به رَستا، اطلاعات و برنامه‌های شخصی‌ات در حساب خودت نگهداری می‌شود.<br><strong>حساب امن · فضای شخصی · مسیر اختصاصی</strong></div>
+      <div class="auth-legal" id="auth-legal">ورود به حساب، فعلاً برنامه‌ها را بین دستگاه‌ها همگام‌سازی نمی‌کند؛ اطلاعات تمرین روی همین مرورگر ذخیره می‌شود.<br><strong>همگام‌سازی ابری در حال آماده‌سازی است.</strong></div>
     </div>
   </div>
 </section>
@@ -169,7 +169,7 @@ const setMode=(next)=>{
  byId('auth-divider').style.display=(next==='forgot'||next==='reset')?'none':'flex';
  byId('auth-tabs').style.display=next==='reset'?'none':'grid';
  byId('auth-title').textContent=next==='signup'?'حساب خودت را بساز ✨':next==='forgot'?'بازیابی رمز عبور':next==='reset'?'رمز عبور جدید بساز':'خوش برگشتی 👋';
- byId('auth-subtitle').textContent=next==='signup'?'یک حساب بساز تا برنامه‌ها و پیشرفتت در فضای شخصی خودت بماند.':next==='forgot'?'ایمیلت را وارد کن تا لینک بازیابی رمز برایت ارسال شود.':next==='reset'?'برای امنیت حساب، یک رمز تازه و قوی انتخاب کن.':'وارد فضای شخصی‌ات شو و ادامه مسیرت را از همان‌جا دنبال کن.';
+ byId('auth-subtitle').textContent=next==='signup'?'یک حساب بساز تا وارد رستا شوی. فعلاً برنامه‌ها و سابقه تمرین روی همین دستگاه ذخیره می‌شوند.':next==='forgot'?'ایمیلت را وارد کن تا لینک بازیابی رمز برایت ارسال شود.':next==='reset'?'برای امنیت حساب، یک رمز تازه و قوی انتخاب کن.':'وارد فضای شخصی‌ات شو و ادامه مسیرت را از همان‌جا دنبال کن.';
  byId('auth-submit').innerHTML=next==='signup'?'ایجاد حساب شخصی <span aria-hidden="true">←</span>':next==='forgot'?'ارسال لینک بازیابی <span aria-hidden="true">←</span>':next==='reset'?'ثبت رمز جدید <span aria-hidden="true">←</span>':'ورود امن به رَستا <span aria-hidden="true">←</span>';
  byId('auth-password').autocomplete=(next==='signup'||next==='reset')?'new-password':'current-password';
  byId('auth-password').placeholder=next==='reset'?'رمز جدید، حداقل ۸ نویسه':'حداقل ۸ نویسه';
