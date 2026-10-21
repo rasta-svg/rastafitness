@@ -96,6 +96,38 @@ jobs:
           PY
         shell: bash
 
+      - name: Verify stable signing key and passwords
+        if: ${{ env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
+        env:
+          RASTA_KEYSTORE_PATH: ${{ runner.temp }}/rasta-upload-key.jks
+          RASTA_KEYSTORE_PASSWORD: ${{ secrets.RASTA_KEYSTORE_PASSWORD }}
+          RASTA_KEY_PASSWORD: ${{ secrets.RASTA_KEY_PASSWORD }}
+          RASTA_KEY_ALIAS: ${{ vars.RASTA_KEY_ALIAS }}
+        run: |
+          cat > /tmp/VerifyRastaKey.java <<'JAVA'
+          import java.io.InputStream;
+          import java.nio.file.Files;
+          import java.nio.file.Path;
+          import java.security.Key;
+          import java.security.KeyStore;
+          import java.security.PrivateKey;
+          public class VerifyRastaKey {
+            public static void main(String[] args) throws Exception {
+              KeyStore ks = KeyStore.getInstance("JKS");
+              try (InputStream in = Files.newInputStream(Path.of(System.getenv("RASTA_KEYSTORE_PATH")))) {
+                ks.load(in, System.getenv("RASTA_KEYSTORE_PASSWORD").toCharArray());
+              }
+              String alias = System.getenv("RASTA_KEY_ALIAS");
+              if (!ks.containsAlias(alias)) throw new IllegalStateException("STORE_PASSWORD_OK_BUT_ALIAS_NOT_FOUND");
+              Key key = ks.getKey(alias, System.getenv("RASTA_KEY_PASSWORD").toCharArray());
+              if (!(key instanceof PrivateKey)) throw new IllegalStateException("ALIAS_FOUND_BUT_PRIVATE_KEY_INVALID");
+              System.out.println("SIGNING_KEY_VALIDATION_SUCCESS");
+            }
+          }
+          JAVA
+          javac /tmp/VerifyRastaKey.java
+          java -cp /tmp VerifyRastaKey
+
       - name: Build signed release APK
         if: ${{ env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
         working-directory: android
