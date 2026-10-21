@@ -56,3 +56,5 @@ create policy nutrition_plan_feedback_delete_own on public.nutrition_plan_feedba
 grant select, insert, update, delete on public.nutrition_plan_feedback to authenticated;
 
 create index if not exists nutrition_plan_feedback_snapshot_idx on public.nutrition_plan_feedback (plan_snapshot_id);
+
+create index if not exists foods_reviewed_by_idx on public.foods (reviewed_by);
