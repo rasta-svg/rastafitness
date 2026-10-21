@@ -25,6 +25,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Configure Pages
         uses: actions/configure-pages@v5
+      # Always publish a fresh version marker so the in-app updater can detect this deployment.
       - name: Write deployed build version
         run: printf '{"sha":"%s","deployed_at":"%s"}\n' "$GITHUB_SHA" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > version.json
       - name: Upload site
