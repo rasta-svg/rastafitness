@@ -906,7 +906,8 @@ async function renderPlans(){
       }).join('');
       const guidance=Array.isArray(content.guidance)?content.guidance:[];
       const guidanceMarkup=guidance.length?'<div class="tip" style="margin-top:10px"><b>نکات اجرای برنامه</b><ul style="margin:6px 0 0;padding-right:18px">'+guidance.map(item=>'<li>'+escapeHtml(item)+'</li>').join('')+'</ul></div>':'';
-      return '<article class="panel" style="min-width:0"><div class="split" style="gap:8px;flex-wrap:wrap"><h3>'+escapeHtml(program.title)+'</h3><span class="pill">'+escapeHtml(program.duration_weeks)+' هفته</span></div><p>'+escapeHtml(program.description||'')+'</p><p class="rasta-payment-note">سطح: '+escapeHtml(content.level||'عمومی')+' · تعداد جلسات پیشنهادی در هفته: '+escapeHtml(content.days_per_week||'—')+'</p>'+weekMarkup+guidanceMarkup+'</article>';
+      const practicalMarkup=Array.isArray(content.exercises)&&content.exercises.length?'<h4 style="margin:12px 0 6px">🏋️ تمرین عملی</h4><p>'+escapeHtml(content.workout_summary||'')+'</p><ul style="padding-right:18px;line-height:2">'+content.exercises.map(item=>'<li>'+escapeHtml(item)+'</li>').join('')+'</ul><h4 style="margin:12px 0 6px">🥗 الگوی غذایی</h4><p>'+escapeHtml(content.nutrition_summary||'')+'</p><ul style="padding-right:18px;line-height:2">'+(Array.isArray(content.menu)?content.menu:[]).map(item=>'<li>'+escapeHtml(item)+'</li>').join('')+'</ul>':'';
+      return '<article class="panel" style="min-width:0"><div class="split" style="gap:8px;flex-wrap:wrap"><h3>'+escapeHtml(program.title)+'</h3><span class="pill">'+escapeHtml(program.duration_weeks)+' هفته</span></div><p>'+escapeHtml(program.description||'')+'</p><p class="rasta-payment-note">سطح: '+escapeHtml(content.level||'عمومی')+' · تعداد جلسات پیشنهادی در هفته: '+escapeHtml(content.days_per_week||'—')+'</p>'+practicalMarkup+weekMarkup+guidanceMarkup+'</article>';
      }).join('');
      premiumBox.style.display='block';
      premiumBox.innerHTML='<div class="split" style="gap:8px;flex-wrap:wrap"><h3>💎 برنامه‌های تمرینی ویژه</h3><span class="pill">دسترسی تأییدشده</span></div><p class="rasta-payment-note">این محتوا از Supabase بارگیری می‌شود و دسترسی آن در سمت سرور با وضعیت اشتراک کنترل می‌شود.</p><div class="grid3">'+cards+'</div>';
@@ -1154,7 +1155,7 @@ async function renderPremiumFitness(){
   if(!user){status.innerHTML='<b>برای استفاده از برنامه‌های پریمیوم وارد حساب شو.</b><br><button class="btn dark" data-goto="plans">ورود به اشتراک</button>';drawRastaPremiumCatalog();return}
   const {data:subs,error:subError}=await client.from('subscriptions').select('plan_id,status,starts_at,ends_at,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(10);
   if(subError)throw subError;
-  const now=Date.now(),active=(subs||[]).find(x=>x.status==='active'&&(!x.starts_at||new Date(x.starts_at).getTime()<=now)&&(!x.ends_at||new Date(x.ends_at).getTime()>now));
+  const now=Date.now(),active=(subs||[]).find(x=>x.plan_id==='premium'&&x.status==='active'&&x.starts_at&&x.ends_at&&new Date(x.starts_at).getTime()<=now&&new Date(x.ends_at).getTime()>now);
   rastaPremiumActive=active?.plan_id==='premium';
   status.innerHTML=rastaPremiumActive?'<b>اشتراک پریمیوم شما فعال است.</b> همه ۴۰ برنامه برایت باز هستند؛ یکی را انتخاب کن تا جزئیات تمرین و تغذیه را ببینی.':'<b>🔒 این ۴۰ برنامه با اشتراک پریمیوم باز می‌شوند.</b> پس از پرداخت و تأیید مدیر، دسترسی ۳۰ روزه به همه برنامه‌ها فعال می‌شود. <button class="btn dark" data-plan-request="premium" style="margin-right:8px">مشاهده قیمت و درخواست پرداخت</button>';
  }catch(e){status.innerHTML='<b>وضعیت اشتراک دریافت نشد.</b> اتصال را بررسی کن و دوباره تلاش کن. <button class="btn ghost" data-goto="plans">مشاهده اشتراک</button>';rastaPremiumActive=false}
