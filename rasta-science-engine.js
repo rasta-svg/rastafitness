@@ -146,12 +146,19 @@ function buildProgram({profile={},exercises=[],durationMinutes=30}){
 function estimateNutrition(a){
  const w=Number(a.current_weight_kg),h=Number(a.height_cm),age=Number(a.age_years);
  if(!(w>=35&&w<=300&&h>=130&&h<=230&&age>=18&&age<=100))return null;
+ const needsReview=!!a.pregnant_or_breastfeeding||!!a.needs_professional_review||
+  (Array.isArray(a.health_conditions)&&a.health_conditions.length>0);
+ if(needsReview)return {requires_professional_review:true,target_energy_kcal:null,
+  reason:'برای بارداری/شیردهی یا وضعیت پزشکی ثبت‌شده، برآورد خودکار انرژی متوقف شد و بررسی متخصص لازم است.'};
  const offset=a.sex==='male'?5:a.sex==='female'?-161:-78;
  const bmr=10*w+6.25*h-5*age+offset;
  const factors={sedentary:1.2,light:1.375,moderate:1.55,active:1.725,very_active:1.9};
  const maintenance=bmr*(factors[a.activity_level]||1.45);
  const goal=a.goal==='fat_loss'?-Math.min(400,maintenance*.15):a.goal==='muscle_gain'?Math.min(200,maintenance*.07):0;
- const kcal=Math.round(clamp(maintenance+goal,1400,4200)/50)*50;
+ const rawTarget=maintenance+goal;
+ if(!Number.isFinite(rawTarget)||rawTarget<1400||rawTarget>4200)return {requires_professional_review:true,target_energy_kcal:null,
+  reason:'برآورد انرژی خارج از محدوده محافظه‌کارانه این نسخه است؛ برای جلوگیری از پیشنهاد نامناسب، تولید خودکار متوقف شد.'};
+ const kcal=Math.round(clamp(rawTarget,1400,4200)/50)*50;
  const proteinPerKg=a.goal==='muscle_gain'?1.6:a.goal==='fat_loss'?1.4:1.2;
  const protein=Math.round(clamp(proteinPerKg*w,0,2*w));
  const fat=Math.round(kcal*.28/9),carbs=Math.max(0,Math.round((kcal-protein*4-fat*9)/4));
