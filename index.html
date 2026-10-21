@@ -11,10 +11,59 @@
 @media(max-width:700px){.layout{display:block}.sidebar{display:none}.main{padding:15px 12px 100px}.hero{grid-template-columns:1fr;padding:22px;border-radius:18px}.hero-art{position:absolute;left:7px;top:20px;opacity:.2;font-size:75px}.hero>div:first-child{position:relative;z-index:1}.hero h2{font-size:25px}.stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.stat{padding:11px}.stat strong{font-size:21px}.catalog{grid-template-columns:1fr}.grid3{grid-template-columns:1fr}.formgrid{grid-template-columns:1fr}.exercise-row{grid-template-columns:60px 1fr;gap:8px}.exercise-row .rowactions{grid-column:2;justify-content:start}.ex-art{height:60px}.top h1{font-size:22px}.mobilebar{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fffef9ed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:7px 3px calc(7px + env(safe-area-inset-bottom));justify-content:space-around;z-index:20}.mobilebar button{display:grid;justify-items:center;gap:3px;border:0;background:transparent;color:var(--muted);font-size:9px}.mobilebar button span{font-size:19px}.mobilebar button.active{color:var(--green);font-weight:900}.datepill{font-size:9px;padding:8px}.mealfood{padding:9px}.mealfood .foodright .mini{padding:5px}}
 
 .programcard{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:15px;display:flex;flex-direction:column;gap:9px;box-shadow:var(--shadow);min-width:0}.programhero{height:86px;border-radius:12px;background:linear-gradient(130deg,#294e3b,#6d8d62);display:flex;align-items:center;justify-content:center;font-size:42px;color:white}.programcard h3{margin:0;font-size:14px}.programcard p{margin:0}.programmeta{display:flex;gap:5px;flex-wrap:wrap}.programcard .actions{margin-top:auto}.workoutcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;flex-direction:column;gap:9px;min-width:0}.workoutcard .wemoji{font-size:30px;background:var(--pale);border-radius:12px;width:55px;height:55px;display:grid;place-items:center}.workoutcard h3{font-size:13px;margin:0}.workoutcard p{margin:0}.timerface{font-size:44px;font-weight:900;text-align:center;padding:15px;color:var(--green)}.stepcount{font-size:10px;color:var(--muted);text-align:center}.programday{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:10px 0}.programday:last-child{border-bottom:0}.mobilebar button{min-width:0;flex:1;font-size:8px}.mobilebar button span{font-size:17px}
+
+/* Rasta secure entry */
+.auth-screen{min-height:100svh;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(360px,.96fr);background:#f3f1e8;color:#242c24;direction:rtl}
+.auth-story{position:relative;overflow:hidden;background:radial-gradient(circle at 15% 15%,#53785a 0,transparent 34%),linear-gradient(145deg,#173c2b,#294e3b 55%,#182e23);color:#fff;padding:clamp(28px,5vw,72px);display:flex;flex-direction:column;justify-content:space-between;min-height:100svh}
+.auth-story:before,.auth-story:after{content:"";position:absolute;border:1px solid #ffffff18;border-radius:50%;width:440px;height:440px;pointer-events:none}
+.auth-story:before{left:-190px;bottom:-180px}.auth-story:after{left:80px;bottom:-270px;width:600px;height:600px}
+.auth-brand{display:flex;align-items:center;gap:13px;position:relative;z-index:1}.auth-logo{width:58px;height:58px;border-radius:19px;background:#d4eca0;color:#294e3b;display:grid;place-items:center;font-weight:900;font-size:34px;box-shadow:0 12px 30px #0b201a45}.auth-brand b{font-size:27px;letter-spacing:-.5px}.auth-brand small{display:block;color:#d4e3d4;font-size:11px;margin-top:2px}
+.auth-story-copy{position:relative;z-index:1;max-width:570px;margin:45px 0}.auth-kicker{display:inline-flex;gap:8px;align-items:center;background:#ffffff12;border:1px solid #ffffff20;border-radius:999px;padding:8px 13px;font-size:11px;color:#e0efdc}.auth-story h1{font-size:clamp(34px,4.5vw,60px);line-height:1.55;margin:22px 0 14px;letter-spacing:-1px}.auth-story h1 em{font-style:normal;color:#d4eca0}.auth-story-copy p{font-size:14px;line-height:2.2;color:#d4e0d4;max-width:480px}.auth-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:28px}.auth-benefit{border:1px solid #ffffff22;background:#ffffff0b;border-radius:15px;padding:13px 12px;backdrop-filter:blur(8px)}.auth-benefit span{font-size:22px;display:block;margin-bottom:8px}.auth-benefit b{font-size:11px;display:block}.auth-benefit small{display:block;font-size:9px;color:#c7d8c8;margin-top:4px;line-height:1.8}.auth-foot{position:relative;z-index:1;font-size:10px;color:#b8cbbb}
+.auth-panel-wrap{display:flex;align-items:center;justify-content:center;padding:clamp(22px,5vw,65px);min-height:100svh}.auth-panel{width:100%;max-width:440px}.auth-mobile-brand{display:none}.auth-panel h2{font-size:27px;margin:0 0 8px;letter-spacing:-.5px}.auth-subtitle{font-size:12px;line-height:2;color:#7a8278;margin:0 0 26px}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;padding:4px;background:#e9e9df;border-radius:13px;margin-bottom:22px;gap:4px}.auth-tabs button{border:0;background:transparent;border-radius:10px;padding:11px 8px;font-weight:800;font-size:12px;color:#7a8278}.auth-tabs button.active{background:#fffefa;color:#294e3b;box-shadow:0 3px 12px #2039240c}.auth-field{margin:0 0 14px}.auth-field label{display:block;font-size:11px;font-weight:800;margin:0 0 7px;color:#37463a}.auth-input-wrap{position:relative}.auth-input{width:100%;height:49px;border:1px solid #dfe2d7;background:#fffefa;border-radius:12px;padding:0 14px;color:#242c24;outline:none;transition:.18s}.auth-input:focus{border-color:#3e6a4e;box-shadow:0 0 0 3px #3e6a4e16}.auth-input::placeholder{color:#a0a69c}.auth-input.with-icon{padding-right:43px}.auth-field-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;color:#829080;pointer-events:none}.auth-inline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 19px;font-size:11px}.auth-link{border:0;background:transparent;color:#3e6a4e;font-size:11px;font-weight:800;padding:0}.auth-link:hover{text-decoration:underline}.auth-submit{width:100%;border:0;border-radius:12px;background:#294e3b;color:white;font-weight:900;padding:14px 16px;box-shadow:0 8px 18px #294e3b20;transition:transform .18s,background .18s}.auth-submit:hover{background:#1f402e;transform:translateY(-1px)}.auth-submit:disabled{opacity:.65;cursor:wait;transform:none}.auth-divider{display:flex;align-items:center;gap:12px;color:#9ba195;font-size:10px;margin:20px 0}.auth-divider:before,.auth-divider:after{content:"";height:1px;background:#e0e3d9;flex:1}.auth-notice{display:none;border-radius:11px;padding:11px 13px;font-size:11px;line-height:1.9;margin-bottom:15px}.auth-notice.show{display:block}.auth-notice.error{background:#f9e9e5;color:#8c3d30;border:1px solid #f0d1c8}.auth-notice.success{background:#e6f0df;color:#294e3b;border:1px solid #d0e3c6}.auth-legal{font-size:10px;line-height:1.9;color:#92998e;text-align:center;margin-top:20px}.auth-legal strong{color:#667566}.auth-userbar{display:flex;align-items:center;gap:8px}.auth-user-chip{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--paper);padding:7px 10px;border-radius:12px;font-size:10px;color:var(--green);max-width:240px}.auth-user-avatar{width:26px;height:26px;display:grid;place-items:center;border-radius:9px;background:var(--pale);font-weight:900}.auth-logout{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 10px;color:var(--red);font-size:10px;font-weight:800}
+@media(max-width:850px){.auth-screen{grid-template-columns:1fr}.auth-story{display:none}.auth-panel-wrap{min-height:100svh;padding:24px 20px}.auth-mobile-brand{display:flex;align-items:center;gap:10px;margin:0 0 34px}.auth-mobile-brand .auth-logo{width:47px;height:47px;border-radius:15px;font-size:28px}.auth-mobile-brand b{font-size:22px}.auth-mobile-brand small{display:block;color:#7a8278;font-size:10px}.auth-panel h2{font-size:25px}.auth-user-chip{max-width:135px}.auth-user-chip .auth-user-email{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
+@media(max-width:420px){.auth-benefits{grid-template-columns:1fr}.auth-inline{font-size:10px}.auth-panel-wrap{padding:19px 16px}}
+
 </style>
 </head>
 <body>
-<div class="layout">
+
+<section class="auth-screen" id="rasta-auth-screen" aria-label="ورود به رستا">
+  <div class="auth-story">
+    <div class="auth-brand"><div class="auth-logo">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو</small></div></div>
+    <div class="auth-story-copy">
+      <div class="auth-kicker">✦ فضای شخصی سلامتی تو</div>
+      <h1>هر روز، یک قدم<br><em>نزدیک‌تر به خودِ بهترت.</em></h1>
+      <p>تمرین، تغذیه و عادت‌های سالم را در یک فضای شخصی و هماهنگ با هدف‌هایت دنبال کن. مسیر تو، برنامه تو، پیشرفت تو.</p>
+      <div class="auth-benefits">
+        <div class="auth-benefit"><span>🏋️</span><b>تمرین متناسب تو</b><small>برنامه بر اساس سطح و امکاناتت</small></div>
+        <div class="auth-benefit"><span>🥗</span><b>غذای ایرانی</b><small>انتخاب وعده‌ها و پیگیری تغذیه</small></div>
+        <div class="auth-benefit"><span>📈</span><b>رشد قابل مشاهده</b><small>ثبت روند و سابقه شخصی</small></div>
+      </div>
+    </div>
+    <div class="auth-foot">رَستا · یک همراه برای عادت‌های بهتر، نه کمال‌گرایی</div>
+  </div>
+  <div class="auth-panel-wrap">
+    <div class="auth-panel">
+      <div class="auth-mobile-brand"><div class="auth-logo">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو</small></div></div>
+      <h2 id="auth-title">خوش برگشتی 👋</h2>
+      <p class="auth-subtitle" id="auth-subtitle">وارد فضای شخصی‌ات شو و ادامه مسیرت را از همان‌جا دنبال کن.</p>
+      <div class="auth-notice" id="auth-notice" role="status" aria-live="polite"></div>
+      <div class="auth-tabs" id="auth-tabs"><button type="button" class="active" data-auth-mode="login">ورود به حساب</button><button type="button" data-auth-mode="signup">ایجاد حساب</button></div>
+      <form id="rasta-auth-form" novalidate>
+        <div class="auth-field" id="auth-name-field" hidden><label for="auth-name">نام نمایشی</label><div class="auth-input-wrap"><span class="auth-field-icon">✧</span><input class="auth-input with-icon" id="auth-name" autocomplete="name" placeholder="مثلاً سارا احمدی"></div></div>
+        <div class="auth-field" id="auth-phone-field"><label for="auth-phone">شماره تلفن</label><div class="auth-input-wrap"><span class="auth-field-icon">☎</span><input class="auth-input with-icon" id="auth-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="مثلاً 0912 123 4567"></div></div>
+        <div class="auth-field" id="auth-email-field"><label for="auth-email">ایمیل</label><div class="auth-input-wrap"><span class="auth-field-icon">✉</span><input class="auth-input with-icon" id="auth-email" type="email" autocomplete="email" placeholder="name@example.com"></div></div>
+        <div class="auth-field" id="auth-password-field"><label for="auth-password">رمز عبور</label><div class="auth-input-wrap"><span class="auth-field-icon">⌑</span><input class="auth-input with-icon" id="auth-password" type="password" autocomplete="current-password" placeholder="حداقل ۸ نویسه"></div></div>
+        <div class="auth-inline" id="auth-inline"><label style="display:flex;align-items:center;gap:7px;color:#7a8278;font-weight:500"><input id="auth-remember" type="checkbox" checked style="accent-color:#294e3b"> مرا وارد نگه دار</label><button type="button" class="auth-link" id="auth-forgot">رمز عبور را فراموش کرده‌ام</button></div>
+        <button class="auth-submit" id="auth-submit" type="submit">ورود امن به رَستا <span aria-hidden="true">←</span></button>
+      </form>
+      <div class="auth-divider" id="auth-divider">فضای اختصاصی هر کاربر</div>
+      <div class="auth-legal" id="auth-legal">با ورود به رَستا، اطلاعات و برنامه‌های شخصی‌ات در حساب خودت نگهداری می‌شود.<br><strong>حساب امن · فضای شخصی · مسیر اختصاصی</strong></div>
+    </div>
+  </div>
+</section>
+
+<div class="layout" id="rasta-app-shell" style="display:none">
 <aside class="sidebar">
 <div class="brand"><div class="brandmark">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو</small></div></div>
 <div class="nav-label">فضای شخصی</div><nav class="nav">
@@ -29,7 +78,7 @@
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
-<header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="datepill" id="todaydate"></div></header>
+<header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="auth-userbar" id="rasta-userbar" style="display:none"><div class="auth-user-chip"><span class="auth-user-avatar" id="rasta-user-avatar">ر</span><span class="auth-user-email" id="rasta-user-email"></span></div><button class="auth-logout" id="rasta-logout" type="button">خروج</button><div class="datepill" id="todaydate"></div></div><div class="datepill" id="todaydate"></div></header>
 <section class="view active" id="view-today">
 <div class="hero"><div><small>به برنامه شخصی رَستا خوش آمدی</small><h2>بدن تو، مسیر تو.<br>امروز از کجا شروع می‌کنی؟</h2><p>یک تجربه یکپارچه برای تمرین، غذاهای ایرانی و عادت‌های روزانه؛ با امکان انتخاب دستی یا دریافت پیشنهاد متناسب با هدفت.</p><div class="actions"><button class="btn primary" data-goto="training">شروع تمرین</button><button class="btn ghost" data-goto="nutrition">چیدن وعده‌های امروز</button></div></div><div class="hero-art">🏋️‍♀️🥗</div></div>
 <div class="stats"><div class="stat"><label>کالری برنامه‌ریزی‌شده</label><strong id="statcal">۰</strong><small>از هدف روزانه</small><div class="bar"><span id="barcal"></span></div></div><div class="stat"><label>پروتئین برنامه غذایی</label><strong id="statprotein">۰ گرم</strong><small>از غذاهای انتخاب‌شده</small><div class="bar"><span id="barprotein"></span></div></div><div class="stat"><label>تمرین‌های انجام‌شده</label><strong id="statworkouts">۰</strong><small>جلسه ثبت‌شده امروز</small><div class="bar"><span id="barworkouts"></span></div></div><div class="stat"><label>مدت تحرک امروز</label><strong id="statmins">۰ دقیقه</strong><small>از تمرین‌های ثبت‌شده</small><div class="bar"><span id="barmins"></span></div></div></div>
@@ -86,6 +135,114 @@
 </main></div>
 <nav class="mobilebar"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="explore"><span>🔎</span>کشف</button><button data-view="library"><span>🧍</span>حرکات</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button data-view="history"><span>📈</span>سابقه</button></nav>
 <div class="modalback" id="modalback"><div class="modal"><div class="modalhead"><h2 id="modaltitle">جزئیات</h2><button class="close" id="modalclose">بستن ✕</button></div><div id="modalbody"></div></div></div><div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.__rastaStartApp=()=>{{
+const SUPABASE_URL='https://ptmokqppwjjxhakjpxum.supabase.co';
+const SUPABASE_KEY='sb_publishable_3zcZSgGImm9GeK2TmngGcg_hQDYNVjT';
+const authScreen=document.getElementById('rasta-auth-screen'),appShell=document.getElementById('rasta-app-shell');
+const byId=id=>document.getElementById(id);
+let mode='login',authUser=null;
+const notice=(message,type='error')=>{const n=byId('auth-notice');n.textContent=message;n.className='auth-notice show '+type};
+const clearNotice=()=>{const n=byId('auth-notice');n.textContent='';n.className='auth-notice'};
+const setBusy=(busy,label)=>{const b=byId('auth-submit');b.disabled=busy;b.textContent=busy?'لطفاً صبر کن…':label};
+const setMode=(next)=>{
+ mode=next;clearNotice();
+ byId('auth-tabs').style.display=next==='forgot'?'none':'grid';
+ byId('auth-name-field').hidden=next!=='signup';
+ byId('auth-phone-field').hidden=next==='forgot';
+ byId('auth-email-field').hidden=false;
+ byId('auth-password-field').hidden=next==='forgot';
+ byId('auth-inline').style.display=next==='login'?'flex':'none';
+ byId('auth-divider').style.display=next==='forgot'?'none':'flex';
+ byId('auth-title').textContent=next==='signup'?'حساب خودت را بساز ✨':next==='forgot'?'بازیابی رمز عبور':'خوش برگشتی 👋';
+ byId('auth-subtitle').textContent=next==='signup'?'یک حساب بساز تا برنامه‌ها و پیشرفتت در فضای شخصی خودت بماند.':next==='forgot'?'ایمیلت را وارد کن تا لینک بازیابی رمز برایت ارسال شود.':'وارد فضای شخصی‌ات شو و ادامه مسیرت را از همان‌جا دنبال کن.';
+ byId('auth-submit').innerHTML=next==='signup'?'ایجاد حساب شخصی <span aria-hidden="true">←</span>':next==='forgot'?'ارسال لینک بازیابی <span aria-hidden="true">←</span>':'ورود امن به رَستا <span aria-hidden="true">←</span>';
+ byId('auth-password').autocomplete=next==='signup'?'new-password':'current-password';
+ byId('auth-legal').innerHTML=next==='forgot'?'برای امنیت حساب، لینک بازیابی به ایمیل ثبت‌شده ارسال می‌شود.':'با ورود به رَستا، اطلاعات و برنامه‌های شخصی‌ات در حساب خودت نگهداری می‌شود.<br><strong>حساب امن · فضای شخصی · مسیر اختصاصی</strong>';
+ document.querySelectorAll('[data-auth-mode]').forEach(b=>b.classList.toggle('active',b.dataset.authMode===next));
+};
+document.querySelectorAll('[data-auth-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.authMode)));
+byId('auth-forgot').addEventListener('click',()=>setMode('forgot'));
+const originalStorage=window.localStorage;
+let client=null;
+try{
+ if(!window.supabase?.createClient)throw new Error('کتابخانه ورود بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را دوباره باز کن.');
+ client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storage:originalStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+}catch(e){notice(e.message||'راه‌اندازی ورود با خطا روبه‌رو شد.');}
+const showApp=async(user)=>{
+ if(!user)return;
+ authUser=user;window.__RASTA_AUTH_USER=user;
+ // Keep Supabase's own auth storage untouched; isolate all app data by authenticated user ID.
+ const native=originalStorage,uid=String(user.id);
+ const scopedKey=k=>String(k).startsWith('sb-')||String(k).startsWith('__rasta_')?String(k):'rasta-user:'+uid+':'+String(k);
+ try{Object.defineProperty(window,'localStorage',{configurable:true,value:{
+  getItem:k=>native.getItem(scopedKey(k)),
+  setItem:(k,v)=>native.setItem(scopedKey(k),String(v)),
+  removeItem:k=>native.removeItem(scopedKey(k)),
+  clear:()=>{const prefix='rasta-user:'+uid+':';for(let i=native.length-1;i>=0;i--){const k=native.key(i);if(k&&k.startsWith(prefix))native.removeItem(k)}},
+  key:i=>{const keys=[];for(let j=0;j<native.length;j++){const k=native.key(j);if(k&&k.startsWith('rasta-user:'+uid+':'))keys.push(k.slice(('rasta-user:'+uid+':').length))}return keys[i]||null},
+  get length(){let n=0;for(let i=0;i<native.length;i++){const k=native.key(i);if(k&&k.startsWith('rasta-user:'+uid+':'))n++}return n}
+ }});}catch(e){console.warn('Could not scope local storage',e)}
+ authScreen.style.display='none';appShell.style.display='grid';
+ byId('rasta-userbar').style.display='flex';
+ byId('todaydate').style.display='block';
+ byId('rasta-user-email').textContent=user.email||user.phone||user.user_metadata?.phone||'حساب من';
+ byId('rasta-user-avatar').textContent=(user.user_metadata?.full_name||user.email||'ر').trim().charAt(0).toLocaleUpperCase('fa-IR');
+ window.dispatchEvent(new Event('rasta:auth-ready'));
+};
+const handleSubmit=async(e)=>{
+ e.preventDefault();clearNotice();
+ if(!client){notice('اتصال ورود آماده نیست. صفحه را با اینترنت بازخوانی کن.');return}
+ const email=byId('auth-email').value.trim(),phone=byId('auth-phone').value.trim(),password=byId('auth-password').value,name=byId('auth-name').value.trim();
+ try{
+  if(mode==='forgot'){
+   if(!email||!email.includes('@')){notice('برای بازیابی رمز، ایمیل معتبر را وارد کن.');return}
+   setBusy(true,'ارسال لینک بازیابی');
+   const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+   if(error)throw error;
+   notice('اگر این ایمیل در رَستا ثبت شده باشد، لینک بازیابی برایت ارسال می‌شود. پوشه هرزنامه را هم بررسی کن.','success');return;
+  }
+  if(mode==='signup'){
+   if(!name){notice('نام نمایشی‌ات را وارد کن.');return}
+   if(!phone){notice('شماره تلفن را وارد کن.');return}
+   if(!email||!email.includes('@')){notice('یک ایمیل معتبر وارد کن.');return}
+   if(password.length<8){notice('رمز عبور باید دست‌کم ۸ نویسه داشته باشد.');return}
+   setBusy(true,'در حال ساخت حساب…');
+   const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:name,phone},emailRedirectTo:location.origin+location.pathname}});
+   if(error)throw error;
+   if(data.session&&data.user){await showApp(data.user);return}
+   notice('حسابت ثبت شد. برای فعال‌سازی، ایمیل تأیید را باز کن و سپس وارد شو.','success');
+   setMode('login');byId('auth-email').value=email;return;
+  }
+  if(!email){notice('ایمیل یا شماره تلفن را وارد کن.');return}
+  if(!password){notice('رمز عبور را وارد کن.');return}
+  setBusy(true,'در حال ورود…');
+  const isEmail=email.includes('@');
+  const credentials=isEmail?{email,password}:{phone:email.replace(/[\s()-]/g,''),password};
+  const {data,error}=await client.auth.signInWithPassword(credentials);
+  if(error)throw error;
+  await showApp(data.user);
+ }catch(err){
+  let msg=err?.message||'ورود انجام نشد. دوباره تلاش کن.';
+  if(/invalid login credentials/i.test(msg))msg='ایمیل/شماره یا رمز عبور درست نیست.';
+  if(/phone.*disabled|phone provider is disabled/i.test(msg))msg='ورود با شماره تلفن هنوز در تنظیمات احراز هویت فعال نشده است؛ فعلاً با ایمیل وارد شو.';
+  if(/email not confirmed/i.test(msg))msg='ابتدا ایمیل تأیید حساب را باز کن، سپس وارد شو.';
+  notice(msg);
+ }finally{setBusy(false,mode==='signup'?'ایجاد حساب شخصی ←':mode==='forgot'?'ارسال لینک بازیابی ←':'ورود امن به رَستا ←')}
+};
+byId('rasta-auth-form').addEventListener('submit',handleSubmit);
+byId('rasta-logout')?.addEventListener('click',async()=>{if(!client)return;await client.auth.signOut();location.reload()});
+(async()=>{
+ if(!client)return;
+ try{
+  const {data,error}=await client.auth.getSession();
+  if(error)throw error;
+  if(data.session?.user){await showApp(data.session.user)}
+ }catch(e){notice('بررسی نشست ورود انجام نشد. صفحه را دوباره بارگذاری کن.')}
+})();
+})();
+</script>
 <script>
 (()=>{
  // Offline/file-origin fallback: keep app usable when the browser blocks localStorage.
@@ -316,10 +473,13 @@ document.addEventListener('input',e=>{if(e.target.id==='workoutsearch'){exploreQ
 document.addEventListener('change',e=>{if(e.target.id==='workoutduration'){exploreDuration=e.target.value;renderExplore()}if(e.target.id==='workoutformat'){exploreFormat=e.target.value;renderExplore()}});
 
 profileLoad();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderTraining();renderLibrary();renderNutrition();renderHistory();renderToday();renderPrograms();renderExplore();
-})();
+}; if(window.__RASTA_AUTH_USER)window.__rastaStartApp();else window.addEventListener("rasta:auth-ready",window.__rastaStartApp,{once:true});
 
 
 </script>
+
+
+</body></html></script>
 
 
 </body></html>
