@@ -41,6 +41,8 @@ jobs:
 
       - name: Test Rasta science engine
         run: node tests/science-engine.test.js
+      - name: Validate application JavaScript syntax
+        run: node tests/app-validation.test.js
 
       - name: Install Android build tools
         run: sudo apt-get update && sudo apt-get install -y zip
