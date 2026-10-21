@@ -77,6 +77,7 @@
 <button data-view="library"><span class="ico">🧍</span>فعالیت‌های ورزشی</button>
 <button data-view="nutrition"><span class="ico">🥗</span>برنامه غذایی ایرانی</button>
 <button data-view="history"><span class="ico">📈</span>گزارش و سابقه</button>
+<button data-view="plans"><span class="ico">💎</span>اشتراک و تعرفه‌ها</button>
 <button data-view="profile"><span class="ico">⚙️</span>تنظیمات شخصی</button></nav>
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
@@ -134,9 +135,16 @@
 </section>
 <section class="view" id="view-profile">
 <div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><p>نسخه فعلی مستقل است و اطلاعات را در همین مرورگر نگه می‌دارد؛ هنوز حساب کاربری یا همگام‌سازی ابری ندارد. مقادیر تغذیه‌ای تقریبی هستند و جایگزین توصیه تخصصی نیستند.</p></div></section>
-<footer style="text-align:center;color:var(--muted);font-size:9px;line-height:1.9;margin-top:28px">رَستا · برنامه مستقل فارسی تمرین و تغذیه · اطلاعات در حافظه همین مرورگر ذخیره می‌شود.</footer>
+<section class="view" id="view-plans">
+<div class="sectionhead"><div><h2>اشتراک و تعرفه‌های رستا</h2><p>طرح مناسب خودت را برای امکانات بیشتر انتخاب کن.</p></div><span class="pill">قیمت‌های آزمایشی</span></div>
+<div class="tip" style="margin-bottom:14px"><b>شفافیت پرداخت</b>درگاه پرداخت هنوز متصل نشده است؛ هیچ مبلغی دریافت نمی‌شود و هیچ اشتراکی به‌صورت خودکار فعال نخواهد شد. تعرفه‌ها فعلاً برای آزمایش و بررسی بازار هستند.</div>
+<div id="rasta-plan-status" class="panel" style="margin-bottom:14px"><h3>وضعیت اشتراک شما</h3><p>در حال دریافت اطلاعات…</p></div>
+<div id="rasta-plan-cards" class="grid2"><div class="empty">در حال بارگذاری تعرفه‌ها…</div></div>
+<div class="panel" style="margin-top:14px"><h3>برای مربیان و باشگاه‌ها</h3><p>پنل‌های مربی و باشگاه در مرحله آماده‌سازی هستند. پیش از فروش، مدیریت شاگردان، دسترسی اعضا و پرداخت امن باید آزمایش شوند.</p><a class="btn ghost" href="mailto:elida600000@gmail.com?subject=درخواست%20اطلاعات%20رستا" style="display:inline-block;text-decoration:none">درخواست اطلاعات</a></div>
+</section>
+<footer style="text-align:center;color:var(--muted);font-size:9px;line-height:1.9;margin-top:28px">رَستا · تمرین و تغذیه با مسیر شخصی · تعرفه‌ها تا زمان فعال‌شدن درگاه آزمایشی هستند.</footer>
 </main></div>
-<nav class="mobilebar"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="explore"><span>🔎</span>کشف</button><button data-view="library"><span>🧍</span>حرکات</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button data-view="history"><span>📈</span>سابقه</button></nav>
+<nav class="mobilebar"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="explore"><span>🔎</span>کشف</button><button data-view="library"><span>🧍</span>حرکات</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button data-view="history"><span>📈</span>سابقه</button><button data-view="plans"><span>💎</span>اشتراک</button></nav>
 <div class="modalback" id="modalback"><div class="modal"><div class="modalhead"><h2 id="modaltitle">جزئیات</h2><button class="close" id="modalclose">بستن ✕</button></div><div id="modalbody"></div></div></div><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -176,6 +184,7 @@ let client=null;
 try{
  if(!window.supabase?.createClient)throw new Error('کتابخانه ورود بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را دوباره باز کن.');
  client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storage:originalStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+ window.__rastaSupabaseClient=client;
 }catch(e){notice(e.message||'راه‌اندازی ورود با خطا روبه‌رو شد.');}
 const showApp=async(user)=>{
  if(!user)return;
@@ -364,7 +373,37 @@ function save(){localStorage.setItem('rasta-training-mode',JSON.stringify(traini
 function toast(s){let t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),2300)}
 function modal(title,html){$('modaltitle').textContent=title;$('modalbody').innerHTML=html;$('modalback').classList.add('open')}
 function closemodal(){$('modalback').classList.remove('open')}
-function goto(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی',history:'گزارش و سابقه',profile:'تنظیمات شخصی'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();scrollTo({top:0,behavior:'smooth'})}
+function goto(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();scrollTo({top:0,behavior:'smooth'})}
+async function renderPlans(){
+ const box=$('rasta-plan-cards'),status=$('rasta-plan-status');
+ if(!box||!status)return;
+ box.innerHTML='<div class="empty">در حال دریافت تعرفه‌ها…</div>';
+ const client=window.__rastaSupabaseClient;
+ if(!client){box.innerHTML='<div class="empty">اتصال به سرویس حساب کاربری برقرار نشد. صفحه را دوباره باز کن.</div>';return}
+ try{
+  const [{data:plans,error:plansError},{data:{user},error:userError}]=await Promise.all([
+   client.from('subscription_plans').select('id,name_fa,description_fa,price_irr,billing_interval,features,sort_order').eq('is_active',true).order('sort_order'),
+   client.auth.getUser()
+  ]);
+  if(plansError)throw plansError;
+  if(userError)throw userError;
+  let active=null;
+  if(user){
+   const {data:subs,error:subError}=await client.from('subscriptions').select('plan_id,status,starts_at,ends_at,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(10);
+   if(subError)throw subError;
+   active=(subs||[]).find(s=>s.status==='active'&&(!s.ends_at||new Date(s.ends_at)>new Date()));
+  }
+  status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>'+(active?'اشتراک فعال: '+escapeHtml((plans||[]).find(p=>p.id===active.plan_id)?.name_fa||active.plan_id):'در حال حاضر اشتراک پولی فعالی ثبت نشده است.')+'</p>';
+  const toman=n=>Math.round(Number(n||0)/10).toLocaleString('fa-IR');
+  box.innerHTML=(plans||[]).map(p=>'<article class="panel" style="display:flex;flex-direction:column;gap:10px"><div class="split"><h3 style="margin:0">'+escapeHtml(p.name_fa)+'</h3><span class="pill">'+(p.id==='free'?'پایه':p.id==='premium'?'ورزشکار':p.id==='trainer'?'مربی':'باشگاه')+'</span></div><p style="margin:0">'+escapeHtml(p.description_fa||'')+'</p><div style="font-size:23px;font-weight:900;color:var(--green)">'+(Number(p.price_irr)===0?'رایگان':toman(p.price_irr)+' تومان')+'<small style="font-size:10px;font-weight:400;color:var(--muted)">'+(p.billing_interval==='month'?' / ماهانه':p.billing_interval==='year'?' / سالانه':'')+'</small></div><ul style="margin:0;padding-right:18px;font-size:11px;line-height:2">'+(Array.isArray(p.features)?p.features:[]).map(f=>'<li>'+escapeHtml(String(f))+'</li>').join('')+'</ul><button class="btn ghost" type="button" data-plan-request="'+escapeHtml(p.id)+'" '+(p.id==='free'?'disabled':'')+'>'+(p.id==='free'?'طرح پایه': 'خرید به‌زودی')+'</button></article>').join('')||'<div class="empty">فعلاً تعرفه‌ای ثبت نشده است.</div>';
+ }catch(err){
+  status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>دریافت اطلاعات اشتراک فعلاً انجام نشد.</p>';
+  box.innerHTML='<div class="empty">خطا در دریافت تعرفه‌ها. لطفاً بعداً دوباره تلاش کن.</div>';
+  console.error('Rasta plans load error',err);
+ }
+}
+function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-plan-request]');if(!b)return;const id=b.getAttribute('data-plan-request');if(id==='free')return;toast('درگاه پرداخت هنوز متصل نیست؛ خرید انجام نشد و مبلغی دریافت نمی‌شود.')});
 function macros(){return Object.values(foodday.meals).flat().reduce((a,item)=>{let entry=typeof item==='string'?{id:item,qty:1}:item,f=getfood(entry.id),q=Math.max(.25,Math.min(10,Number(entry.qty)||1));if(!f)return a;return {cal:a.cal+f.cal*q,p:a.p+f.p*q,c:a.c+f.c*q,f:a.f+f.f*q}},{cal:0,p:0,c:0,f:0})}
 function exerciseArt(item){let accent='#466c4d';return `<svg viewBox="0 0 100 85" role="img" aria-label="${item.name}"><circle cx="50" cy="12" r="8" fill="${accent}"/><path d="M50 22 L50 45 M50 29 L30 40 L20 31 M50 29 L70 40 L81 30 M50 45 L36 64 L31 78 M50 45 L65 61 L72 77" stroke="${accent}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M9 79 H91" stroke="#b5c6a7" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="31" r="4" fill="#dca365"/><circle cx="81" cy="30" r="4" fill="#dca365"/></svg>`}
 function renderTraining(){let df=$('dayfilters');df.innerHTML=plan.map((d,i)=>`<button class="filter ${i===activeDay?'active':''}" data-day="${i}">${dayNames[i%7]} · ${d.type}</button>`).join('');let d=plan[activeDay];if(!d)return;$('daytitle').textContent=d.title;$('daymeta').textContent=d.type+' · '+fa(d.mins)+' دقیقه · '+d.ids.length+' حرکت';$('plannedex').innerHTML=d.ids.length?d.ids.map((id,i)=>{let e=getex(id);if(!e)return '';return `<div class="exercise-row"><div class="ex-art">${exerciseArt(e)}</div><div><b>${e.name}</b><p>${e.muscle} · ${e.sets} ست × ${e.reps} · ${e.equipment}</p></div><div class="rowactions"><button class="mini fill" data-exdetail="${e.id}">توضیح</button><button class="mini" data-moveup="${i}">↑</button><button class="mini" data-replace="${i}">جایگزین</button><button class="mini" data-delplan="${i}">حذف</button></div></div>`}).join(''):'<div class="empty">برای این روز حرکتی انتخاب نشده است. از «افزودن حرکت» استفاده کن.</div>';$('goal').value=profile.goal;$('place').value=profile.place;$('level').value=profile.level;$('duration').value=profile.duration;if($('musclefocus'))$('musclefocus').value=profile.muscle||'تمام بدن';if($('musclegoal'))$('musclegoal').value=profile.musclegoal||'عضله‌سازی';if($('measurestart')){['measurestart','measurecurrent','strengthstart','strengthcurrent'].forEach(k=>$(k).value=progress[k]??'')}document.querySelectorAll('[data-trainingmode]').forEach(b=>b.classList.toggle('active',b.dataset.trainingmode===trainingMode));$('trainingmodehint').textContent=trainingMode==='auto'?'خودکار: با ذخیره تنظیمات، رَستا برنامه را بر اساس هدف و محل تمرین به‌روزرسانی می‌کند.':trainingMode==='hybrid'?'ترکیبی: رَستا ابتدا پیشنهاد می‌دهد؛ برنامه فقط پس از تأیید تو تغییر می‌کند.':'دستی: تنظیمات ذخیره می‌شوند اما فهرست حرکات فعلی خودکار جایگزین نمی‌شود.'}
