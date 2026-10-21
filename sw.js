@@ -3,12 +3,13 @@
  * User-specific data stays in localStorage; authenticated APIs are never cached.
  */
 const CACHE_PREFIX='rasta-fitness-';
-const CACHE_VERSION='v1';
+const CACHE_VERSION='v2';
 const CACHE_NAME=CACHE_PREFIX+CACHE_VERSION;
 const BASE_URL=new URL('./',self.registration.scope);
 const CORE_URLS=[
  new URL('./',BASE_URL).href,
  new URL('./index.html',BASE_URL).href,
+ new URL('./rasta-science-engine.js',BASE_URL).href,
  new URL('./manifest.json',BASE_URL).href,
  new URL('./version.json',BASE_URL).href,
  new URL('./assets/rasta-icon.png?v=65fa264',BASE_URL).href,
