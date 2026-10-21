@@ -5,7 +5,21 @@
 <meta name="theme-color" content="#0b3a2b"><link rel="icon" type="image/png" href="./assets/rasta-icon.png?v=65fa264">
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="رستا">
 <meta name="application-name" content="رستا">
+<link rel="manifest" href="./manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>رَستا | تمرین و تغذیه</title>
+<script>
+/* Install offline support on secure hosted origins. The app shell and local data remain available after the first successful online load. */
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+ window.addEventListener('load', () => {
+  navigator.serviceWorker.register('./sw.js', {scope:'./'}).then(reg => {
+   if (reg.waiting) reg.waiting.postMessage({type:'SKIP_WAITING'});
+   reg.update().catch(()=>{});
+  }).catch(()=>{});
+ });
+}
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
 :root{--bg:#f3f1e8;--paper:#fffefa;--ink:#242c24;--muted:#7a8278;--line:#e4e5da;--green:#294e3b;--green2:#3e6a4e;--pale:#dce9d5;--lime:#d4eca0;--orange:#e4a45f;--red:#a95847;--shadow:0 8px 24px #253c2810}
