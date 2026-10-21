@@ -207,7 +207,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
         <div class="auth-field" id="auth-email-field"><label for="auth-email">ایمیل (برای ورود با ایمیل)</label><div class="auth-input-wrap"><span class="auth-field-icon">✉</span><input class="auth-input with-icon" id="auth-email" type="email" autocomplete="email" placeholder="name@example.com"></div></div>
         <div class="auth-field" id="auth-password-field"><label for="auth-password">رمز عبور</label><div class="auth-input-wrap"><span class="auth-field-icon">⌑</span><input class="auth-input with-icon" id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="حداقل ۸ نویسه"></div></div>
         <div class="auth-field" id="auth-password-confirm-field" hidden><label for="auth-password-confirm">تکرار رمز عبور</label><div class="auth-input-wrap"><span class="auth-field-icon">✓</span><input class="auth-input with-icon" id="auth-password-confirm" type="password" autocomplete="new-password" minlength="8" placeholder="رمز عبور را دوباره وارد کن"></div></div>
-        <div class="auth-inline" id="auth-inline"><label style="display:flex;align-items:center;gap:7px;color:#7a8278;font-weight:500"><input id="auth-remember" type="checkbox" checked style="accent-color:#294e3b"> مرا وارد نگه دار</label><button type="button" class="auth-link" id="auth-forgot">رمز عبور را فراموش کرده‌ام</button></div>
+        <div class="auth-inline" id="auth-inline"><label style="display:flex;align-items:center;gap:7px;color:#7a8278;font-weight:500"><input id="auth-remember" type="checkbox" checked style="accent-color:#294e3b"> ایمیلم را به خاطر بسپار و وارد نگه دار</label><button type="button" class="auth-link" id="auth-forgot">رمز عبور را فراموش کرده‌ام</button></div>
         <button class="auth-submit" id="auth-submit" type="submit">ورود امن به رَستا <span aria-hidden="true">←</span></button>
       </form>
       <button type="button" id="rasta-offline-login" class="auth-submit" style="display:none;margin-top:10px;background:#e4ecd9;color:#294e3b;box-shadow:none">📴 ورود آفلاین به حساب ذخیره‌شده روی این گوشی</button>
@@ -617,6 +617,21 @@ const setMode=(next)=>{
 document.querySelectorAll('[data-auth-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.authMode)));
 byId('auth-forgot').addEventListener('click',()=>setMode('forgot'));
 const originalStorage=window.localStorage;
+const rememberEmailKey='__rasta_remembered_email';
+const rememberEmailToggle=byId('auth-remember'),emailInput=byId('auth-email');
+try{
+ const savedEmail=originalStorage.getItem(rememberEmailKey);
+ if(savedEmail&&emailInput)emailInput.value=savedEmail;
+}catch(e){}
+const saveRememberedEmail=()=>{
+ try{
+  if(!rememberEmailToggle?.checked){originalStorage.removeItem(rememberEmailKey);return}
+  const value=(emailInput?.value||'').trim();
+  if(value&&value.includes('@'))originalStorage.setItem(rememberEmailKey,value);
+ }catch(e){}
+};
+rememberEmailToggle?.addEventListener('change',saveRememberedEmail);
+emailInput?.addEventListener('change',()=>{if(rememberEmailToggle?.checked)saveRememberedEmail()});
 let client=null;
 try{
  if(!window.supabase?.createClient)throw new Error('کتابخانه ورود بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را دوباره باز کن.');
@@ -712,6 +727,7 @@ const handleSubmit=async(e)=>{
   const credentials=isEmail?{email:identifier,password}:{phone:identifier.replace(/[\s()-]/g,''),password};
   const {data,error}=await client.auth.signInWithPassword(credentials);
   if(error)throw error;
+  if(isEmail)saveRememberedEmail();
   window.__RASTA_OFFLINE_MODE=false;
   await showApp(data.user);
  }catch(err){
