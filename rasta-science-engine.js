@@ -124,7 +124,8 @@ function buildProgram({profile={},exercises=[],durationMinutes=30}){
  for(let i=0;i<days;i++){
   const focus=focuses[i],mins=clamp(Number(durationMinutes)||30,10,150);
   const count=focus==='تحرک'?3:focus==='هوازی'?2:Math.max(4,Math.min(7,Math.floor((mins-(faNum(profile.warmup)||8)-(faNum(profile.cooldown)||5))/5)));
-  const chosen=chooseForFocus(exercises,focus,profile,used,count);
+  const dayProfile={...profile};if(includes(profile.intensity,['متغیر']))dayProfile.intensity=i%3===0?'چالش‌برانگیز':i%3===1?'سبک':'متوسط';
+  const chosen=chooseForFocus(exercises,focus,dayProfile,used,count);
   if(!chosen.length)return {blocked:true,warning:'با تجهیزات و محدودیت‌های انتخاب‌شده حرکت ایمن کافی در کتابخانه پیدا نشد. تنظیمات را بازبینی کن یا از متخصص راهنمایی بگیر.',days:[]};
   const type=focus==='هوازی'?'هوازی':focus==='تحرک'?'بازیابی':'قدرتی';
   out.push({title:splitNames[i]+' · '+focus,type,mins,focus,ids:chosen.map(e=>e.id),prescriptions:Object.fromEntries(chosen.map(e=>[e.id,prescription(e,dayProfile)])),warmupMinutes:clamp(faNum(profile.warmup)||8,0,20),cooldownMinutes:clamp(faNum(profile.cooldown)||5,0,20),restRecommendationSeconds:prescription(chosen[0],dayProfile).restSeconds,engineVersion:VERSION});
