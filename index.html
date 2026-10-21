@@ -328,6 +328,9 @@ const handleSubmit=async(e)=>{
   await showApp(data.user);
  }catch(err){
   let msg=err?.message||'ورود انجام نشد. دوباره تلاش کن.';
+  // Give mobile users a useful explanation for browser/network-level fetch failures.
+  if(err instanceof TypeError && /fetch/i.test(msg)) msg='ارتباط با سرور ورود برقرار نشد. اینترنت را بررسی کن؛ اگر VPN یا فیلترشکن روشن است، یک‌بار خاموش/روشن کن و صفحه را دوباره بارگذاری کن. اطلاعات ورودت پاک نمی‌شود.';
+  if(/failed to fetch|networkerror|load failed/i.test(msg))msg='ارتباط با سرور ورود برقرار نشد. اتصال اینترنت یا دسترسی به Supabase را بررسی کن و دوباره تلاش کن.';
   if(/invalid login credentials/i.test(msg))msg='ایمیل/شماره یا رمز عبور درست نیست.';
   if(/phone.*disabled|phone provider is disabled/i.test(msg))msg='ورود با شماره تلفن هنوز در تنظیمات احراز هویت فعال نشده است؛ فعلاً با ایمیل وارد شو.';
   if(/email not confirmed/i.test(msg))msg='ابتدا ایمیل تأیید حساب را باز کن، سپس وارد شو.';
