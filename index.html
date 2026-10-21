@@ -247,7 +247,7 @@
 <div class="sectionhead"><div><h2>گزارش و سابقه</h2><p>جلسه‌های تمرینی و ست‌هایی که ثبت کرده‌ای</p></div><button class="btn ghost" id="exportdata">خروجی گرفتن از اطلاعات</button></div><div class="stats"><div class="stat"><label>جلسه‌های ثبت‌شده</label><strong id="histcount">۰</strong><small>در کل</small></div><div class="stat"><label>دقایق تمرین</label><strong id="histmins">۰</strong><small>در کل</small></div><div class="stat"><label>ست‌های تکمیل‌شده</label><strong id="histsets">۰</strong><small>ثبت‌شده</small></div><div class="stat"><label>غذاهای امروز</label><strong id="histfoods">۰</strong><small>آیتم غذایی</small></div></div><div class="panel"><h3>تاریخچه جلسات</h3><div class="history" id="historylist"></div></div>
 </section>
 <section class="view" id="view-profile">
-<div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
+<div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small><div class="tip" style="margin-top:10px"><b>به‌روزرسانی خودکار هر ۱ دقیقه</b><span id="auto-sync-status">پس از ورود، اطلاعات عمومی Supabase هر ۶۰ ثانیه بررسی می‌شود. تغییر نسخه سایت از GitHub هم بررسی می‌شود؛ برای بارگذاری نسخه جدید، دکمه زیر را بزن.</span><button class="btn" id="rasta-reload-version" type="button" style="display:none;width:100%;margin-top:8px">بارگذاری نسخه جدید از GitHub</button></div></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
 <section class="view" id="view-plans">
 <div class="sectionhead"><div><h2>اشتراک و تعرفه‌های رستا</h2><p>طرح مناسب خودت را برای امکانات بیشتر انتخاب کن.</p></div><span class="pill">پرداخت کارت‌به‌کارت</span></div>
 <div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>با امکانات پیشرفته‌تر، مسیر تمرین و پیشرفتت را هدفمند دنبال کن. امکانات پایه و سوابق شخصی‌ات حتی بدون اشتراک پولی در دسترس می‌مانند.</p><div class="rasta-hero-points"><span>✦ برنامه‌های تمرینی ویژه</span><span>✦ گزارش پیشرفت پیشرفته</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>پریمیوم</strong><small>۳۰ روز دسترسی</small></div></div>
@@ -798,7 +798,49 @@ async function rastaRunFullSync(){
  }catch(e){status.textContent='همگام‌سازی ناموفق';detail.textContent='اتصال یا دسترسی دیتابیس انجام نشد؛ اطلاعات محلی حفظ شده است. '+(e&&e.message||'');toast('همگام‌سازی انجام نشد؛ اطلاعات محلی حفظ شد.')}
  finally{button.disabled=false;button.textContent='همگام‌سازی اطلاعات و محتوا'}
 }
-document.addEventListener('click',e=>{if(e.target.closest('#rasta-sync-now'))rastaRunFullSync()});
+document.addEventListener('click',e=>{if(e.target.closest('#rasta-sync-now'))rastaRunFullSync();if(e.target.closest('#rasta-reload-version')){if(confirm('نسخه جدید سایت بارگذاری شود؟ اطلاعات ذخیره‌شده در این دستگاه پاک نمی‌شود.'))location.reload()}});
+
+async function rastaAutoRefresh(){
+ const status=$('auto-sync-status');if(!status||document.visibilityState==='hidden')return;
+ const client=window.__rastaSupabaseClient,user=window.__RASTA_AUTH_USER;
+ if(!client||!user){status.textContent='برای به‌روزرسانی خودکار باید وارد حساب رستا باشی.';return}
+ const stamp=new Intl.DateTimeFormat('fa-IR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date());
+ try{
+  const [exRes,foodRes,plansRes,subRes,payRes]=await Promise.all([
+   client.from('exercises').select('*').limit(500),
+   client.from('foods').select('*').eq('is_public',true).limit(500),
+   client.from('subscription_plans').select('id,name_fa,description_fa,price_irr,billing_interval,features,sort_order').eq('is_active',true).order('sort_order'),
+   client.from('subscriptions').select('id,status,plan_id,starts_at,ends_at,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(10),
+   client.from('payment_transactions').select('id,status,created_at,amount_irr').eq('user_id',user.id).eq('provider','manual_card_transfer').order('created_at',{ascending:false}).limit(10)
+  ]);
+  const errs=[exRes,foodRes,plansRes,subRes,payRes].filter(x=>x.error);
+  if(exRes.data&&!exRes.error)localStorage.setItem('rasta-cloud-exercises-cache',JSON.stringify(exRes.data));
+  if(foodRes.data&&!foodRes.error)localStorage.setItem('rasta-cloud-foods-cache',JSON.stringify(foodRes.data));
+  if(!errs.length){
+   status.textContent='آخرین بررسی خودکار: '+stamp+'؛ تمرین‌ها، غذاها، پلن‌ها و وضعیت اشتراک/پرداخت بررسی شدند. اطلاعات شخصی محلی بدون بازنویسی حفظ می‌شود.';
+   if($('view-library')?.classList.contains('active'))renderLibrary();
+   if($('view-explore')?.classList.contains('active'))renderExplore();
+   if($('view-plans')?.classList.contains('active')){const p=$('rasta-plan-cards');if(p) p.dataset.refreshHint=stamp;}
+  }else status.textContent='بررسی خودکار '+stamp+' انجام شد، اما برخی اطلاعات به‌دلیل خطای دسترسی دریافت نشدند.';
+ }catch(e){status.textContent='به‌روزرسانی خودکار انجام نشد؛ اطلاعات ذخیره‌شده حفظ شده‌اند.'}
+}
+async function rastaCheckGitHubVersion(){
+ const status=$('auto-sync-status');if(!status||document.visibilityState==='hidden')return;
+ try{
+  const res=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/commits/main',{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
+  if(!res.ok)return;
+  const data=await res.json();
+  const seen=localStorage.getItem('rasta-last-seen-github-commit');
+  if(seen&&seen!==data.sha){const b=$('rasta-reload-version');if(b)b.style.display='block';status.textContent='نسخه جدیدی در GitHub پیدا شد. برای بارگذاری کد جدید، دکمه «بارگذاری نسخه جدید از GitHub» را بزن؛ اطلاعات محلی حفظ می‌شود.'}
+  else if(!seen)localStorage.setItem('rasta-last-seen-github-commit',data.sha);
+ }catch(e){}
+}
+if(!window.__rastaAutoRefreshStarted){
+ window.__rastaAutoRefreshStarted=true;
+ setTimeout(()=>{rastaAutoRefresh();rastaCheckGitHubVersion()},1500);
+ setInterval(()=>{rastaAutoRefresh();rastaCheckGitHubVersion()},60000);
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){rastaAutoRefresh();rastaCheckGitHubVersion()}});
+}
 profileLoad();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderTraining();renderLibrary();renderNutrition();renderHistory();renderToday();renderPrograms();renderExplore();
 }; if(window.__RASTA_AUTH_USER)window.__rastaStartApp();else window.addEventListener("rasta:auth-ready",window.__rastaStartApp,{once:true});
 
