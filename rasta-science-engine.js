@@ -180,11 +180,17 @@ function nextLoad({weight=0,repsCompleted=0,repsTarget=12,setsCompleted=0,setsTa
  if(setsCompleted>=setsTarget&&repsCompleted>=repsTarget){if(includes(progression,['حجم']))return {action:'consider_sets',message:'اگر ریکاوری خوب است، به‌جای افزایش وزنه فقط یک ست به یک حرکت اضافه کن و واکنش را پایش کن.'};return {action:'small_increase',weightSuggestion:weight>0?Math.round(weight*1.025*2)/2:null,message:'اگر این عملکرد در جلسه بعد هم با فرم مناسب تکرار شد، افزایش کوچک وزنه را بررسی کن.'};}
  return {action:'hold',message:'تا کامل شدن هدف تکرار با فرم مناسب، بار فعلی را حفظ کن.'};
 }
+function weeklyGuidance(profile={},plan=[]){
+ if(includes(profile.cardioType,['بدون هوازی']))return ' · هوازی برنامه‌ریزی‌شده فعلاً خاموش است؛ اگر هدف سلامت عمومی است، فعالیت روزانه را جداگانه در نظر بگیر.';
+ const mins=(Array.isArray(plan)?plan:[]).filter(d=>d&&d.focus==='هوازی').reduce((sum,d)=>sum+(Number(d.mins)||0),0);
+ if(mins<150)return ' · هوازی برنامه فعلی حدود '+mins+' دقیقه در هفته است؛ راهنمای عمومی بزرگسالان سالم ۱۵۰ تا ۳۰۰ دقیقه هوازی متوسط در هفته است. به‌تدریج و متناسب با توان خودت افزایش بده؛ این عدد هدف عمومی است، نه نسخه فردی.';
+ return ' · زمان هوازی برنامه به حدود '+mins+' دقیقه در هفته می‌رسد؛ شدت و تحمل فردی را هم پایش کن.';
+}
 function recoveryAdvice({sleepHours=null,soreness='unknown',pain=false,energy='normal'}={}){
  if(pain)return {status:'stop',message:'تمرین را متوقف کن؛ درد شدید، ناگهانی یا پایدار نیازمند ارزیابی تخصصی است.'};
  if(soreness==='high'||energy==='low'||(sleepHours!==null&&sleepHours!==undefined&&sleepHours!==''&&Number.isFinite(Number(sleepHours))&&Number(sleepHours)<5))return {status:'reduce',message:'امروز شدت یا حجم را کم کن یا بازیابی فعال انتخاب کن؛ تمرین سنگین را به زمان مناسب‌تری موکول کن.'};
  if(sleepHours!==null&&sleepHours!==undefined&&sleepHours!==''&&Number.isFinite(Number(sleepHours))&&Number(sleepHours)<7)return {status:'caution',message:'با خواب کم، شدت را بر اساس احساس و کیفیت فرم تنظیم کن.'};
  return {status:'normal',message:'طبق برنامه پیش برو و فرم صحیح را بر افزایش بار مقدم بدان.'};
 }
-root.RastaScienceEngine={version:VERSION,buildProgram,prescription,estimateNutrition,analyzeProgress,nextLoad,recoveryAdvice,equipmentAllowed,safeForLimit};
+root.RastaScienceEngine={version:VERSION,buildProgram,prescription,estimateNutrition,analyzeProgress,nextLoad,recoveryAdvice,weeklyGuidance,equipmentAllowed,safeForLimit};
 })(typeof window!=='undefined'?window:globalThis);
