@@ -54,7 +54,57 @@ jobs:
           npx capacitor-assets generate --android
           npx cap sync android
 
-      - name: Build debug APK
+      - name: Prepare stable Android signing key
+        if: ${{ secrets.RASTA_KEYSTORE_BASE64 != '' && secrets.RASTA_KEYSTORE_PASSWORD != '' && secrets.RASTA_KEY_PASSWORD != '' && vars.RASTA_KEY_ALIAS != '' }}
+        env:
+          RASTA_KEYSTORE_BASE64: ${{ secrets.RASTA_KEYSTORE_BASE64 }}
+          RASTA_KEYSTORE_PASSWORD: ${{ secrets.RASTA_KEYSTORE_PASSWORD }}
+          RASTA_KEY_PASSWORD: ${{ secrets.RASTA_KEY_PASSWORD }}
+          RASTA_KEY_ALIAS: ${{ vars.RASTA_KEY_ALIAS }}
+        run: |
+          echo "$RASTA_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/rasta-upload-key.jks"
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("android/app/build.gradle")
+          s = p.read_text()
+          marker = "    buildTypes {"
+          if marker not in s:
+              raise SystemExit("Could not find Android buildTypes block")
+          signing = """    signingConfigs {
+              release {
+                  storeFile file(System.getenv('RASTA_KEYSTORE_PATH'))
+                  storePassword System.getenv('RASTA_KEYSTORE_PASSWORD')
+                  keyAlias System.getenv('RASTA_KEY_ALIAS')
+                  keyPassword System.getenv('RASTA_KEY_PASSWORD')
+              }
+          }
+
+          """
+          if "signingConfigs {" not in s:
+              s = s.replace(marker, signing + marker, 1)
+          release_marker = "        release {"
+          if release_marker not in s:
+              raise SystemExit("Could not find release build type")
+          if "signingConfig signingConfigs.release" not in s:
+              s = s.replace(release_marker, release_marker + "\n            signingConfig signingConfigs.release", 1)
+          p.write_text(s)
+          PY
+        shell: bash
+
+      - name: Build signed release APK
+        if: ${{ secrets.RASTA_KEYSTORE_BASE64 != '' && secrets.RASTA_KEYSTORE_PASSWORD != '' && secrets.RASTA_KEY_PASSWORD != '' && vars.RASTA_KEY_ALIAS != '' }}
+        working-directory: android
+        env:
+          RASTA_KEYSTORE_PATH: ${{ runner.temp }}/rasta-upload-key.jks
+          RASTA_KEYSTORE_PASSWORD: ${{ secrets.RASTA_KEYSTORE_PASSWORD }}
+          RASTA_KEY_PASSWORD: ${{ secrets.RASTA_KEY_PASSWORD }}
+          RASTA_KEY_ALIAS: ${{ vars.RASTA_KEY_ALIAS }}
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+      - name: Build debug APK (temporary, not published as latest)
+        if: ${{ secrets.RASTA_KEYSTORE_BASE64 == '' || secrets.RASTA_KEYSTORE_PASSWORD == '' || secrets.RASTA_KEY_PASSWORD == '' || vars.RASTA_KEY_ALIAS == '' }}
         working-directory: android
         run: |
           chmod +x gradlew
@@ -63,7 +113,11 @@ jobs:
       - name: Package APK as ZIP
         run: |
           mkdir -p release
-          cp android/app/build/outputs/apk/debug/app-debug.apk release/Rasta-Fitness.apk
+          if [ -f android/app/build/outputs/apk/release/app-release.apk ]; then
+            cp android/app/build/outputs/apk/release/app-release.apk release/Rasta-Fitness.apk
+          else
+            cp android/app/build/outputs/apk/debug/app-debug.apk release/Rasta-Fitness.apk
+          fi
           cd release
           zip Rasta-Fitness-APK.zip Rasta-Fitness.apk
 
@@ -75,14 +129,16 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Publish latest APK release
+      - name: Publish latest signed APK release
+        if: ${{ secrets.RASTA_KEYSTORE_BASE64 != '' && secrets.RASTA_KEYSTORE_PASSWORD != '' && secrets.RASTA_KEY_PASSWORD != '' && vars.RASTA_KEY_ALIAS != '' }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
           name: Rasta Fitness Android build ${{ github.run_number }}
           body: |
-            نسخه اندروید رَستا فیتنس.
+            نسخه اندروید امضاشده رَستا فیتنس.
             
-            فایل ZIP شامل APK نصب اندروید است. پس از دانلود، فایل ZIP را استخراج و APK را با تأیید خود نصب کنید.
+            این نسخه با کلید ثابت رَستا امضا شده و برای نصب به‌روزرسانی روی نسخه قبلی که با همین کلید نصب شده مناسب است.
+            فایل ZIP را استخراج کنید و APK را با تأیید خود نصب کنید.
           files: release/Rasta-Fitness-APK.zip
           make_latest: true
