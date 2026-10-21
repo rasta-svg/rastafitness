@@ -259,7 +259,7 @@
 <div class="sectionhead"><div><h2>گزارش و سابقه</h2><p>جلسه‌های تمرینی و ست‌هایی که ثبت کرده‌ای</p></div><button class="btn ghost" id="exportdata">خروجی گرفتن از اطلاعات</button></div><div class="stats"><div class="stat"><label>جلسه‌های ثبت‌شده</label><strong id="histcount">۰</strong><small>در کل</small></div><div class="stat"><label>دقایق تمرین</label><strong id="histmins">۰</strong><small>در کل</small></div><div class="stat"><label>ست‌های تکمیل‌شده</label><strong id="histsets">۰</strong><small>ثبت‌شده</small></div><div class="stat"><label>غذاهای امروز</label><strong id="histfoods">۰</strong><small>آیتم غذایی</small></div></div><div class="panel"><h3>تاریخچه جلسات</h3><div class="history" id="historylist"></div></div>
 </section>
 <section class="view" id="view-profile">
-<div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small><div class="tip" style="margin-top:10px"><b>به‌روزرسانی خودکار هر ۱ دقیقه</b><span id="auto-sync-status">پس از ورود، اطلاعات عمومی Supabase هر ۶۰ ثانیه بررسی می‌شود. تغییر نسخه سایت از GitHub هم بررسی می‌شود؛ برای بارگذاری نسخه جدید، دکمه زیر را بزن.</span><button class="btn" id="rasta-reload-version" type="button" style="display:none;width:100%;margin-top:8px">بارگذاری نسخه جدید از GitHub</button></div></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
+<div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small><div class="tip" style="margin-top:10px"><b>🔄 بررسی و به‌روزرسانی رَستا</b><span id="auto-sync-status">برای بررسی انتشار نسخه جدید، دکمه زیر را بزن. نسخه وب در صورت نیاز تازه‌سازی می‌شود؛ در نسخه اندروید، لینک دریافت APK جدید نمایش داده می‌شود.</span><button class="btn dark" id="rasta-check-version-now" type="button" style="width:100%;margin-top:8px">🔄 بررسی نسخه جدید</button><button class="btn" id="rasta-reload-version" type="button" style="display:none;width:100%;margin-top:8px">دریافت نسخه جدید</button><small style="display:block;margin-top:8px;line-height:1.8">توجه: به‌روزرسانی نسخه اندروید پس از دانلود، نیازمند تأیید نصب توسط خودت است.</small></div></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
 <section class="view" id="view-plans">
 <div class="sectionhead"><div><h2>اشتراک و تعرفه‌های رستا</h2><p>طرح مناسب خودت را برای امکانات بیشتر انتخاب کن.</p></div><span class="pill">پرداخت کارت‌به‌کارت</span></div>
 <div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>در حال حاضر فقط «برنامه‌های تمرینی ویژه» به اشتراک فعال پریمیوم نیاز دارد. امکانات پایه و سوابق شخصی حتی بدون اشتراک پولی در دسترس می‌مانند؛ مواردی که هنوز آماده نیستند در فهرست زیر شفاف مشخص شده‌اند.</p><div class="rasta-hero-points"><button type="button" data-plan-request="premium" style="cursor:pointer">🔒 برنامه‌های تمرینی ویژه · مشاهده قیمت</button><span>✦ پرداخت یک‌باره برای ۳۰ روز</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>پریمیوم</strong><small>۳۰ روز دسترسی</small></div></div>
@@ -1124,26 +1124,34 @@ async function rastaSaveUiStateAndReload(){
  }catch(e){}
  location.reload();
 }
+function rastaIsNativeApp(){
+ try{return !!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform())}catch(e){return false}
+}
 async function rastaCheckDeployedBuild(manual=false){
  const status=$('auto-sync-status');
  try{
-  const res=await fetch('./version.json?check='+Date.now(),{cache:'no-store'});
-  if(!res.ok)return false;
+  const res=await fetch('https://rasta-svg.github.io/rastafitness/version.json?check='+Date.now(),{cache:'no-store'});
+  if(!res.ok)throw new Error('نسخه سرور در دسترس نیست');
   const data=await res.json(),version=String(data.sha||data.version||'');
-  if(!version)return false;
+  if(!version)throw new Error('شماره نسخه دریافت نشد');
   const loaded=window.__rastaLoadedBuild;
-  if(!loaded){window.__rastaLoadedBuild=version;return false}
+  if(!loaded){window.__rastaLoadedBuild=version;if(manual&&status)status.textContent='نسخه نصب‌شده: '+version.slice(0,7)+'؛ نسخه منتشرشده بررسی شد.';return false}
   if(version!==loaded){
-   const b=$('rasta-reload-version');if(b)b.style.display='block';
-   if(status)status.textContent='نسخه تازه‌ای از سایت منتشر شده است؛ برای جلوگیری از قطع کار، به‌روزرسانی خودکار هنگام استفاده از فرم‌ها به تعویق می‌افتد.';
+   const b=$('rasta-reload-version');
+   if(b){b.style.display='block';b.textContent=rastaIsNativeApp()?'⬇ دریافت نسخه جدید APK':'بارگذاری نسخه جدید از GitHub';}
+   if(rastaIsNativeApp()){
+    if(status)status.textContent='نسخه جدید رَستا منتشر شده است. برای دریافت فایل APK روی دکمه زیر بزن؛ نصب نسخه اندروید با تأیید خودت انجام می‌شود.';
+    return true;
+   }
+   if(status)status.textContent='نسخه تازه‌ای از سایت منتشر شده است؛ صفحه برای بارگذاری نسخه جدید تازه‌سازی می‌شود.';
    const focused=document.activeElement;
    const editing=focused&&(/^(INPUT|TEXTAREA|SELECT)$/.test(focused.tagName))&&focused.type!=='button';
    const modalOpen=$('modalback')?.classList.contains('open');
    if(manual||(!editing&&!modalOpen))await rastaSaveUiStateAndReload();
    return true;
   }
-  if(manual&&status)status.textContent='نسخه سایت به‌روز است؛ اطلاعات عمومی و ابری بررسی شدند.';
- }catch(e){}
+  if(manual&&status)status.textContent='رَستا به‌روز است؛ نسخه منتشرشده ('+version.slice(0,7)+') با نسخه فعلی مطابقت دارد.';
+ }catch(e){if(manual&&status)status.textContent='بررسی نسخه انجام نشد. اتصال اینترنت را بررسی کن و دوباره بزن.'}
  return false;
 }
 document.addEventListener('click',async e=>{
@@ -1154,7 +1162,16 @@ document.addEventListener('click',async e=>{
   finally{if(b){b.disabled=false;b.textContent='⟳ همگام‌سازی و به‌روزرسانی'}}
   return;
  }
- if(e.target.closest('#rasta-reload-version')){await rastaSaveUiStateAndReload()}
+ if(e.target.closest('#rasta-check-version-now')){
+  const b=$('rasta-check-version-now');if(b){b.disabled=true;b.textContent='در حال بررسی نسخه…'}
+  try{const changed=await rastaCheckDeployedBuild(true);if(!changed)toast('نسخه منتشرشده بررسی شد.')}
+  finally{if(b){b.disabled=false;b.textContent='🔄 بررسی نسخه جدید'}}
+  return;
+ }
+ if(e.target.closest('#rasta-reload-version')){
+  if(rastaIsNativeApp()){window.open('https://github.com/rasta-svg/rastafitness/releases/latest','_blank');return}
+  await rastaSaveUiStateAndReload();
+ }
 });
 
 async function rastaAutoRefresh(){
