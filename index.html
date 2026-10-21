@@ -1135,7 +1135,10 @@ async function rastaSaveUiStateAndReload(){
   });
   sessionStorage.setItem('rasta-update-ui-state',JSON.stringify({activeView,fields,scrollY:window.scrollY}));
  }catch(e){}
- location.reload();
+ // Add a unique query parameter so GitHub Pages/CDN/WebView cannot reuse a cached HTML response.
+ const freshUrl=new URL(window.location.href);
+ freshUrl.searchParams.set('rasta_refresh',String(Date.now()));
+ window.location.replace(freshUrl.toString());
 }
 function rastaIsNativeApp(){
  try{return !!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform())}catch(e){return false}
@@ -1170,15 +1173,37 @@ async function rastaCheckDeployedBuild(manual=false){
 document.addEventListener('click',async e=>{
  if(e.target.closest('#rasta-sync-now')){await rastaRunFullSync();return}
  if(e.target.closest('#rasta-home-sync')){
-  const b=$('rasta-home-sync');if(b){b.disabled=true;b.textContent='در حال همگام‌سازی…'}
-  try{await rastaRunFullSync();await rastaAutoRefresh();const changed=await rastaCheckDeployedBuild(true);if(!changed)toast('همگام‌سازی انجام شد؛ نسخه سایت بررسی شد.')}
-  finally{if(b){b.disabled=false;b.textContent='⟳ همگام‌سازی و به‌روزرسانی'}}
+  const b=$('rasta-home-sync'),status=$('auto-sync-status');
+  if(b){b.disabled=true;b.textContent='در حال همگام‌سازی…'}
+  try{
+   await rastaRunFullSync();
+   await rastaAutoRefresh();
+   if(rastaIsNativeApp()){
+    if(status)status.textContent='اطلاعات آنلاین بررسی شد. برای دریافت تغییرات کد برنامه اندروید، نسخه APK جدید را از بخش Releases دریافت و نصب کن؛ نصب با تأیید اندروید انجام می‌شود.';
+    toast('اطلاعات آنلاین بررسی شد؛ برای تغییرات کد APK باید نسخه جدید نصب شود.');
+    window.open('https://github.com/rasta-svg/rastafitness/releases/latest','_blank');
+   }else{
+    if(status)status.textContent='همگام‌سازی انجام شد؛ در حال بارگذاری اجباری آخرین نسخه منتشرشده از GitHub…';
+    await rastaSaveUiStateAndReload();
+   }
+  }catch(err){
+   if(status)status.textContent='همگام‌سازی/به‌روزرسانی با خطا روبه‌رو شد: '+(err?.message||'خطای نامشخص');
+   toast('به‌روزرسانی کامل نشد؛ دوباره تلاش کن.');
+  }finally{if(b){b.disabled=false;b.textContent='⟳ همگام‌سازی و به‌روزرسانی'}}
   return;
  }
  if(e.target.closest('#rasta-check-version-now')){
-  const b=$('rasta-check-version-now');if(b){b.disabled=true;b.textContent='در حال بررسی نسخه…'}
-  try{const changed=await rastaCheckDeployedBuild(true);if(!changed)toast('نسخه منتشرشده بررسی شد.')}
-  finally{if(b){b.disabled=false;b.textContent='🔄 بررسی نسخه جدید'}}
+  const b=$('rasta-check-version-now'),status=$('auto-sync-status');
+  if(b){b.disabled=true;b.textContent='در حال بررسی نسخه…'}
+  try{
+   if(rastaIsNativeApp()){
+    if(status)status.textContent='برای به‌روزرسانی کد APK، نسخه جدید را از GitHub Releases دریافت و با تأیید اندروید نصب کن.';
+    window.open('https://github.com/rasta-svg/rastafitness/releases/latest','_blank');
+   }else{
+    if(status)status.textContent='در حال دریافت اجباری آخرین نسخه منتشرشده…';
+    await rastaSaveUiStateAndReload();
+   }
+  }finally{if(b){b.disabled=false;b.textContent='🔄 بررسی نسخه جدید'}}
   return;
  }
  if(e.target.closest('#rasta-reload-version')){
