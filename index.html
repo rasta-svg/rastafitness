@@ -27,11 +27,10 @@
 @media(max-width:420px){.auth-benefits{grid-template-columns:1fr}.auth-inline{font-size:10px}.auth-panel-wrap{padding:19px 16px}}
 
 
-/* Mobile/WebView full-width safeguard: prevent the sign-in panel from rendering in half a screen */
+/* Mobile/WebView full-width safeguard: force the entire app into a true single-column mobile layout */
 @media (max-width: 900px), (pointer: coarse) {
   html, body { width:100% !important; min-width:0 !important; max-width:100% !important; overflow-x:hidden !important; }
   #rasta-auth-screen.auth-screen {
-    display:grid;
     grid-template-columns:minmax(0,1fr) !important;
     width:100% !important;
     min-width:0 !important;
@@ -56,8 +55,43 @@
     min-width:0 !important;
     margin-inline:auto !important;
   }
-  #rasta-app-shell.layout { width:100% !important; max-width:100% !important; min-width:0 !important; }
-  #rasta-app-shell .main { width:100% !important; min-width:0 !important; max-width:100% !important; }
+  #rasta-app-shell.layout {
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    overflow-x:clip;
+  }
+  #rasta-app-shell .sidebar { display:none !important; }
+  #rasta-app-shell .main {
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    margin:0 auto !important;
+    padding:15px 12px calc(100px + env(safe-area-inset-bottom)) !important;
+  }
+  #rasta-app-shell .top,
+  #rasta-app-shell .sectionhead { min-width:0; flex-wrap:wrap; }
+  #rasta-app-shell .hero { grid-template-columns:minmax(0,1fr) !important; }
+  #rasta-app-shell .stats,
+  #rasta-app-shell .grid3,
+  #rasta-app-shell .catalog { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+  #rasta-app-shell .grid2 { grid-template-columns:minmax(0,1fr) !important; }
+  #rasta-app-shell .formgrid { grid-template-columns:minmax(0,1fr) !important; }
+  #rasta-app-shell .mobilebar {
+    display:flex !important;
+    position:fixed !important;
+    bottom:0 !important; left:0 !important; right:0 !important;
+    width:100% !important; max-width:100vw !important;
+    overflow-x:auto !important;
+    z-index:100 !important;
+    padding-bottom:calc(7px + env(safe-area-inset-bottom)) !important;
+  }
+  #rasta-app-shell .mobilebar button { flex:1 0 auto; min-width:42px; }
+  #rasta-app-shell img, #rasta-app-shell svg, #rasta-app-shell input,
+  #rasta-app-shell select, #rasta-app-shell textarea { max-width:100%; }
 }
 </style>
 </head>
