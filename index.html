@@ -1336,7 +1336,7 @@ async function rastaNutritionGenerate(){
  const risk=nutritionRisk(a);
  if(risk){nutritionStatus(risk);$('nf-result').innerHTML='<div class="tip"><b>نیازمند بررسی بیشتر</b>'+risk+'</div>';return}
  const targets=nutritionEstimate(a);
- if(!targets||targets.requires_professional_review||!Number.isFinite(Number(targets.target_energy_kcal))||targets.target_energy_kcal<1400){nutritionStatus(targets?.reason||'برآورد انرژی در محدوده محافظه‌کارانه این نسخه نیست؛ تولید برنامه متوقف شد و بررسی متخصص پیشنهاد می‌شود.');return}
+ if(!targets||targets.requires_professional_review||!Number.isFinite(Number(targets.target_energy_kcal))||targets.target_energy_kcal<1400){const reason=targets?.reason||'برآورد انرژی در محدوده محافظه‌کارانه این نسخه نیست؛ تولید برنامه متوقف شد و بررسی متخصص پیشنهاد می‌شود.';nutritionStatus(reason);const result=$('nf-result');if(result)result.textContent=reason;return}
  const week=[];
  for(let day=0;day<7;day++){const builtDay=nutritionBuildPlan(a,targets,day);if(builtDay.error){nutritionStatus(builtDay.error);return}week.push(builtDay)}
  const built={...week[0],week_plan:week,plan_horizon_days:7,created_at:new Date().toISOString()};
