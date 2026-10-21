@@ -682,7 +682,12 @@ const showRecoveryForm=()=>{
 if(client)client.auth.onAuthStateChange((event,session)=>{
  if(event==='PASSWORD_RECOVERY'||(isRecoveryUrl()&&session?.user))showRecoveryForm();
 });
-byId('rasta-logout')?.addEventListener('click',async()=>{if(!client)return;await client.auth.signOut();location.reload()});
+byId('rasta-logout')?.addEventListener('click',async()=>{
+ try{originalStorage.removeItem('__rasta_offline_user')}catch(e){}
+ if(client&&navigator.onLine){try{await client.auth.signOut()}catch(e){console.warn('Online sign-out unavailable',e)}}
+ window.__RASTA_OFFLINE_MODE=false;
+ location.reload();
+});
 (async()=>{
  if(!client)return;
  try{
@@ -1160,6 +1165,14 @@ async function rastaRunFullSync(){
  }catch(e){if(status)status.textContent='همگام‌سازی ناموفق';if(detail)detail.textContent='اتصال یا دسترسی دیتابیس انجام نشد؛ اطلاعات محلی حفظ شده است. '+(e&&e.message||'');toast('همگام‌سازی انجام نشد؛ اطلاعات محلی حفظ شد.')}
  finally{if(button){button.disabled=false;button.textContent='همگام‌سازی اطلاعات و محتوا'}}
 }
+const rastaWarmLocalCache=()=>{
+ const user=window.__RASTA_AUTH_USER;
+ if(!navigator.onLine||!user||window.__rastaWarmedCacheUser===user.id)return;
+ window.__rastaWarmedCacheUser=user.id;
+ setTimeout(()=>{if(navigator.onLine&&window.__RASTA_AUTH_USER?.id===user.id)rastaRunFullSync().catch(()=>{});},1800);
+};
+window.addEventListener('rasta:auth-ready',rastaWarmLocalCache);
+if(window.__RASTA_AUTH_USER)rastaWarmLocalCache();
 async function rastaSaveUiStateAndReload(){
  try{
   const activeView=document.querySelector('.view.active')?.id?.replace('view-','')||'today';
