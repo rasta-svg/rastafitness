@@ -49,4 +49,7 @@ assert.equal(engine.nextLoad({weight:10,repsCompleted:12,repsTarget:12,setsCompl
 assert.equal(engine.recoveryAdvice({sleepHours:null}).status,'normal','unknown sleep must not be treated as zero hours');
 assert.ok(engine.estimateNutrition({current_weight_kg:70,height_cm:175,age_years:30,sex:'male',activity_level:'moderate',goal:'general_health'}).target_energy_kcal>0,'nutrition estimate must be positive for valid adult data');
 assert.match(engine.weeklyGuidance(base,build({weeklyDays:'3'}).days),/۱۵۰ تا ۳۰۰/,'weekly aerobic guideline should be visible');
+assert.equal(engine.estimateNutrition({current_weight_kg:70,height_cm:175,age_years:30,sex:'female',activity_level:'moderate',goal:'general_health',pregnant_or_breastfeeding:true}).requires_professional_review,true,'pregnancy/breastfeeding must stop automated nutrition targets');
+assert.equal(engine.estimateNutrition({current_weight_kg:70,height_cm:175,age_years:30,sex:'male',activity_level:'moderate',goal:'general_health',health_conditions:['kidney disease']}).requires_professional_review,true,'reported medical conditions must stop automated nutrition targets');
+assert.equal(engine.estimateNutrition({current_weight_kg:35,height_cm:130,age_years:100,sex:'female',activity_level:'sedentary',goal:'fat_loss'}).requires_professional_review,true,'out-of-range calorie estimates must be flagged instead of clamped silently');
 console.log('Rasta Science Engine tests passed.');
