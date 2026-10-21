@@ -11,6 +11,8 @@ const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 const splitNames=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
 const typeFocus={
  'بالاتنه':['سینه','پشت','سرشانه','بازو'],
+ 'push':['سینه','سرشانه','پشت بازو'],
+ 'pull':['پشت','جلو بازو','بازو','همسترینگ'],
  'پایین تنه':['پا','باسن','همسترینگ','ساق'],
  'میان تنه':['میان‌تنه','شکم','پهلو'],
  'هوازی':['هوازی','قلب','تنفس'],
@@ -25,7 +27,7 @@ function equipmentAllowed(e,p){
  if(includes(pref,['کش مقاومتی']) && !includes(eq,['کش','بدون وسیله','پله محکم'])) return false;
  if(includes(pref,['دستگاه']) && !includes(eq,['دستگاه','دوچرخه ثابت','بدون وسیله'])) return false;
  if(includes(pref,['هالتر']) && !includes(eq,['هالتر','وزنه','بدون وسیله'])) return false;
- if(includes(pref,['وزن بدن']) && !includes(eq,['بدون وسیله','پله محکم'])) return false;
+ if(includes(pref,['وزن بدن']) && !includes(pref,['دمبل']) && !includes(eq,['بدون وسیله','پله محکم'])) return false;
  if(place==='خانه' && includes(eq,['دستگاه','دوچرخه ثابت','هالتر'])) return false;
  return true;
 }
@@ -69,6 +71,8 @@ function chooseForFocus(exercises,focus,p,used,count){
  else if(focus==='تحرک')candidates=candidates.filter(e=>includes(e.type,['انعطاف','یوگا','پیلاتس','تحرک'])||includes(e.name,['کشش','گربه','چرخش آرام']));
  else if(focus==='میان تنه')candidates=candidates.filter(e=>includes(e.muscle,['میان‌تنه','شکم','پهلو'])||includes(e.type,['میان‌تنه']));
  else if(focus==='بالاتنه')candidates=candidates.filter(e=>includes(e.muscle,['سینه','پشت','سرشانه','بازو']));
+ else if(focus==='push')candidates=candidates.filter(e=>includes(e.muscle,['سینه','سرشانه','پشت بازو']));
+ else if(focus==='pull')candidates=candidates.filter(e=>includes(e.muscle,['پشت','جلو بازو','بازو','همسترینگ','باسن']));
  else if(focus==='پایین تنه')candidates=candidates.filter(e=>includes(e.muscle,['پا','باسن','همسترینگ','ساق']));
  if(!candidates.length)candidates=exercises.filter(e=>equipmentAllowed(e,p)&&safeForLimit(e,p)&&!includes(e.type,['HIIT']));
  const picked=[];
@@ -83,11 +87,12 @@ function chooseForFocus(exercises,focus,p,used,count){
 }
 function sessionFocuses(p,days){
  const split=text(p.trainingSplit||'تمام بدن'),goal=text(p.goal||'');
- if(includes(split,['بالا/پایین']))return Array.from({length:days},(_,i)=>i%2===0?'بالاتنه':'پایین تنه');
- if(includes(split,['پوش/پول/لگز','push/pull/legs'])){const seq=['بالاتنه','بالاتنه','پایین تنه'];return Array.from({length:days},(_,i)=>seq[i%3]);}
- if(includes(split,['قدرت + هوازی','قدرتی + هوازی']))return Array.from({length:days},(_,i)=>i%2===0?'تمام بدن':'هوازی');
+ if(includes(split,['بالاتنه/پایین','بالا/پایین']))return Array.from({length:days},(_,i)=>i%2===0?'بالاتنه':'پایین تنه');
+ if(includes(split,['فشار/کشش/پا','push/pull/legs'])){const seq=['push','pull','پایین تنه'];return Array.from({length:days},(_,i)=>seq[i%3]);}
+ if(includes(split,['قدرتی و هوازی','قدرت + هوازی','قدرتی + هوازی']))return Array.from({length:days},(_,i)=>i%2===0?'تمام بدن':'هوازی');
  if(includes(split,['تحرک/بازیابی','بازیابی']))return Array.from({length:days},(_,i)=>i%2===0?'تحرک':'تمام بدن');
- if(includes(split,['تمام بدن']))return Array.from({length:days},()=> 'تمام بدن');
+ if(includes(split,['تمام بدن'])){const seq=days<=3?Array.from({length:days},()=> 'تمام بدن'):['تمام بدن','هوازی','تمام بدن','تحرک','تمام بدن','هوازی','تحرک'];return seq.slice(0,days);}
+ if(includes(split,['ترکیبی']))return Array.from({length:days},(_,i)=>['بالاتنه','پایین تنه','تمام بدن','هوازی','تحرک','بالاتنه','پایین تنه'][i%7]);
  if(includes(goal,['انعطاف','تحرک']))return Array.from({length:days},()=> 'تحرک');
  if(includes(goal,['چربی']))return Array.from({length:days},(_,i)=>i%3===2?'هوازی':'تمام بدن');
  return Array.from({length:days},(_,i)=>['بالاتنه','پایین تنه','تمام بدن','هوازی','بالاتنه','پایین تنه','تحرک'][i%7]);
@@ -112,6 +117,8 @@ function prescription(e,p){
 function buildProgram({profile={},exercises=[],durationMinutes=30}){
  const days=clamp(faNum(profile.weeklyDays)||faNum(profile.days)||3,2,7);
  const focuses=sessionFocuses(profile,days),used=new Set(),out=[];
+ const requestedFocus=text(profile.sessionFocus||'متعادل');
+ if(requestedFocus!=='متعادل'&&focuses.length){const mapped=requestedFocus==='میان تنه'?'میان تنه':requestedFocus;focuses[0]=mapped;}
  const blocked=includes(profile.limitations,['ابتدا با متخصص','مشورت با متخصص']);
  if(blocked)return {blocked:true,warning:'با توجه به گزینه محدودیت انتخاب‌شده، برنامه خودکار ساخته نشد. ابتدا با پزشک یا فیزیوتراپیست/متخصص واجد صلاحیت مشورت کن.',days:[]};
  for(let i=0;i<days;i++){
@@ -120,7 +127,7 @@ function buildProgram({profile={},exercises=[],durationMinutes=30}){
   const chosen=chooseForFocus(exercises,focus,profile,used,count);
   if(!chosen.length)return {blocked:true,warning:'با تجهیزات و محدودیت‌های انتخاب‌شده حرکت ایمن کافی در کتابخانه پیدا نشد. تنظیمات را بازبینی کن یا از متخصص راهنمایی بگیر.',days:[]};
   const type=focus==='هوازی'?'هوازی':focus==='تحرک'?'بازیابی':'قدرتی';
-  out.push({title:splitNames[i]+' · '+focus,type,mins,focus,ids:chosen.map(e=>e.id),prescriptions:Object.fromEntries(chosen.map(e=>[e.id,prescription(e,profile)])),warmupMinutes:clamp(faNum(profile.warmup)||8,0,20),cooldownMinutes:clamp(faNum(profile.cooldown)||5,0,20),restRecommendationSeconds:prescription(chosen[0],profile).restSeconds,engineVersion:VERSION});
+  out.push({title:splitNames[i]+' · '+focus,type,mins,focus,ids:chosen.map(e=>e.id),prescriptions:Object.fromEntries(chosen.map(e=>[e.id,prescription(e,dayProfile)])),warmupMinutes:clamp(faNum(profile.warmup)||8,0,20),cooldownMinutes:clamp(faNum(profile.cooldown)||5,0,20),restRecommendationSeconds:prescription(chosen[0],dayProfile).restSeconds,engineVersion:VERSION});
  }
  return {blocked:false,days:out,summary:{sessionsPerWeek:days,focuses,weeklyMinutes:out.reduce((s,d)=>s+d.mins,0),recovery:'بین جلسات سخت عضله مشابه را بازیابی کن؛ درد تیز، سرگیجه یا تنگی نفس غیرعادی علامت توقف تمرین است.'},warning:includes(profile.limitations,['زانو','کمر','شانه','مچ'])?'برنامه با فیلترهای عمومی محدود شده؛ این فیلترها جایگزین ارزیابی پزشکی یا برنامه توان‌بخشی نیستند.':'برنامه عمومی است؛ شدت را با فرم صحیح و توان روزانه تنظیم کن.'};
 }
