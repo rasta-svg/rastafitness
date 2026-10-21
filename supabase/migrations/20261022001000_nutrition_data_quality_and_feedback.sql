@@ -8,7 +8,10 @@ alter table public.foods
   add column if not exists source_record_id text,
   add column if not exists verified_at timestamptz,
   add column if not exists portion_name_fa text,
-  add column if not exists portion_grams numeric(8,2) check (portion_grams is null or portion_grams > 0);
+  add column if not exists portion_grams numeric(8,2) check (portion_grams is null or portion_grams > 0),
+  add column if not exists review_status text not null default 'pending' check (review_status in ('pending','approved','rejected')),
+  add column if not exists reviewed_by uuid references auth.users(id) on delete set null,
+  add column if not exists reviewed_at timestamptz;
 
 alter table public.recipes
   add column if not exists energy_kcal numeric(9,2),
@@ -51,3 +54,5 @@ drop policy if exists nutrition_plan_feedback_delete_own on public.nutrition_pla
 create policy nutrition_plan_feedback_delete_own on public.nutrition_plan_feedback for delete to authenticated using ((select auth.uid()) = owner_id);
 
 grant select, insert, update, delete on public.nutrition_plan_feedback to authenticated;
+
+create index if not exists nutrition_plan_feedback_snapshot_idx on public.nutrition_plan_feedback (plan_snapshot_id);
