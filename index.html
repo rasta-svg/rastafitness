@@ -252,11 +252,38 @@
 <div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small><div class="tip" style="margin-top:10px"><b>به‌روزرسانی خودکار هر ۱ دقیقه</b><span id="auto-sync-status">پس از ورود، اطلاعات عمومی Supabase هر ۶۰ ثانیه بررسی می‌شود. تغییر نسخه سایت از GitHub هم بررسی می‌شود؛ برای بارگذاری نسخه جدید، دکمه زیر را بزن.</span><button class="btn" id="rasta-reload-version" type="button" style="display:none;width:100%;margin-top:8px">بارگذاری نسخه جدید از GitHub</button></div></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
 <section class="view" id="view-plans">
 <div class="sectionhead"><div><h2>اشتراک و تعرفه‌های رستا</h2><p>طرح مناسب خودت را برای امکانات بیشتر انتخاب کن.</p></div><span class="pill">پرداخت کارت‌به‌کارت</span></div>
-<div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>با امکانات پیشرفته‌تر، مسیر تمرین و پیشرفتت را هدفمند دنبال کن. امکانات پایه و سوابق شخصی‌ات حتی بدون اشتراک پولی در دسترس می‌مانند.</p><div class="rasta-hero-points"><span>✦ برنامه‌های تمرینی ویژه</span><span>✦ گزارش پیشرفت پیشرفته</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>پریمیوم</strong><small>۳۰ روز دسترسی</small></div></div>
+<div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>در حال حاضر فقط «برنامه‌های تمرینی ویژه» به اشتراک فعال پریمیوم نیاز دارد. امکانات پایه و سوابق شخصی حتی بدون اشتراک پولی در دسترس می‌مانند؛ مواردی که هنوز آماده نیستند در فهرست زیر شفاف مشخص شده‌اند.</p><div class="rasta-hero-points"><button type="button" data-plan-request="premium" style="cursor:pointer">🔒 برنامه‌های تمرینی ویژه · مشاهده قیمت</button><span>✦ پرداخت یک‌باره برای ۳۰ روز</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>پریمیوم</strong><small>۳۰ روز دسترسی</small></div></div>
 <div class="tip" style="margin-bottom:14px"><b>پرداخت کارت‌به‌کارت</b>اشتراک ویژه ورزشکار با کارت‌به‌کارت قابل درخواست است. پس از ثبت شماره پیگیری، مدیر واریز را بررسی می‌کند؛ اشتراک فقط پس از تأیید واقعی پرداخت فعال می‌شود.</div>
 <div id="rasta-plan-status" class="panel" style="margin-bottom:14px"><h3>وضعیت اشتراک شما</h3><p>در حال دریافت اطلاعات…</p></div>
 <div id="rasta-premium-content" class="panel" style="display:none;margin-bottom:14px"></div>
 <div id="rasta-plan-cards" class="grid2"><div class="empty">در حال بارگذاری تعرفه‌ها…</div></div>
+<div class="panel" style="margin-top:14px">
+<h3>🔎 راهنمای شفاف امکانات رایگان و پولی</h3>
+<p>این فهرست مشخص می‌کند کدام امکانات اکنون رایگان‌اند و کدام مورد نیاز به پرداخت دارد. برای دیدن مبلغ و شرایط اشتراک، روی دکمهٔ پریمیوم بزن.</p>
+<div class="grid2" style="margin-top:10px">
+<div class="panel" style="margin:0;border:1px solid var(--line)">
+<h3>🟢 رایگان و قابل استفاده</h3>
+<ul class="rasta-plan-features">
+<li>برنامه تمرینی شخصی و ویرایش روزهای تمرین</li>
+<li>برنامه‌های چند‌هفته‌ای معمولی و انتخاب/نمایش آن‌ها</li>
+<li>کشف تمرین‌ها و کتابخانه حرکات</li>
+<li>برنامه غذایی ایرانی و بانک غذاها</li>
+<li>ثبت وعده‌ها، فعالیت‌ها و سابقه تمرین</li>
+<li>تنظیمات شخصی و همگام‌سازی اطلاعات</li>
+</ul>
+<p class="rasta-payment-note">این امکانات در کد فعلی به اشتراک پولی وابسته نشده‌اند.</p>
+</div>
+<div class="panel" style="margin:0;border:1px solid #c9a65a">
+<h3>🔒 پریمیوم؛ نیازمند پرداخت</h3>
+<ul class="rasta-plan-features">
+<li>دسترسی به برنامه‌های تمرینی ویژه‌ای که مدیر منتشر می‌کند</li>
+</ul>
+<p class="rasta-payment-note">پس از پرداخت و تأیید مدیر، دسترسی ۳۰ روزه فعال می‌شود. تمدید خودکار وجود ندارد.</p>
+<button class="rasta-plan-cta" type="button" data-plan-request="premium" style="width:100%">🔒 مشاهده قیمت و درخواست پریمیوم</button>
+</div>
+</div>
+<div class="tip" style="margin-top:12px"><b>شفافیت درباره امکانات در حال آماده‌سازی</b>گزارش پیشرفت پیشرفته هنوز به‌طور کامل به قفل اشتراک وصل نشده است؛ بنابراین فعلاً آن را به‌عنوان قابلیت پولی فعال معرفی نمی‌کنیم. پنل مربی و باشگاه نیز فعلاً قابل خرید نیستند و در مرحله آماده‌سازی‌اند.</div>
+</div>
 <div class="panel" style="margin-top:14px"><h3>برای مربیان و باشگاه‌ها</h3><p>پنل‌های مربی و باشگاه در مرحله آماده‌سازی هستند. پیش از فروش، مدیریت شاگردان، دسترسی اعضا و پرداخت امن باید آزمایش شوند.</p><a class="btn ghost" href="mailto:elida600000@gmail.com?subject=درخواست%20اطلاعات%20رستا" style="display:inline-block;text-decoration:none">درخواست اطلاعات</a></div>
 </section>
 <footer style="text-align:center;color:var(--muted);font-size:9px;line-height:1.9;margin-top:28px">رَستا · تمرین و تغذیه با مسیر شخصی · پرداخت کارت‌به‌کارت با تأیید مدیر</footer>
