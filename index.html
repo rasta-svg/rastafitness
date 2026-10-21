@@ -1208,30 +1208,43 @@ function nutritionEstimate(a){
  const carbs=Math.max(0,Math.round((kcal-protein*4-fat*9)/4));
  return {bmr:Math.round(bmr),maintenance_kcal:Math.round(maintenance),target_energy_kcal:kcal,target_protein_g:protein,target_fat_g:fat,target_carbohydrate_g:carbs};
 }
+function nutritionNormalize(v){return String(v||'').toLowerCase().normalize('NFKC').replace(/[\u200c\u200f\u064a\u0649]/g,'').replace(/ك/g,'ک').replace(/\s+/g,' ').trim()}
 function nutritionFoodAllowed(f,a){
- const hay=(f.name+' '+f.desc).toLowerCase();
- const dislikes=(a.disliked_foods||[]).some(x=>x&&hay.includes(x.toLowerCase()));
+ const hay=nutritionNormalize((f.name||'')+' '+(f.desc||''));
+ const dislikes=(a.disliked_foods||[]).some(x=>{const n=nutritionNormalize(x);return n&&hay.includes(n)});
  if(dislikes)return false;
- if(a.diet_style==='vegetarian'&&/(مرغ|گوشت|کباب|ماهی|تن ماهی|میگو|بوقلمون)/.test(hay))return false;
- if(a.diet_style==='vegan'&&/(مرغ|گوشت|کباب|ماهی|تن ماهی|میگو|بوقلمون|تخم.?مرغ|پنیر|ماست|شیر|کشک|خامه|عسل|حلیم)/.test(hay))return false;
- if(a.diet_style==='pescatarian'&&/(مرغ|گوشت|کباب|بوقلمون)/.test(hay))return false;
- if(a.diet_style==='low_lactose'&&/(شیر|ماست|پنیر|کشک|خامه|دوغ|فرنی|شیربرنج)/.test(hay))return false;
+ const animal=/مرغ|گوشت|کباب|ماهی|تن ماهی|میگو|بوقلمون|سوسیس|کالباس|ژامبون|جگر|دل و قلوه|آبگوشت|کله پاچه|صدف|میگو|ژلاتین حیوانی/;
+ const dairy=/شیر|ماست|پنیر|کشک|خامه|دوغ|فرنی|شیربرنج|کره|آب پنیر|وی پروتئین|پودر شیر/;
+ const eggs=/تخم.?مرغ|مایونز|سس مایونز/;
+ const honey=/عسل|ژلاتین|پودر آب پنیر/;
+ if(a.diet_style==='vegetarian'&&animal.test(hay))return false;
+ if(a.diet_style==='vegan'&&(animal.test(hay)||dairy.test(hay)||eggs.test(hay)||honey.test(hay)||/کره بادام|شکلات شیری/.test(hay)))return false;
+ if(a.diet_style==='pescatarian'&&/مرغ|گوشت|کباب|بوقلمون|سوسیس|کالباس|ژامبون|جگر|دل و قلوه|آبگوشت|کله پاچه/.test(hay))return false;
+ if(a.diet_style==='low_lactose'&&dairy.test(hay))return false;
  return true;
 }
-function nutritionBuildPlan(a,targets){
+function nutritionBuildPlan(a,targets,dayOffset=0){
  const meals=a.meals_per_day===3?[['صبحانه','صبحانه',.28],['ناهار','ناهار',.40],['شام','شام',.32]]:a.meals_per_day===5?[['صبحانه','صبحانه',.22],['میان‌وعده ۱','میان‌وعده',.10],['ناهار','ناهار',.32],['میان‌وعده ۲','میان‌وعده',.10],['شام','شام',.26]]:a.meals_per_day===6?[['صبحانه','صبحانه',.20],['میان‌وعده ۱','میان‌وعده',.08],['ناهار','ناهار',.30],['میان‌وعده ۲','میان‌وعده',.08],['شام','شام',.25],['میان‌وعده ۳','میان‌وعده',.09]]:[['صبحانه','صبحانه',.25],['ناهار','ناهار',.35],['شام','شام',.25],['میان‌وعده','میان‌وعده',.15]];
- const result={};
- const used=new Set();
- for(const [key,cat,share] of meals){
+ const result={};const used=new Set();
+ for(let slotIndex=0;slotIndex<meals.length;slotIndex++){
+  const [key,cat,share]=meals[slotIndex];
   let candidates=foods.filter(f=>f.cat===cat&&nutritionFoodAllowed(f,a)&&!used.has(f.id));
   if(!candidates.length)candidates=foods.filter(f=>f.cat===cat&&nutritionFoodAllowed(f,a));
-  if(!candidates.length) return {error:'برای سبک غذایی انتخاب‌شده در بانک فعلی غذای کافی وجود ندارد. لطفاً سبک یا انتخاب‌های غذایی را بازبینی کن.'};
+  if(!candidates.length)return {error:'برای سبک غذایی انتخاب‌شده در بانک فعلی غذای کافی وجود ندارد. لطفاً سبک یا انتخاب‌های غذایی را بازبینی کن.'};
   const target=targets.target_energy_kcal*share;
-  const scored=candidates.map(f=>{const qty=Math.max(.5,Math.min(2.0,target/Math.max(1,f.cal)));const hay=(f.name+' '+f.desc).toLowerCase();const liked=(a.liked_foods||[]).some(x=>hay.includes(x.toLowerCase()));const budgetPenalty=a.budget_level==='economical'&&/(ماهی|میگو|کباب کوبیده|گوشت|بادام|گردو|مغزها)/.test(hay)?65:0;const score=Math.abs(f.cal*qty-target)-(liked?35:0)+budgetPenalty;return {f,qty,score}}).sort((x,y)=>x.score-y.score);
+  const scored=candidates.map(f=>{
+   const qty=Math.max(.5,Math.min(2.0,target/Math.max(1,f.cal)));
+   const hay=nutritionNormalize((f.name||'')+' '+(f.desc||''));
+   const liked=(a.liked_foods||[]).some(x=>{const n=nutritionNormalize(x);return n&&hay.includes(n)});
+   const budgetPenalty=a.budget_level==='economical'&&/(ماهی|میگو|کباب کوبیده|گوشت|بادام|گردو|مغزها)/.test(hay)?65:0;
+   const varietyPenalty=((foods.indexOf(f)+dayOffset*11+slotIndex*5)%Math.min(candidates.length,7))*3.5;
+   const score=Math.abs(f.cal*qty-target)-(liked?35:0)+budgetPenalty+varietyPenalty;
+   return {f,qty,score}
+  }).sort((x,y)=>x.score-y.score);
   const pick=scored[0];used.add(pick.f.id);result[key]=[{id:pick.f.id,qty:Math.round(pick.qty*100)/100}];
  }
  const totals=Object.values(result).flat().reduce((acc,it)=>{const f=getfood(it.id);if(!f)return acc;return {energy:acc.energy+f.cal*it.qty,protein:acc.protein+f.p*it.qty,carbohydrate:acc.carbohydrate+f.c*it.qty,fat:acc.fat+f.f*it.qty}},{energy:0,protein:0,carbohydrate:0,fat:0});
- return {meals:result,estimated_totals:Object.fromEntries(Object.entries(totals).map(([k,v])=>[k,Math.round(v)])),disclaimer:'مقادیر غذاهای فعلی بانک رستا تخمینی و بر اساس سهم‌های نمونه هستند؛ این برنامه یک پیش‌نویس عمومی برای بزرگسالان سالم است، نه نسخه درمانی. قبل از انتشار عمومی، ارزش غذایی و مواد تشکیل‌دهنده هر غذا باید راستی‌آزمایی شوند.'};
+ return {day_offset:dayOffset,meals:result,estimated_totals:Object.fromEntries(Object.entries(totals).map(([k,v])=>[k,Math.round(v)])),disclaimer:'مقادیر غذاهای فعلی بانک رستا تخمینی و بر اساس سهم‌های نمونه هستند؛ این برنامه یک پیش‌نویس عمومی برای بزرگسالان سالم است، نه نسخه درمانی. قبل از انتشار عمومی، ارزش غذایی و مواد تشکیل‌دهنده هر غذا باید راستی‌آزمایی شوند.'};
 }
 async function rastaNutritionGenerate(){
  const a=nutritionReadForm();const validation=nutritionValidate(a);if(validation){nutritionStatus(validation);return}
