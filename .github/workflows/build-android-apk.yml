@@ -42,6 +42,7 @@ jobs:
           cp admin.html www/admin.html
           cp -R assets www/assets
           cp assets/rasta-icon.png resources/icon.png
+          cp assets/rasta-icon.png assets/icon.png
 
       - name: Install npm dependencies
         run: npm install
