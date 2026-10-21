@@ -198,7 +198,7 @@
 <main class="main">
 <header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="auth-userbar" id="rasta-userbar" style="display:none"><div class="auth-user-chip"><span class="auth-user-avatar" id="rasta-user-avatar">ر</span><span class="auth-user-email" id="rasta-user-email"></span></div><button class="auth-logout" id="rasta-logout" type="button">خروج</button><a id="rasta-admin-link" href="./admin.html" style="display:none;color:#fff;background:#294e3b;border-radius:9px;padding:8px 10px;text-decoration:none;font-size:12px;font-weight:bold">پنل مدیریت</a><div class="datepill" id="todaydate"></div></div></header>
 <section class="view active" id="view-today">
-<div class="hero"><div><small>به برنامه شخصی رَستا خوش آمدی</small><h2>بدن تو، مسیر تو.<br>امروز از کجا شروع می‌کنی؟</h2><p>یک تجربه یکپارچه برای تمرین، غذاهای ایرانی و عادت‌های روزانه؛ با امکان انتخاب دستی یا دریافت پیشنهاد متناسب با هدفت.</p><div class="actions"><button class="btn primary" data-goto="training">شروع تمرین</button><button class="btn ghost" data-goto="nutrition">چیدن وعده‌های امروز</button></div></div><div class="hero-art">🏋️‍♀️🥗</div></div>
+<div class="hero"><div><small>به برنامه شخصی رَستا خوش آمدی</small><h2>بدن تو، مسیر تو.<br>امروز از کجا شروع می‌کنی؟</h2><p>یک تجربه یکپارچه برای تمرین، غذاهای ایرانی و عادت‌های روزانه؛ با امکان انتخاب دستی یا دریافت پیشنهاد متناسب با هدفت.</p><div class="actions"><button class="btn primary" data-goto="training">شروع تمرین</button><button class="btn ghost" data-goto="nutrition">چیدن وعده‌های امروز</button><button class="btn" id="rasta-home-sync" type="button" style="background:#d4eca0;color:#294e3b">⟳ همگام‌سازی و به‌روزرسانی</button></div></div><div class="hero-art">🏋️‍♀️🥗</div></div>
 <div class="stats"><div class="stat"><label>کالری برنامه‌ریزی‌شده</label><strong id="statcal">۰</strong><small>از هدف روزانه</small><div class="bar"><span id="barcal"></span></div></div><div class="stat"><label>پروتئین برنامه غذایی</label><strong id="statprotein">۰ گرم</strong><small>از غذاهای انتخاب‌شده</small><div class="bar"><span id="barprotein"></span></div></div><div class="stat"><label>تمرین‌های انجام‌شده</label><strong id="statworkouts">۰</strong><small>جلسه ثبت‌شده امروز</small><div class="bar"><span id="barworkouts"></span></div></div><div class="stat"><label>مدت تحرک امروز</label><strong id="statmins">۰ دقیقه</strong><small>از تمرین‌های ثبت‌شده</small><div class="bar"><span id="barmins"></span></div></div></div>
 <div class="sectionhead"><div><h2>برنامه پیشنهادی امروز</h2><p>قابل تغییر بر اساس وقت، سطح و امکاناتت</p></div><button class="btn ghost" id="newday">پیشنهاد تازه</button></div>
 <div class="grid2"><div class="panel"><div class="split"><h3>تمرین امروز</h3><span class="pill" id="todayworkouttag">تمرین پیشنهادی</span></div><div id="todayworkout"></div><div style="margin-top:12px"><button class="btn dark" data-goto="training">مشاهده و ویرایش برنامه</button></div></div>
@@ -799,7 +799,50 @@ async function rastaRunFullSync(){
  }catch(e){status.textContent='همگام‌سازی ناموفق';detail.textContent='اتصال یا دسترسی دیتابیس انجام نشد؛ اطلاعات محلی حفظ شده است. '+(e&&e.message||'');toast('همگام‌سازی انجام نشد؛ اطلاعات محلی حفظ شد.')}
  finally{button.disabled=false;button.textContent='همگام‌سازی اطلاعات و محتوا'}
 }
-document.addEventListener('click',e=>{if(e.target.closest('#rasta-sync-now'))rastaRunFullSync();if(e.target.closest('#rasta-reload-version')){if(confirm('نسخه جدید سایت بارگذاری شود؟ اطلاعات ذخیره‌شده در این دستگاه پاک نمی‌شود.'))location.reload()}});
+async function rastaSaveUiStateAndReload(){
+ try{
+  const activeView=document.querySelector('.view.active')?.id?.replace('view-','')||'today';
+  const fields={};
+  document.querySelectorAll('input,select,textarea').forEach((el,i)=>{
+   if(!el.id||el.type==='password'||el.type==='file'||el.type==='hidden')return;
+   fields[el.id]=el.type==='checkbox'||el.type==='radio'?{checked:el.checked}: {value:el.value};
+  });
+  sessionStorage.setItem('rasta-update-ui-state',JSON.stringify({activeView,fields,scrollY:window.scrollY}));
+ }catch(e){}
+ location.reload();
+}
+async function rastaCheckDeployedBuild(manual=false){
+ const status=$('auto-sync-status');
+ try{
+  const res=await fetch('./version.json?check='+Date.now(),{cache:'no-store'});
+  if(!res.ok)return false;
+  const data=await res.json(),version=String(data.sha||data.version||'');
+  if(!version)return false;
+  const loaded=window.__rastaLoadedBuild;
+  if(!loaded){window.__rastaLoadedBuild=version;return false}
+  if(version!==loaded){
+   const b=$('rasta-reload-version');if(b)b.style.display='block';
+   if(status)status.textContent='نسخه تازه‌ای از سایت منتشر شده است؛ برای جلوگیری از قطع کار، به‌روزرسانی خودکار هنگام استفاده از فرم‌ها به تعویق می‌افتد.';
+   const focused=document.activeElement;
+   const editing=focused&&(/^(INPUT|TEXTAREA|SELECT)$/.test(focused.tagName))&&focused.type!=='button';
+   const modalOpen=$('modalback')?.classList.contains('open');
+   if(manual||(!editing&&!modalOpen))await rastaSaveUiStateAndReload();
+   return true;
+  }
+  if(manual&&status)status.textContent='نسخه سایت به‌روز است؛ اطلاعات عمومی و ابری بررسی شدند.';
+ }catch(e){}
+ return false;
+}
+document.addEventListener('click',async e=>{
+ if(e.target.closest('#rasta-sync-now')){await rastaRunFullSync();return}
+ if(e.target.closest('#rasta-home-sync')){
+  const b=$('rasta-home-sync');if(b){b.disabled=true;b.textContent='در حال همگام‌سازی…'}
+  try{await rastaRunFullSync();await rastaAutoRefresh();const changed=await rastaCheckDeployedBuild(true);if(!changed)toast('همگام‌سازی انجام شد؛ نسخه سایت بررسی شد.')}
+  finally{if(b){b.disabled=false;b.textContent='⟳ همگام‌سازی و به‌روزرسانی'}}
+  return;
+ }
+ if(e.target.closest('#rasta-reload-version')){await rastaSaveUiStateAndReload()}
+});
 
 async function rastaAutoRefresh(){
  const status=$('auto-sync-status');if(!status||document.visibilityState==='hidden')return;
@@ -826,14 +869,8 @@ async function rastaAutoRefresh(){
  }catch(e){status.textContent='به‌روزرسانی خودکار انجام نشد؛ اطلاعات ذخیره‌شده حفظ شده‌اند.'}
 }
 async function rastaCheckGitHubVersion(){
- const status=$('auto-sync-status');if(!status||document.visibilityState==='hidden')return;
- try{
-  const res=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/commits/main',{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});
-  if(!res.ok)return;
-  const data=await res.json();
-  const committedAt=Date.parse(data.commit?.committer?.date||data.commit?.author?.date||'');
-  if(Number.isFinite(committedAt)&&committedAt>performance.timeOrigin+5000){const b=$('rasta-reload-version');if(b)b.style.display='block';status.textContent='نسخه جدیدی در GitHub پس از بازشدن این صفحه ثبت شده است. برای بارگذاری کد جدید، دکمه «بارگذاری نسخه جدید از GitHub» را بزن؛ اطلاعات محلی حفظ می‌شود.'}
- }catch(e){}
+ if(document.visibilityState==='hidden')return;
+ await rastaCheckDeployedBuild(false);
 }
 if(!window.__rastaAutoRefreshStarted){
  window.__rastaAutoRefreshStarted=true;
@@ -842,6 +879,11 @@ if(!window.__rastaAutoRefreshStarted){
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){rastaAutoRefresh();rastaCheckGitHubVersion()}});
 }
 profileLoad();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderTraining();renderLibrary();renderNutrition();renderHistory();renderToday();renderPrograms();renderExplore();
+try{
+ const saved=JSON.parse(sessionStorage.getItem('rasta-update-ui-state')||'null');
+ if(saved){sessionStorage.removeItem('rasta-update-ui-state');Object.entries(saved.fields||{}).forEach(([id,state])=>{const el=$(id);if(!el)return;if(state&&Object.prototype.hasOwnProperty.call(state,'checked'))el.checked=state.checked;else if(state&&Object.prototype.hasOwnProperty.call(state,'value'))el.value=state.value});if(saved.activeView&&saved.activeView!=='today')goto(saved.activeView);if(Number.isFinite(saved.scrollY))setTimeout(()=>scrollTo(0,saved.scrollY),100)}
+}catch(e){}
+fetch('./version.json?check='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json():null).then(v=>{if(v?.sha)window.__rastaLoadedBuild=String(v.sha)}).catch(()=>{});
 }; if(window.__RASTA_AUTH_USER)window.__rastaStartApp();else window.addEventListener("rasta:auth-ready",window.__rastaStartApp,{once:true});
 
 
