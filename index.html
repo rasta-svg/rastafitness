@@ -392,20 +392,34 @@ byId('auth-submit').addEventListener('click',()=>{
  }
 });
 byId('rasta-auth-form').addEventListener('submit',handleSubmit);
+const isRecoveryUrl=()=>/type=recovery/i.test(location.hash+' '+location.search)||/[?&#]flow=recovery(?:[&#]|$)/i.test(location.hash+' '+location.search);
+const showRecoveryForm=()=>{
+ authScreen.style.display='grid';appShell.style.display='none';
+ setMode('reset');notice('لینک بازیابی تأیید شد. رمز عبور جدیدت را وارد کن.','success');
+};
 if(client)client.auth.onAuthStateChange((event,session)=>{
- if(event==='PASSWORD_RECOVERY'){
-  authScreen.style.display='grid';appShell.style.display='none';
-  setMode('reset');notice('لینک بازیابی تأیید شد. رمز عبور جدیدت را وارد کن.','success');
- }
+ if(event==='PASSWORD_RECOVERY'||(isRecoveryUrl()&&session?.user))showRecoveryForm();
 });
 byId('rasta-logout')?.addEventListener('click',async()=>{if(!client)return;await client.auth.signOut();location.reload()});
 (async()=>{
  if(!client)return;
  try{
+  const recoveryLink=isRecoveryUrl();
   const {data,error}=await client.auth.getSession();
   if(error)throw error;
-  const recoveryLink=/type=recovery/i.test(location.hash+' '+location.search);
-  if(data.session?.user&&!recoveryLink){await showApp(data.session.user)}
+  if(recoveryLink){
+   if(data.session?.user){showRecoveryForm();return}
+   window.setTimeout(async()=>{
+    try{
+     const {data:later,error:laterError}=await client.auth.getSession();
+     if(laterError)throw laterError;
+     if(later.session?.user&&isRecoveryUrl())showRecoveryForm();
+     else if(isRecoveryUrl())notice('نشست بازیابی از لینک دریافت نشد. تازه‌ترین ایمیل بازیابی را باز کن؛ ممکن است لینک قبلی منقضی یا استفاده شده باشد.');
+    }catch(e){notice('بررسی لینک بازیابی انجام نشد. لینک را دوباره از ایمیل باز کن.')}
+   },1200);
+   return;
+  }
+  if(data.session?.user)await showApp(data.session.user);
  }catch(e){notice('بررسی نشست ورود انجام نشد. صفحه را دوباره بارگذاری کن.')}
 })();
 })();
