@@ -1163,31 +1163,37 @@ function nutritionValidate(a){
  if(a.target_weight_kg&& (a.target_weight_kg<25||a.target_weight_kg>350))return 'وزن هدف واردشده معتبر نیست.';
  return '';
 }
+function rastaNutritionActiveUserId(){try{return typeof authUser!=='undefined'&&authUser?.id?String(authUser.id):null}catch(e){return null}}
+function rastaNutritionLocalKey(userId){return 'rasta-nutrition-assessment:'+String(userId||'offline')}
+function rastaNutritionFeedbackKey(userId){return 'rasta-nutrition-feedback:'+String(userId||'offline')}
 async function rastaNutritionSaveAssessment(a,quiet=false){
  const err=nutritionValidate(a);if(err){nutritionStatus(err);return false}
- localStorage.setItem('rasta-nutrition-assessment',JSON.stringify(a));
- const c=window.__rastaSupabaseClient;
- if(c){
+ const c=window.__rastaSupabaseClient;let user=null;
+ if(c){try{const res=await c.auth.getUser();if(res.error)throw res.error;user=res.data?.user||null}catch(e){}}
+ const userId=user?.id||rastaNutritionActiveUserId();
+ try{localStorage.setItem(rastaNutritionLocalKey(userId),JSON.stringify(a))}catch(e){}
+ if(c&&user){
   try{
-   const {data:{user},error:ue}=await c.auth.getUser();if(ue)throw ue;
-   if(user){
-    const row={...a,user_id:user.id,updated_at:new Date().toISOString()};
-    const {error}=await c.from('nutrition_assessments').upsert(row,{onConflict:'user_id'});if(error)throw error;
-    nutritionStatus('پرونده تغذیه‌ای به‌صورت امن در حساب رستا ذخیره شد.');
-    if(!quiet)toast('پرونده تغذیه‌ای ذخیره شد.');
-    return true;
-   }
-  }catch(e){nutritionStatus('اطلاعات در این دستگاه ذخیره شد، اما همگام‌سازی ابری انجام نشد: '+(e?.message||'خطای اتصال')) ;return true}
+   const row={...a,user_id:user.id,updated_at:new Date().toISOString()};
+   const {error}=await c.from('nutrition_assessments').upsert(row,{onConflict:'user_id'});if(error)throw error;
+   nutritionStatus('پرونده تغذیه‌ای به‌صورت امن در حساب رستا ذخیره شد.');
+   if(!quiet)toast('پرونده تغذیه‌ای ذخیره شد.');
+   return true;
+  }catch(e){nutritionStatus('اطلاعات فقط در فضای محلی همین حساب ذخیره شد؛ همگام‌سازی ابری انجام نشد: '+(e?.message||'خطای اتصال'));return true}
  }
- nutritionStatus('پرونده در همین دستگاه ذخیره شد. برای همگام‌سازی بین دستگاه‌ها وارد حساب رستا شو.');
+ nutritionStatus('پرونده در همین دستگاه و فضای محلی ذخیره شد. برای همگام‌سازی بین دستگاه‌ها وارد حساب رستا شو.');
  if(!quiet)toast('پرونده تغذیه‌ای روی دستگاه ذخیره شد.');
  return true;
 }
 async function rastaNutritionLoadAssessment(){
- let a=null;try{a=JSON.parse(localStorage.getItem('rasta-nutrition-assessment')||'null')}catch(e){}
- const c=window.__rastaSupabaseClient;
- if(c){try{const {data:{user}}=await c.auth.getUser();if(user){const {data,error}=await c.from('nutrition_assessments').select('*').eq('user_id',user.id).maybeSingle();if(!error&&data)a=data}}catch(e){}}
- if(a){nutritionFillForm({...rastaNutritionDefault,...a});nutritionStatus('پرونده تغذیه‌ای قبلی بارگذاری شد. پس از تغییر اطلاعات، ذخیره را بزن.')}
+ const c=window.__rastaSupabaseClient;let user=null;
+ if(c){try{const res=await c.auth.getUser();if(!res.error)user=res.data?.user||null}catch(e){}}
+ const userId=user?.id||rastaNutritionActiveUserId();let a=null;
+ try{a=JSON.parse(localStorage.getItem(rastaNutritionLocalKey(userId))||'null')}catch(e){}
+ if(c&&user){
+  try{const {data,error}=await c.from('nutrition_assessments').select('*').eq('user_id',user.id).maybeSingle();if(!error&&data){a=data;try{localStorage.setItem(rastaNutritionLocalKey(user.id),JSON.stringify(data))}catch(e){}}}catch(e){}
+ }
+ if(a){nutritionFillForm({...rastaNutritionDefault,...a});nutritionStatus('پرونده تغذیه‌ای مربوط به همین حساب بارگذاری شد. پس از تغییر اطلاعات، ذخیره را بزن.')}
 }
 function nutritionRisk(a){
  const highRisk=(a.health_conditions||[]).length>0||a.pregnant_or_breastfeeding;
@@ -1268,14 +1274,18 @@ async function rastaNutritionGenerate(){
  toast('پیش‌نویس برنامه ۷ روزه ساخته شد.');
 }
 async function rastaNutritionSubmitFeedback(){
- const payload={adherence_score:Number($('nf-feedback-adherence')?.value||3),satiety_score:Number($('nf-feedback-satiety')?.value||3),taste_score:Number($('nf-feedback-taste')?.value||3),energy_level_score:Number($('nf-feedback-energy')?.value||3),notes:String($('nf-feedback-notes')?.value||'').trim().slice(0,1000)};
- const c=window.__rastaSupabaseClient;
- if(!c){try{localStorage.setItem('rasta-nutrition-feedback',JSON.stringify({...payload,feedback_date:new Date().toISOString().slice(0,10)}));nutritionStatus('بازخورد روی همین دستگاه ذخیره شد؛ برای همگام‌سازی وارد حساب رستا شو.')}catch(e){nutritionStatus('ذخیره بازخورد انجام نشد.')}return}
+ const payload={adherence_score:Number($('nf-feedback-adherence')?.value||3),satiety_score:Number($('nf-feedback-satiety')?.value||3),taste_score:Number($('nf-feedback-taste')?.value||3),energy_level_score:Number($('nf-feedback-energy')?.value||3),notes:String($('nf-feedback-notes')?.value||'').trim().slice(0,1000),feedback_date:new Date().toISOString().slice(0,10)};
+ const c=window.__rastaSupabaseClient;let user=null;
+ if(c){try{const res=await c.auth.getUser();if(!res.error)user=res.data?.user||null}catch(e){}}
+ const userId=user?.id||rastaNutritionActiveUserId();
+ if(!c||!user){
+  try{localStorage.setItem(rastaNutritionFeedbackKey(userId),JSON.stringify(payload));nutritionStatus('بازخورد در فضای محلی همین حساب ذخیره شد؛ برای همگام‌سازی بین دستگاه‌ها وارد حساب رستا شو.')}catch(e){nutritionStatus('ذخیره بازخورد انجام نشد.')}
+  return;
+ }
  try{
-  const {data:{user},error:ue}=await c.auth.getUser();if(ue)throw ue;
-  if(!user){localStorage.setItem('rasta-nutrition-feedback',JSON.stringify({...payload,feedback_date:new Date().toISOString().slice(0,10)}));nutritionStatus('بازخورد روی همین دستگاه ذخیره شد؛ برای همگام‌سازی وارد حساب رستا شو.');return}
-  const row={...payload,owner_id:user.id,plan_snapshot_id:rastaNutritionLastPlanId,feedback_date:new Date().toISOString().slice(0,10)};
+  const row={...payload,owner_id:user.id,plan_snapshot_id:rastaNutritionLastPlanId};
   const {error}=await c.from('nutrition_plan_feedback').insert(row);if(error)throw error;
+  try{localStorage.setItem(rastaNutritionFeedbackKey(user.id),JSON.stringify(payload))}catch(e){}
   nutritionStatus('بازخورد با موفقیت در حساب رستا ذخیره شد و می‌تواند در بازبینی‌های بعدی برنامه استفاده شود.');toast('بازخورد ثبت شد.');
  }catch(e){nutritionStatus('ذخیره ابری بازخورد انجام نشد: '+(e?.message||'خطای ارتباط'))}
 }
