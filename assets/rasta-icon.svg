@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0b3a2b"/><stop offset=".55" stop-color="#126443"/><stop offset="1" stop-color="#05251c"/></linearGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff1b5"/><stop offset="1" stop-color="#caa65b"/></linearGradient>
+ <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5c99e"/><stop offset="1" stop-color="#b86f48"/></linearGradient>
+ <linearGradient id="appleR" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff6353"/><stop offset="1" stop-color="#a90e20"/></linearGradient>
+ <linearGradient id="appleG" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c7ef61"/><stop offset="1" stop-color="#3e941f"/></linearGradient>
+ <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#00150d" flood-opacity=".55"/></filter>
+</defs>
+<rect width="1024" height="1024" rx="220" fill="url(#bg)"/>
+<rect x="24" y="24" width="976" height="976" rx="202" fill="none" stroke="#e9d68a" stroke-width="12"/>
+<circle cx="512" cy="380" r="292" fill="#092e22" stroke="#b8d66a" stroke-width="8"/>
+<!-- man silhouette -->
+<g filter="url(#shadow)">
+ <path d="M160 704 Q132 610 176 500 Q201 435 275 425 L332 410 L382 454 L424 540 L413 715Z" fill="#123c2d"/>
+ <path d="M235 450 Q210 397 236 331 Q253 285 310 285 Q365 290 375 345 Q388 406 345 449 L322 482 L256 480Z" fill="url(#skin)"/>
+ <path d="M229 344 Q222 273 286 249 Q351 229 385 291 L376 330 Q351 302 325 306 Q284 310 251 353Z" fill="#17251e"/>
+ <path d="M179 500 Q235 451 295 469 Q355 479 388 548 L412 715 L132 715Z" fill="#174c38"/>
+ <path d="M225 484 Q274 461 321 487 L350 575 L280 616 L203 570Z" fill="#f0c093"/>
+</g>
+<!-- woman silhouette -->
+<g filter="url(#shadow)">
+ <path d="M600 714 L620 545 Q641 470 710 438 L761 416 L813 454 Q866 501 873 584 L887 714Z" fill="#164b37"/>
+ <path d="M672 336 Q685 271 743 267 Q804 270 819 332 Q830 389 794 438 L768 466 L705 440 Q664 403 672 336Z" fill="url(#skin)"/>
+ <path d="M665 351 Q646 278 713 236 Q776 206 823 269 Q846 305 823 363 L805 333 Q793 293 750 298 Q709 302 684 361Z" fill="#1a241c"/>
+ <path d="M646 483 Q695 454 742 475 L792 534 L763 614 L657 578Z" fill="#0d3528"/>
+</g>
+<!-- leaf crown -->
+<path d="M486 154 Q433 93 390 126 Q405 183 486 174Z" fill="#9ed45c"/>
+<path d="M522 154 Q566 89 617 120 Q599 181 522 174Z" fill="#bce76b"/>
+<path d="M504 171 L505 218" stroke="#d8eaa1" stroke-width="10" stroke-linecap="round"/>
+<!-- apples -->
+<g filter="url(#shadow)">
+ <path d="M344 673 Q309 624 333 577 Q360 527 419 551 Q449 567 471 551 Q523 525 556 574 Q586 626 545 681 Q506 732 444 744 Q382 738 344 673Z" fill="url(#appleG)" stroke="#d6f5a1" stroke-width="5"/>
+ <path d="M480 559 Q475 526 497 504" stroke="#563b20" stroke-width="13" stroke-linecap="round" fill="none"/>
+ <path d="M489 527 Q529 489 554 512 Q535 543 489 527Z" fill="#9bd65d"/>
+ <path d="M499 601 Q518 577 528 605" stroke="#e8ffc2" stroke-width="12" stroke-linecap="round" fill="none" opacity=".65"/>
+ <path d="M491 670 Q462 621 494 580 Q522 548 558 569 Q585 600 568 647 Q547 694 509 711 Q479 700 491 670Z" fill="url(#appleR)" stroke="#ff9b7d" stroke-width="5" transform="translate(72 -2)"/>
+ <path d="M566 564 Q564 534 583 514" stroke="#563b20" stroke-width="13" stroke-linecap="round" fill="none"/>
+ <path d="M577 535 Q617 496 641 519 Q623 550 577 535Z" fill="#9bd65d"/>
+ <path d="M594 602 Q609 584 618 606" stroke="#ffd4b7" stroke-width="11" stroke-linecap="round" fill="none" opacity=".65"/>
+</g>
+<path d="M171 788 Q512 735 853 788 L853 861 Q512 920 171 861Z" fill="#06271d" stroke="#d8c477" stroke-width="5"/>
+<text x="512" y="843" text-anchor="middle" font-size="88" font-weight="bold" fill="url(#gold)" font-family="Tahoma, Arial, sans-serif">رستا</text>
+<text x="512" y="920" text-anchor="middle" font-size="29" fill="#f4e7b7" font-family="Tahoma, Arial, sans-serif">تناسب اندام • تغذیه سالم</text>
+</svg>
