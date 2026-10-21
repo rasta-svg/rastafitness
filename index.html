@@ -1132,7 +1132,7 @@ function showEx(id){let e=getex(id);if(!e)return;const steps=beginnerSteps(e);mo
 
 const RASTA_NUTRITION_VERSION='rasta-nutrition-0.1';
 const rastaNutritionDefault={age_years:'',sex:'unspecified',height_cm:'',current_weight_kg:'',target_weight_kg:'',goal:'general_health',activity_level:'moderate',diet_style:'iranian_mixed',budget_level:'moderate',meals_per_day:4,liked_foods:[],disliked_foods:[],allergies:[],intolerances:[],health_conditions:[],pregnant_or_breastfeeding:false,consent_to_store_health_data:false,notes:''};
-function nutritionCsv(v){return String(v||'').replace(/\\n/g,',').split(/[,،;؛]+/).map(x=>x.trim()).filter(Boolean).slice(0,40)}
+function nutritionCsv(v){return String(v||'').replaceAll('\n',',').split(/[,،;؛]+/).map(x=>x.trim()).filter(Boolean).slice(0,40)}
 function nutritionReadForm(){
  const val=id=>$(id)?.value??'';
  const checks=['diabetes','kidney disease','heart disease','high blood pressure','gastrointestinal disease','eating disorder','cancer treatment','medication affecting nutrition'];
