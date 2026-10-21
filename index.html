@@ -1390,7 +1390,11 @@ async function rastaDownloadLatestApk(){
   if(!response.ok)throw new Error('انتشار APK جدید پیدا نشد یا هنوز آماده نیست.');
   const release=await response.json(),asset=(release.assets||[]).find(x=>x.name==='Rasta-Fitness.apk');
   if(!asset)throw new Error('فایل APK مستقیم هنوز در انتشار موجود نیست. پس از پایان ساخت نسخه، دوباره بررسی کن.');
-  const button=$('rasta-reload-version');if(button){button.style.display='block';button.textContent='⬇ دانلود APK نسخه '+(release.tag_name||'جدید');button.dataset.downloadUrl=asset.browser_download_url;}
+  const releaseCommit=(release.body||'').match(/Commit:\s*([0-9a-f]{40})/i)?.[1]||'';
+  const installed=String(window.__rastaLoadedBuild||'');
+  const button=$('rasta-reload-version');
+  if(releaseCommit&&installed&&releaseCommit===installed){if(button)button.style.display='none';if(status)status.textContent='رَستا به‌روز است؛ APK نصب‌شده با آخرین انتشار رسمی مطابقت دارد.';return false;}
+  if(button){button.style.display='block';button.textContent='⬇ دانلود APK نسخه '+(release.tag_name||'جدید');button.dataset.downloadUrl=asset.browser_download_url;}
   if(status)status.textContent='نسخه اندروید جدید آماده است ('+(release.name||release.tag_name||'نسخه جدید')+'). با زدن دکمه دانلود، فایل APK دریافت می‌شود؛ نصب نسخه باید در اندروید تأیید شود.';return true;
  }catch(e){if(status)status.textContent=e.message||'دریافت اطلاعات انتشار ناموفق بود.';return false}
 }
