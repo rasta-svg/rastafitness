@@ -1683,7 +1683,9 @@ async function rastaRunFullSync(){
  const client=window.__rastaSupabaseClient,user=window.__RASTA_AUTH_USER;
  if(!client||!user){if(status)status.textContent='ورود لازم است';if(detail)detail.textContent='برای همگام‌سازی امن ابتدا وارد حساب رستا شو.';toast('برای همگام‌سازی ابتدا وارد حساب رستا شو.');return}
  if(button){button.disabled=true;button.textContent='در حال همگام‌سازی…'}if(status)status.textContent='در حال اتصال';
- const keys=['rasta-training-mode','rasta-profile','rasta-plan','rasta-food-'+today,'rasta-history','rasta-progress','rasta-favorites','rasta-saved-workouts'];
+ const keys=['rasta-training-mode','rasta-profile','rasta-plan','rasta-history','rasta-progress','rasta-favorites','rasta-saved-workouts'];
+ // Include dated food logs so previous days are restored on a second device too.
+ for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(key&&key.startsWith('rasta-food-')&&!key.startsWith('rasta-cloud-')&&!keys.includes(key))keys.push(key)}
  try{
   const local={};for(const k of keys){const v=localStorage.getItem(k);if(v!==null){try{local[k]=JSON.parse(v)}catch{local[k]=v}}}
   const {data:row,error:readError}=await client.from('user_app_sync_state').select('payload,updated_at').eq('user_id',user.id).maybeSingle();if(readError)throw readError;
