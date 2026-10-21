@@ -177,5 +177,7 @@ jobs:
             
             این نسخه با کلید ثابت رَستا امضا شده و برای نصب به‌روزرسانی روی نسخه قبلی که با همین کلید نصب شده مناسب است.
             فایل ZIP را استخراج کنید و APK را با تأیید خود نصب کنید.
-          files: release/Rasta-Fitness-APK.zip
+          files: |
+            release/Rasta-Fitness-APK.zip
+            release/Rasta-Fitness.apk
           make_latest: true
