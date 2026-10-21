@@ -98,6 +98,43 @@ Deno.serve(async (req: Request) => {
     return json({ ok: true, enabled: /^\d{16}$/.test(cardNumber) && Boolean(cardholderName) });
   }
 
+  if (action === "set_price") {
+    const toman = Number(body.price_toman);
+    if (!Number.isSafeInteger(toman) || toman < 1000 || toman > 100000000) return json({ error: "مبلغ باید بین ۱٬۰۰۰ تا ۱۰۰٬۰۰۰٬۰۰۰ تومان باشد." }, 400);
+    const { data: plan, error } = await db.from("subscription_plans").update({ price_irr: toman * 10, updated_at: new Date().toISOString() }).eq("id", "premium").select("id,price_irr").single();
+    if (error || !plan) return json({ error: "ذخیره مبلغ اشتراک انجام نشد." }, 500);
+    return json({ ok: true, price_toman: Math.round(Number(plan.price_irr) / 10) });
+  }
+
+  if (action === "grant_complimentary") {
+    const email = String(body.email || "").trim().toLowerCase();
+    const days = Number(body.days ?? 30);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "ایمیل معتبر کاربر را وارد کنید." }, 400);
+    if (!Number.isInteger(days) || days < 1 || days > 3650) return json({ error: "مدت اشتراک باید بین ۱ تا ۳۶۵۰ روز باشد." }, 400);
+    let target = null;
+    for (let page = 1; page <= 10; page++) {
+      const { data, error } = await db.auth.admin.listUsers({ page, perPage: 1000 });
+      if (error) return json({ error: "جست‌وجوی کاربران انجام نشد." }, 500);
+      target = (data.users || []).find((u) => (u.email || "").toLowerCase() === email) || null;
+      if (target || (data.users || []).length < 1000) break;
+    }
+    if (!target) return json({ error: "کاربری با این ایمیل پیدا نشد؛ ابتدا باید در رستا ثبت‌نام کند." }, 404);
+    const { data: current, error: currentError } = await db.from("subscriptions").select("id,ends_at").eq("user_id", target.id).eq("status", "active");
+    if (currentError) return json({ error: "بررسی اشتراک فعلی کاربر انجام نشد." }, 500);
+    const now = new Date();
+    const valid = (current || []).filter((s) => !s.ends_at || new Date(s.ends_at) > now);
+    const latestEnd = valid.reduce((max, s) => Math.max(max, s.ends_at ? new Date(s.ends_at).getTime() : now.getTime()), now.getTime());
+    const start = new Date(Math.max(now.getTime(), latestEnd));
+    const end = new Date(start.getTime() + days * 86400000);
+    if (valid.length) {
+      const { error } = await db.from("subscriptions").update({ status: "expired", ends_at: now.toISOString(), updated_at: now.toISOString() }).in("id", valid.map((s) => s.id));
+      if (error) return json({ error: "به‌روزرسانی اشتراک قبلی ناموفق بود." }, 500);
+    }
+    const { data: granted, error: grantError } = await db.from("subscriptions").insert({ user_id: target.id, plan_id: "premium", status: "active", starts_at: start.toISOString(), ends_at: end.toISOString(), updated_at: now.toISOString() }).select("id,starts_at,ends_at").single();
+    if (grantError) return json({ error: "اعطای اشتراک رایگان انجام نشد." }, 500);
+    return json({ ok: true, user: { email: target.email || email, name: String(target.user_metadata?.full_name || target.user_metadata?.name || "") }, subscription: granted, days, message: "اشتراک رایگان ویژه با موفقیت اعطا شد." });
+  }
+
   if (action === "admin_list") {
     const { data: transactions, error } = await db.from("payment_transactions")
       .select("id,user_id,amount_irr,status,provider,created_at,verified_at,provider_response")
