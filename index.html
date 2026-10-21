@@ -1174,6 +1174,7 @@ const rastaWarmLocalCache=()=>{
  setTimeout(()=>{if(navigator.onLine&&window.__RASTA_AUTH_USER?.id===user.id)rastaRunFullSync().catch(()=>{});},1800);
 };
 window.addEventListener('rasta:auth-ready',rastaWarmLocalCache);
+window.addEventListener('online',()=>{window.__rastaWarmedCacheUser=null;rastaWarmLocalCache()});
 if(window.__RASTA_AUTH_USER)rastaWarmLocalCache();
 async function rastaSaveUiStateAndReload(){
  try{
