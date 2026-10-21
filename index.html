@@ -190,6 +190,8 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
         <div class="auth-inline" id="auth-inline"><label style="display:flex;align-items:center;gap:7px;color:#7a8278;font-weight:500"><input id="auth-remember" type="checkbox" checked style="accent-color:#294e3b"> مرا وارد نگه دار</label><button type="button" class="auth-link" id="auth-forgot">رمز عبور را فراموش کرده‌ام</button></div>
         <button class="auth-submit" id="auth-submit" type="submit">ورود امن به رَستا <span aria-hidden="true">←</span></button>
       </form>
+      <button type="button" id="rasta-offline-login" class="auth-submit" style="display:none;margin-top:10px;background:#e4ecd9;color:#294e3b;box-shadow:none">📴 ورود آفلاین به حساب ذخیره‌شده روی این گوشی</button>
+      <div id="rasta-offline-help" style="display:none;font-size:10px;line-height:1.9;color:#737b70;margin-top:8px;text-align:center">این گزینه فقط پس از یک ورود موفق قبلی روی همین گوشی فعال می‌شود. اطلاعات تازه‌نشده از سرور در دسترس نیست.</div>
       <div class="auth-divider" id="auth-divider">فضای اختصاصی هر کاربر</div>
       <div class="auth-legal" id="auth-legal">ورود به حساب، فعلاً برنامه‌ها را بین دستگاه‌ها همگام‌سازی نمی‌کند؛ اطلاعات تمرین روی همین مرورگر ذخیره می‌شود.<br><strong>همگام‌سازی ابری در حال آماده‌سازی است.</strong></div>
     </div>
@@ -561,8 +563,16 @@ try{
  client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storage:originalStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
  window.__rastaSupabaseClient=client;
 }catch(e){notice(e.message||'راه‌اندازی ورود با خطا روبه‌رو شد.');}
+const readOfflineUser=()=>{try{const raw=originalStorage.getItem('__rasta_offline_user');if(!raw)return null;const u=JSON.parse(raw);return u&&typeof u.id==='string'&&u.id?u:null}catch(e){return null}};
+const offlineLoginButton=byId('rasta-offline-login'),offlineLoginHelp=byId('rasta-offline-help');
+const refreshOfflineLoginButton=()=>{const cached=readOfflineUser(),show=!!cached&&(!navigator.onLine||!client||window.__rastaOfflineLoginAvailable===true);if(offlineLoginButton)offlineLoginButton.style.display=show?'block':'none';if(offlineLoginHelp)offlineLoginHelp.style.display=show?'block':'none';};
+window.addEventListener('online',refreshOfflineLoginButton);
+window.addEventListener('offline',refreshOfflineLoginButton);
 const showApp=async(user)=>{
  if(!user)return;
+ // Keep a minimal identity snapshot so a previously authenticated user can reopen their local workspace if the network disappears.
+ try{originalStorage.setItem('__rasta_offline_user',JSON.stringify({id:String(user.id),email:user.email||null,phone:user.phone||null,user_metadata:user.user_metadata||{},saved_at:new Date().toISOString()}));}catch(e){}
+ window.__rastaOfflineLoginAvailable=false;
  authUser=user;window.__RASTA_AUTH_USER=user;
  // Keep Supabase's own auth storage untouched; isolate all app data by authenticated user ID.
  const native=originalStorage,uid=String(user.id);
@@ -584,7 +594,7 @@ const showApp=async(user)=>{
  const adminLink=byId('rasta-admin-link');
  if(adminLink)adminLink.style.display=(String(user.email||'').toLowerCase()==='elida600000@gmail.com')?'inline-flex':'none';
  const sendPresence=async(state='active')=>{
-  try{if(client&&user?.id)await client.from('user_presence').upsert({user_id:user.id,last_seen:new Date().toISOString(),app_state:state},{onConflict:'user_id'});}
+  try{if(navigator.onLine&&client&&user?.id)await client.from('user_presence').upsert({user_id:user.id,last_seen:new Date().toISOString(),app_state:state},{onConflict:'user_id'});}
   catch(err){console.warn('Presence heartbeat unavailable',err)}
  };
  sendPresence(document.visibilityState==='visible'?'active':'background');
@@ -592,6 +602,16 @@ const showApp=async(user)=>{
  window.__rastaPresenceTimer=setInterval(()=>sendPresence(document.visibilityState==='visible'?'active':'background'),20000);
  if(!window.__rastaPresenceVisibilityBound){document.addEventListener('visibilitychange',()=>{const u=window.__RASTA_AUTH_USER;if(!u)return;try{window.__rastaSupabaseClient?.from('user_presence').upsert({user_id:u.id,last_seen:new Date().toISOString(),app_state:document.visibilityState==='visible'?'active':'background'},{onConflict:'user_id'}).then(()=>{}).catch(()=>{})}catch(e){}});window.__rastaPresenceVisibilityBound=true;}
 };
+offlineLoginButton?.addEventListener('click',async()=>{
+ const cached=readOfflineUser();
+ if(!cached){notice('حساب ذخیره‌شده‌ای روی این گوشی پیدا نشد. ابتدا یک بار با اینترنت وارد حساب شو.');refreshOfflineLoginButton();return;}
+ window.__rastaOfflineLoginAvailable=true;
+ window.__RASTA_OFFLINE_MODE=true;
+ await showApp(cached);
+ const banner=byId('rasta-offline-banner');
+ if(banner){banner.textContent='📴 ورود آفلاین: فضای ذخیره‌شده حساب روی همین گوشی باز شده است. تغییرات تا اتصال دوباره به اینترنت با سرور همگام نمی‌شوند.';banner.style.display='block';}
+});
+refreshOfflineLoginButton();
 const handleSubmit=async(e)=>{
  e.preventDefault();clearNotice();
  if(!client){notice('اتصال ورود آماده نیست. صفحه را با اینترنت بازخوانی کن.');return}
@@ -632,6 +652,7 @@ const handleSubmit=async(e)=>{
   const credentials=isEmail?{email:identifier,password}:{phone:identifier.replace(/[\s()-]/g,''),password};
   const {data,error}=await client.auth.signInWithPassword(credentials);
   if(error)throw error;
+  window.__RASTA_OFFLINE_MODE=false;
   await showApp(data.user);
  }catch(err){
   let msg=err?.message||'ورود انجام نشد. دوباره تلاش کن.';
@@ -1368,7 +1389,14 @@ fetch('./version.json?check='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json
 (function(){
  const banner=document.getElementById('rasta-offline-banner');
  if(!banner)return;
- const update=()=>{banner.style.display=navigator.onLine?'none':'block';};
+ const update=()=>{
+  if(window.__RASTA_OFFLINE_MODE){
+   banner.textContent='📴 ورود آفلاین: فضای ذخیره‌شده حساب روی همین گوشی باز شده است. تغییرات تا اتصال دوباره به اینترنت با سرور همگام نمی‌شوند.';
+   banner.style.display='block';
+  }else{
+   banner.style.display=navigator.onLine?'none':'block';
+  }
+ };
  window.addEventListener('online',update);
  window.addEventListener('offline',update);
  update();
