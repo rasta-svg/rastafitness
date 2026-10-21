@@ -194,7 +194,7 @@
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
-<header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="auth-userbar" id="rasta-userbar" style="display:none"><div class="auth-user-chip"><span class="auth-user-avatar" id="rasta-user-avatar">ر</span><span class="auth-user-email" id="rasta-user-email"></span></div><button class="auth-logout" id="rasta-logout" type="button">خروج</button><div class="datepill" id="todaydate"></div></div></header>
+<header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="auth-userbar" id="rasta-userbar" style="display:none"><div class="auth-user-chip"><span class="auth-user-avatar" id="rasta-user-avatar">ر</span><span class="auth-user-email" id="rasta-user-email"></span></div><button class="auth-logout" id="rasta-logout" type="button">خروج</button><a id="rasta-admin-link" href="./admin.html" style="display:none;color:#fff;background:#294e3b;border-radius:9px;padding:8px 10px;text-decoration:none;font-size:12px;font-weight:bold">پنل مدیریت</a><div class="datepill" id="todaydate"></div></div></header>
 <section class="view active" id="view-today">
 <div class="hero"><div><small>به برنامه شخصی رَستا خوش آمدی</small><h2>بدن تو، مسیر تو.<br>امروز از کجا شروع می‌کنی؟</h2><p>یک تجربه یکپارچه برای تمرین، غذاهای ایرانی و عادت‌های روزانه؛ با امکان انتخاب دستی یا دریافت پیشنهاد متناسب با هدفت.</p><div class="actions"><button class="btn primary" data-goto="training">شروع تمرین</button><button class="btn ghost" data-goto="nutrition">چیدن وعده‌های امروز</button></div></div><div class="hero-art">🏋️‍♀️🥗</div></div>
 <div class="stats"><div class="stat"><label>کالری برنامه‌ریزی‌شده</label><strong id="statcal">۰</strong><small>از هدف روزانه</small><div class="bar"><span id="barcal"></span></div></div><div class="stat"><label>پروتئین برنامه غذایی</label><strong id="statprotein">۰ گرم</strong><small>از غذاهای انتخاب‌شده</small><div class="bar"><span id="barprotein"></span></div></div><div class="stat"><label>تمرین‌های انجام‌شده</label><strong id="statworkouts">۰</strong><small>جلسه ثبت‌شده امروز</small><div class="bar"><span id="barworkouts"></span></div></div><div class="stat"><label>مدت تحرک امروز</label><strong id="statmins">۰ دقیقه</strong><small>از تمرین‌های ثبت‌شده</small><div class="bar"><span id="barmins"></span></div></div></div>
@@ -320,6 +320,16 @@ const showApp=async(user)=>{
  byId('rasta-user-email').textContent=user.email||user.phone||user.user_metadata?.phone||'حساب من';
  byId('rasta-user-avatar').textContent=(user.user_metadata?.full_name||user.email||'ر').trim().charAt(0).toLocaleUpperCase('fa-IR');
  window.dispatchEvent(new Event('rasta:auth-ready'));
+ const adminLink=byId('rasta-admin-link');
+ if(adminLink)adminLink.style.display=(String(user.email||'').toLowerCase()==='elida600000@gmail.com')?'inline-flex':'none';
+ const sendPresence=async(state='active')=>{
+  try{if(client&&user?.id)await client.from('user_presence').upsert({user_id:user.id,last_seen:new Date().toISOString(),app_state:state},{onConflict:'user_id'});}
+  catch(err){console.warn('Presence heartbeat unavailable',err)}
+ };
+ sendPresence(document.visibilityState==='visible'?'active':'background');
+ if(window.__rastaPresenceTimer)clearInterval(window.__rastaPresenceTimer);
+ window.__rastaPresenceTimer=setInterval(()=>sendPresence(document.visibilityState==='visible'?'active':'background'),45000);
+ if(!window.__rastaPresenceVisibilityBound){document.addEventListener('visibilitychange',()=>{const u=window.__RASTA_AUTH_USER;if(!u)return;try{window.__rastaSupabaseClient?.from('user_presence').upsert({user_id:u.id,last_seen:new Date().toISOString(),app_state:document.visibilityState==='visible'?'active':'background'},{onConflict:'user_id'}).then(()=>{}).catch(()=>{})}catch(e){}});window.__rastaPresenceVisibilityBound=true;}
 };
 const handleSubmit=async(e)=>{
  e.preventDefault();clearNotice();
