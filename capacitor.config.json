@@ -1,0 +1,9 @@
+{
+  "appId": "com.rasta.fitness",
+  "appName": "رستا",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https"
+  }
+}
