@@ -1229,7 +1229,7 @@ const rastaPremiumPlans=[
 ['protein','High-Protein Diet','توزیع مناسب منابع پروتئین در وعده‌ها','تغذیه'],
 ['carb-cycling','Carb Cycling','تنظیم انعطاف‌پذیر کربوهیدرات بر اساس روز تمرین','تغذیه'],
 ].map(([id,title,desc,family],i)=>({id,title,desc,family,emoji:['🔥','🏋️','🥗','💪','⚖️','🚶','🎯','🍽️'][i%8]}));
-let rastaPremiumActive=false,rastaPremiumFilter='همه',rastaPremiumQuery='';
+let rastaPremiumActive=false,rastaPremiumFilter='همه',rastaPremiumQuery='',rastaPremiumSelectedPlan=localStorage.getItem('rasta-selected-premium-goal')||'';
 async function renderPremiumFitness(){
  const status=$('rasta-premium-catalog-status'),grid=$('rasta-premium-catalog');
  if(!status||!grid)return;
@@ -1243,7 +1243,7 @@ async function renderPremiumFitness(){
   if(subError)throw subError;
   const now=Date.now(),active=(subs||[]).find(x=>x.plan_id==='premium'&&x.status==='active'&&x.starts_at&&x.ends_at&&new Date(x.starts_at).getTime()<=now&&new Date(x.ends_at).getTime()>now);
   rastaPremiumActive=active?.plan_id==='premium';
-  status.innerHTML=rastaPremiumActive?'<b>اشتراک پریمیوم شما فعال است.</b> همه ۴۰ برنامه برایت باز هستند؛ یکی را انتخاب کن تا جزئیات تمرین و تغذیه را ببینی.':'<b>🔒 این ۴۰ برنامه با اشتراک پریمیوم باز می‌شوند.</b> پس از پرداخت و تأیید مدیر، دسترسی ۳۰ روزه به همه برنامه‌ها فعال می‌شود. <button class="btn dark" data-plan-request="premium" style="margin-right:8px">مشاهده قیمت و درخواست پرداخت</button>';
+  status.innerHTML=rastaPremiumActive?'<b>اشتراک پریمیوم شما فعال است.</b> همه برنامه‌های هدف‌محور برایت باز هستند؛ یکی را انتخاب کن تا جزئیات تمرین و تغذیه را ببینی.':'<b>🔒 برنامه‌های هدف‌محور ۳۰ روزه با اشتراک پریمیوم باز می‌شوند.</b> پس از پرداخت و تأیید مدیر، دسترسی ۳۰ روزه به همه برنامه‌ها فعال می‌شود. <button class="btn dark" data-plan-request="premium" style="margin-right:8px">مشاهده قیمت و درخواست پرداخت</button>';
  }catch(e){status.innerHTML='<b>وضعیت اشتراک دریافت نشد.</b> اتصال را بررسی کن و دوباره تلاش کن. <button class="btn ghost" data-goto="plans">مشاهده اشتراک</button>';rastaPremiumActive=false}
  drawRastaPremiumCatalog();
 }
@@ -1252,34 +1252,39 @@ function drawRastaPremiumCatalog(){
  const cats=['همه','کاهش چربی','حجم‌گیری','قدرت و توان','هوازی و استقامت','تعادل و انعطاف','ریکاوری و روش تمرین','تغذیه'];
  filters.innerHTML=cats.map(c=>'<button class="filter '+(rastaPremiumFilter===c?'active':'')+'" data-premium-filter="'+c+'">'+c+'</button>').join('');
  const arr=rastaPremiumPlans.filter(p=>(rastaPremiumFilter==='همه'||(rastaPremiumFilter==='کاهش چربی'&&['چربی‌کاهش'].includes(p.family))||(rastaPremiumFilter==='حجم‌گیری'&&['حجم','بازترکیب'].includes(p.family))||(rastaPremiumFilter==='قدرت و توان'&&['قدرت','توان','آمادگی','عملکردی'].includes(p.family))||(rastaPremiumFilter==='هوازی و استقامت'&&['هوازی','تناوبی','سرعتی','چابکی','استقامت'].includes(p.family))||(rastaPremiumFilter==='تعادل و انعطاف'&&['تعادل','تقارن','نقاط ضعف','فعال‌سازی','انعطاف','ثبات'].includes(p.family))||(rastaPremiumFilter==='ریکاوری و روش تمرین'&&['دوره‌بندی','ریکاوری','شدت تمرین'].includes(p.family))||(rastaPremiumFilter==='تغذیه'&&['تغذیه'].includes(p.family)))&&(p.title+' '+p.desc+' '+p.family).toLowerCase().includes(rastaPremiumQuery.toLowerCase()));
- grid.innerHTML=arr.map(p=>'<article class="workoutcard" style="border:1px solid '+(rastaPremiumActive?'#c9a65a':'var(--line)')+'"><div class="split"><div class="wemoji">'+p.emoji+'</div><span class="pill '+(rastaPremiumActive?'rasta-premium-pill':'')+'">'+(rastaPremiumActive?'پریمیوم باز':'🔒 پریمیوم')+'</span></div><h3>'+p.title+'</h3><p>'+p.desc+'</p><div class="programmeta"><span class="pill">'+p.family+'</span><span class="pill">تمرین + تغذیه</span></div><div class="actions"><button class="btn '+(rastaPremiumActive?'dark':'ghost')+'" data-premium-plan="'+p.id+'">'+(rastaPremiumActive?'مشاهده برنامه عملی':'بازکردن با اشتراک')+'</button></div></article>').join('')||'<div class="empty">برنامه‌ای با این جست‌وجو پیدا نشد.</div>';
+ grid.innerHTML=arr.map(p=>{const chosen=rastaPremiumSelectedPlan===p.id;return '<article class="workoutcard" style="border:1px solid '+(chosen?'#c9a65a':rastaPremiumActive?'#c9a65a':'var(--line)')+'"><div class="split"><div class="wemoji">'+p.emoji+'</div><span class="pill '+(chosen?'rasta-premium-pill':'')+'">'+(chosen?'✓ هدف انتخاب‌شده':rastaPremiumActive?'پریمیوم باز':'🔒 پریمیوم')+'</span></div><h3>'+escapeHtml(p.title)+'</h3><p>'+escapeHtml(p.desc)+'</p><div class="programmeta"><span class="pill">'+escapeHtml(p.family)+'</span><span class="pill">برنامه ۳۰ روزه تمرین + تغذیه</span></div><div class="actions"><button class="btn '+(chosen?'dark':'ghost')+'" data-premium-select="'+p.id+'">'+(chosen?'هدف من انتخاب شده':'انتخاب این هدف')+'</button><button class="btn '+(rastaPremiumActive?'dark':'ghost')+'" data-premium-plan="'+p.id+'">'+(rastaPremiumActive?'مشاهده برنامه ۳۰ روزه':'بازکردن با اشتراک')+'</button></div></article>'}).join('')||'<div class="empty">برنامه‌ای با این جست‌وجو پیدا نشد.</div>';
 }
-async function openRastaPremiumPlan(id){
+let rastaPremiumOpenedPlan=null;
+function renderRastaPremiumWeek(weekNo){
+ const opened=rastaPremiumOpenedPlan;if(!opened)return;
+ const {p,program,c}=opened;
+ const week=(Array.isArray(c.weeks)?c.weeks:[]).find(x=>Number(x.week)===Number(weekNo))||c.weeks?.[0];
+ const nutrition=(Array.isArray(c.nutrition_month)?c.nutrition_month:[]).find(x=>Number(x.week)===Number(weekNo))||c.nutrition_month?.[0];
+ const workoutDays=Array.isArray(week?.days)?week.days:[];
+ const nutritionDays=Array.isArray(nutrition?.days)?nutrition.days:[];
+ const workoutMarkup=workoutDays.map(day=>'<article class="panel" style="min-width:0;margin:8px 0;padding:12px;box-shadow:none"><h4 style="margin:0 0 6px">'+escapeHtml(day.day||'روز تمرین')+' · '+escapeHtml(day.focus||'تمرین')+'</h4><p style="margin:0 0 8px;color:var(--muted);line-height:1.8">'+escapeHtml(day.notes||'با فرم صحیح اجرا کن و شدت را با توان فعلی هماهنگ کن.')+'</p>'+(day.exercises?.length?'<ul style="padding-right:18px;margin:0;line-height:1.9">'+day.exercises.map(x=>'<li>'+escapeHtml(x.name||'حرکت')+' — '+escapeHtml(x.sets||'')+' ست × '+escapeHtml(x.reps||'')+(x.rest?' · استراحت '+escapeHtml(x.rest):'')+'</li>').join('')+'</ul>':'<p class="muted" style="margin:0">استراحت یا بازیابی؛ در صورت تمایل پیاده‌روی آرام انجام بده.</p>')+'</article>').join('');
+ const nutritionMarkup=nutritionDays.map(day=>'<article class="panel" style="min-width:0;margin:8px 0;padding:12px;box-shadow:none"><h4 style="margin:0 0 8px">'+escapeHtml(day.day||'روز غذایی')+'</h4><ul style="padding-right:18px;margin:0;line-height:1.9">'+(Array.isArray(day.meals)?day.meals:[]).map(m=>'<li><b>'+escapeHtml(m.meal||'وعده')+':</b> '+escapeHtml(m.description||'')+'</li>').join('')+'</ul><p style="margin:8px 0 0;line-height:1.8;color:var(--muted)">'+escapeHtml(day.portion_guide||'مقدار غذا را با نیاز فردی تنظیم کن.')+'</p></article>').join('');
+ $('modalbody').innerHTML='<div class="split" style="gap:8px;flex-wrap:wrap"><span class="pill">'+escapeHtml(p.family)+'</span><span class="pill">برنامه ۳۰ روزه</span><span class="pill">دسترسی تأییدشده</span></div><p>'+escapeHtml(program.description||p.desc)+'</p><div class="actions" style="margin:12px 0"><button class="btn '+(rastaPremiumSelectedPlan===p.id?'dark':'ghost')+'" data-premium-select="'+p.id+'">'+(rastaPremiumSelectedPlan===p.id?'✓ هدف انتخاب‌شده':'انتخاب این هدف')+'</button></div><div class="tip"><b>روش پیشرفت چهار هفته‌ای</b><p style="margin:6px 0 0;line-height:1.8">'+escapeHtml(c.training_method||'تدریجی تمرین کن و هفته چهارم فشار را کاهش بده.')+'</p></div><div class="filters" style="margin:14px 0">'+[1,2,3,4].map(n=>'<button class="filter '+(Number(weekNo)===n?'active':'')+'" data-premium-week="'+n+'">هفته '+n+'</button>').join('')+'</div><h3>🏋️ برنامه تمرینی · '+escapeHtml(week?.title||'هفته '+weekNo)+'</h3><p style="line-height:1.8">'+escapeHtml(c.workout_summary||'')+'</p>'+workoutMarkup+'<h3 style="margin-top:18px">🥗 رژیم غذایی · '+escapeHtml(nutrition?.title||'هفته '+weekNo)+'</h3><p style="line-height:1.8">'+escapeHtml(c.nutrition_summary||'')+'</p>'+nutritionMarkup+'<div class="tip" style="margin-top:14px"><b>راهنمای ایمنی و شخصی‌سازی</b><p style="margin:6px 0 0;line-height:1.9">'+escapeHtml(c.disclaimer||'برنامه عمومی است؛ مقدار غذا و شدت تمرین باید با شرایط فردی تنظیم شود.')+'</p></div>';
+}
+async function openRastaPremiumPlan(id,weekNo=1){
  const p=rastaPremiumPlans.find(x=>x.id===id);if(!p)return;
- if(!rastaPremiumActive){modal('قفل پریمیوم','<div class="tip"><b>'+escapeHtml(p.title)+'</b><p>'+escapeHtml(p.desc)+'</p><p>برای دیدن جزئیات تمرین و تغذیه، اشتراک پریمیوم ۳۰ روزه را تهیه کن.</p><button class="btn dark" data-plan-request="premium">مشاهده قیمت و درخواست پرداخت</button></div>');return}
- const client=window.__rastaSupabaseClient;
- if(!client){toast('اتصال امن به محتوای پریمیوم برقرار نیست.');return}
- modal(p.title,'<div class="empty">در حال دریافت برنامه امن از سرور…</div>');
+ if(!rastaPremiumActive){modal('قفل پریمیوم','<div class="tip"><b>'+escapeHtml(p.title)+'</b><p>'+escapeHtml(p.desc)+'</p><p>هدف را می‌توانی انتخاب کنی؛ برای دیدن برنامه کامل ۳۰ روزه تمرین و تغذیه، اشتراک پریمیوم ۳۰ روزه را تهیه کن.</p><button class="btn dark" data-premium-select="'+p.id+'">انتخاب این هدف</button> <button class="btn dark" data-plan-request="premium">مشاهده قیمت و درخواست پرداخت</button></div>');return}
+ const client=window.__rastaSupabaseClient;if(!client){toast('اتصال امن به محتوای پریمیوم برقرار نیست.');return}
+ modal(p.title,'<div class="empty">در حال دریافت برنامه ۳۰ روزه از سرور…</div>');
  try{
   const {data:program,error}=await client.from('premium_programs').select('slug,title,description,duration_weeks,content').eq('slug',id).eq('is_published',true).single();
   if(error)throw error;
   const c=program?.content&&typeof program.content==='object'?program.content:{};
-  const exercises=Array.isArray(c.exercises)?c.exercises:[];
-  const menu=Array.isArray(c.menu)?c.menu:[];
-  const guidance=Array.isArray(c.guidance)?c.guidance:[];
-  $('modaltitle').textContent=program.title||p.title;
-  $('modalbody').innerHTML='<div class="split" style="gap:8px;flex-wrap:wrap"><span class="pill">'+escapeHtml(p.family)+'</span><span class="pill">'+escapeHtml(program.duration_weeks||4)+' هفته</span><span class="pill">دسترسی تأییدشده</span></div><p>'+escapeHtml(program.description||p.desc)+'</p><h3 style="margin-top:14px">🏋️ برنامه تمرین عملی</h3><p><b>تقسیم پیشنهادی:</b> '+escapeHtml(c.days_per_week||'بر اساس توان و سطح فرد')+'</p><p>'+escapeHtml(c.workout_summary||'شدت و مدت را با سطح آمادگی تنظیم کن.')+'</p><ol style="padding-right:22px;line-height:2.1">'+exercises.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ol><h3 style="margin-top:14px">🥗 الگوی غذایی مرتبط</h3><p>'+escapeHtml(c.nutrition_summary||'وعده‌های متعادل و متنوع را بر اساس نیاز فردی انتخاب کن.')+'</p><ul style="padding-right:22px;line-height:2.1">'+menu.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul><div class="tip" style="margin-top:12px"><b>نکات اجرا و پیشرفت</b><ul style="padding-right:22px;line-height:2">'+guidance.map(x=>'<li>'+escapeHtml(x)+'</li>').join('')+'</ul></div><div class="tip"><b>سلامت و شخصی‌سازی</b>'+escapeHtml(c.disclaimer||'این راهنمای عمومی است؛ مقدار غذا و شدت تمرین باید با شرایط فردی تنظیم شود.')+'</div>';
- }catch(err){
-  $('modalbody').innerHTML='<div class="tip"><b>برنامه از سرور دریافت نشد.</b><p>برای محافظت از محتوای پولی، جزئیات فقط از مسیر امن سرور نمایش داده می‌شوند. اتصال و وضعیت اشتراک را بررسی کن.</p></div>';
-  console.error('premium plan fetch error',err);
- }
+  rastaPremiumOpenedPlan={p,program,c};$('modaltitle').textContent=(program.title||p.title)+' · برنامه ۳۰ روزه';renderRastaPremiumWeek(weekNo);
+ }catch(err){$('modalbody').innerHTML='<div class="tip"><b>برنامه از سرور دریافت نشد.</b><p>برای محافظت از محتوای پریمیوم، جزئیات فقط از مسیر امن سرور نمایش داده می‌شوند. اتصال و وضعیت اشتراک را بررسی کن.</p></div>';console.error('premium plan fetch error',err)}
 }
 document.addEventListener('click',e=>{
  const filter=e.target.closest('[data-premium-filter]');if(filter){rastaPremiumFilter=filter.getAttribute('data-premium-filter');drawRastaPremiumCatalog();return}
+ const week=e.target.closest('[data-premium-week]');if(week){renderRastaPremiumWeek(Number(week.getAttribute('data-premium-week')));return}
+ const select=e.target.closest('[data-premium-select]');if(select){const id=select.getAttribute('data-premium-select');rastaPremiumSelectedPlan=id;localStorage.setItem('rasta-selected-premium-goal',id);drawRastaPremiumCatalog();if(rastaPremiumOpenedPlan?.p?.id===id)renderRastaPremiumWeek(1);toast('هدف برنامه ذخیره شد.');return}
  const plan=e.target.closest('[data-premium-plan]');if(plan){openRastaPremiumPlan(plan.getAttribute('data-premium-plan'));return}
 });
 document.addEventListener('input',e=>{if(e.target.id==='rasta-premium-search'){rastaPremiumQuery=e.target.value;drawRastaPremiumCatalog()}});
-
 function renderPrograms(){
  const active=rastaPrograms.find(p=>p.id===activeProgram);
  $('activeprogramlabel').textContent=active?`${active.title} · ${active.weeks} هفته · ${active.days} جلسه در هفته`:'هنوز برنامهٔ چند‌هفته‌ای انتخاب نکرده‌ای.';
