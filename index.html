@@ -15,6 +15,8 @@
 
 .programcard{background:var(--paper);border:1px solid var(--line);border-radius:17px;padding:15px;display:flex;flex-direction:column;gap:9px;box-shadow:var(--shadow);min-width:0}.programhero{height:86px;border-radius:12px;background:linear-gradient(130deg,#294e3b,#6d8d62);display:flex;align-items:center;justify-content:center;font-size:42px;color:white}.programcard h3{margin:0;font-size:14px}.programcard p{margin:0}.programmeta{display:flex;gap:5px;flex-wrap:wrap}.programcard .actions{margin-top:auto}.workoutcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:13px;display:flex;flex-direction:column;gap:9px;min-width:0}.workoutcard .wemoji{font-size:30px;background:var(--pale);border-radius:12px;width:55px;height:55px;display:grid;place-items:center}.workoutcard h3{font-size:13px;margin:0}.workoutcard p{margin:0}.timerface{font-size:44px;font-weight:900;text-align:center;padding:15px;color:var(--green)}.stepcount{font-size:10px;color:var(--muted);text-align:center}.programday{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:10px 0}.programday:last-child{border-bottom:0}.mobilebar button{min-width:0;flex:1;font-size:8px}.mobilebar button span{font-size:17px}
 
+/* Premium locks and mobile back navigation */
+.programcard.rasta-locked-card{border-color:#c7b77c;position:relative}.programcard.rasta-locked-card .programhero{background:linear-gradient(130deg,#28271f,#5d4d28);position:relative}.rasta-lock-mark{position:absolute;top:8px;left:8px;font-size:18px;background:#fffdf0;color:#3f3520;border-radius:9px;padding:5px 7px;box-shadow:0 2px 8px #0002}.rasta-premium-pill{background:#f3e8bf!important;color:#6c531b!important;border:1px solid #d8c47b}
 /* Rasta secure entry */
 .auth-screen{min-height:100svh;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(360px,.96fr);background:#f3f1e8;color:#242c24;direction:rtl}
 .auth-story{position:relative;overflow:hidden;background:radial-gradient(circle at 15% 15%,#53785a 0,transparent 34%),linear-gradient(145deg,#173c2b,#294e3b 55%,#182e23);color:#fff;padding:clamp(28px,5vw,72px);display:flex;flex-direction:column;justify-content:space-between;min-height:100svh}
@@ -169,7 +171,8 @@
         <div class="auth-field" id="auth-name-field" hidden><label for="auth-name">نام نمایشی</label><div class="auth-input-wrap"><span class="auth-field-icon">✧</span><input class="auth-input with-icon" id="auth-name" autocomplete="name" placeholder="مثلاً سارا احمدی"></div></div>
         <div class="auth-field" id="auth-phone-field"><label for="auth-phone">شماره تلفن</label><div class="auth-input-wrap"><span class="auth-field-icon">☎</span><input class="auth-input with-icon" id="auth-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="مثلاً 0912 123 4567"></div></div>
         <div class="auth-field" id="auth-email-field"><label for="auth-email">ایمیل (برای ورود با ایمیل)</label><div class="auth-input-wrap"><span class="auth-field-icon">✉</span><input class="auth-input with-icon" id="auth-email" type="email" autocomplete="email" placeholder="name@example.com"></div></div>
-        <div class="auth-field" id="auth-password-field"><label for="auth-password">رمز عبور</label><div class="auth-input-wrap"><span class="auth-field-icon">⌑</span><input class="auth-input with-icon" id="auth-password" type="password" autocomplete="current-password" placeholder="حداقل ۸ نویسه"></div></div>
+        <div class="auth-field" id="auth-password-field"><label for="auth-password">رمز عبور</label><div class="auth-input-wrap"><span class="auth-field-icon">⌑</span><input class="auth-input with-icon" id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="حداقل ۸ نویسه"></div></div>
+        <div class="auth-field" id="auth-password-confirm-field" hidden><label for="auth-password-confirm">تکرار رمز عبور</label><div class="auth-input-wrap"><span class="auth-field-icon">✓</span><input class="auth-input with-icon" id="auth-password-confirm" type="password" autocomplete="new-password" minlength="8" placeholder="رمز عبور را دوباره وارد کن"></div></div>
         <div class="auth-inline" id="auth-inline"><label style="display:flex;align-items:center;gap:7px;color:#7a8278;font-weight:500"><input id="auth-remember" type="checkbox" checked style="accent-color:#294e3b"> مرا وارد نگه دار</label><button type="button" class="auth-link" id="auth-forgot">رمز عبور را فراموش کرده‌ام</button></div>
         <button class="auth-submit" id="auth-submit" type="submit">ورود امن به رَستا <span aria-hidden="true">←</span></button>
       </form>
@@ -517,14 +520,16 @@ const setMode=(next)=>{
  byId('auth-tabs').style.display='grid';
  byId('auth-name-field').hidden=next!=='signup';
  byId('auth-phone-field').hidden=next!=='signup';
- if(next!=='signup')byId('auth-phone').value='';
+ byId('auth-password-confirm-field').hidden=next!=='signup';
+ document.querySelector('label[for="auth-email"]').textContent=next==='signup'?'ایمیل معتبر (برای تأیید حساب)':'ایمیل';
+ if(next!=='signup'){byId('auth-phone').value='';byId('auth-password-confirm').value='';}
  byId('auth-email-field').hidden=next==='reset';
  byId('auth-password-field').hidden=next==='forgot';
  byId('auth-inline').style.display=next==='login'?'flex':'none';
  byId('auth-divider').style.display=(next==='forgot'||next==='reset')?'none':'flex';
  byId('auth-tabs').style.display=next==='reset'?'none':'grid';
  byId('auth-title').textContent=next==='signup'?'حساب خودت را بساز ✨':next==='forgot'?'بازیابی رمز عبور':next==='reset'?'رمز عبور جدید بساز':'خوش برگشتی 👋';
- byId('auth-subtitle').textContent=next==='signup'?'یک حساب بساز تا وارد رستا شوی. فعلاً برنامه‌ها و سابقه تمرین روی همین دستگاه ذخیره می‌شوند.':next==='forgot'?'ایمیلت را وارد کن تا لینک بازیابی رمز برایت ارسال شود.':next==='reset'?'برای امنیت حساب، یک رمز تازه و قوی انتخاب کن.':'وارد فضای شخصی‌ات شو و ادامه مسیرت را از همان‌جا دنبال کن.';
+ byId('auth-subtitle').textContent=next==='signup'?'برای ساخت حساب، نام، شماره تلفن، ایمیل و رمز عبور را وارد کن. اگر تأیید ایمیل فعال باشد، ایمیل تأیید را باز کن و سپس وارد شو.':next==='forgot'?'ایمیلت را وارد کن تا لینک بازیابی رمز برایت ارسال شود.':next==='reset'?'برای امنیت حساب، یک رمز تازه و قوی انتخاب کن.':'وارد فضای شخصی‌ات شو و ادامه مسیرت را از همان‌جا دنبال کن.';
  byId('auth-submit').innerHTML=next==='signup'?'ایجاد حساب شخصی <span aria-hidden="true">←</span>':next==='forgot'?'ارسال لینک بازیابی <span aria-hidden="true">←</span>':next==='reset'?'ثبت رمز جدید <span aria-hidden="true">←</span>':'ورود امن به رَستا <span aria-hidden="true">←</span>';
  byId('auth-password').autocomplete=(next==='signup'||next==='reset')?'new-password':'current-password';
  byId('auth-password').placeholder=next==='reset'?'رمز جدید، حداقل ۸ نویسه':'حداقل ۸ نویسه';
@@ -597,12 +602,12 @@ const handleSubmit=async(e)=>{
    if(!phone){notice('شماره تلفن را وارد کن.');return}
    if(!email||!email.includes('@')){notice('یک ایمیل معتبر وارد کن.');return}
    if(password.length<8){notice('رمز عبور باید دست‌کم ۸ نویسه داشته باشد.');return}
+   if(password!==byId('auth-password-confirm').value){notice('رمز عبور و تکرار آن یکسان نیستند.');return}
    setBusy(true,'در حال ساخت حساب…');
    const {data,error}=await client.auth.signUp({email,password,options:{data:{full_name:name,phone},emailRedirectTo:location.origin+location.pathname}});
    if(error)throw error;
    if(data.session&&data.user){await showApp(data.user);return}
-   notice('حسابت ثبت شد. برای فعال‌سازی، ایمیل تأیید را باز کن و سپس وارد شو.','success');
-   setMode('login');byId('auth-email').value=email;return;
+   setMode('login');byId('auth-email').value=email;notice('درخواست ساخت حساب ثبت شد. اگر پیام تأیید ایمیل دریافت کردی، صندوق ورودی و هرزنامه را بررسی و روی لینک تأیید بزن؛ سپس با همین ایمیل و رمز وارد شو.','success');return;
   }
   const identifier=email||phone;
   if(!identifier){notice('ایمیل یا شماره تلفن را وارد کن.');return}
@@ -818,7 +823,9 @@ async function renderPlans(){
    const {data:pending}=await client.from('payment_transactions').select('id,status,created_at').eq('user_id',user.id).eq('provider','manual_card_transfer').eq('status','pending').order('created_at',{ascending:false}).limit(1).maybeSingle();
    pendingPayment=pending||null;
   }
-  const activePlanName=active?escapeHtml((plans||[]).find(p=>p.id===active.plan_id)?.name_fa||active.plan_id):'';
+  window.__RASTA_PREMIUM_ACTIVE=active?.plan_id==='premium';
+   if(typeof renderPrograms==='function')renderPrograms();
+   const activePlanName=active?escapeHtml((plans||[]).find(p=>p.id===active.plan_id)?.name_fa||active.plan_id):'';
   const activeUntil=active?.ends_at?new Date(active.ends_at).toLocaleDateString('fa-IR'):'';
   status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>'+(active?'اشتراک فعال: '+activePlanName:'در حال حاضر اشتراک پولی فعالی ثبت نشده است.')+'</p>'+(active?.plan_id==='premium'&&activeUntil?'<p class="rasta-payment-note">اعتبار پریمیوم تا '+escapeHtml(activeUntil)+' است؛ تمدید خودکار انجام نمی‌شود.</p>':'')+(pendingPayment?'<p class="pill">یک درخواست کارت‌به‌کارت در انتظار بررسی است.</p>':'');
   const premiumBox=$('rasta-premium-content');
@@ -1043,13 +1050,15 @@ const rastaWorkouts=[
 {id:'core-basics',title:'میان‌تنه و ثبات پایه',emoji:'🧘',type:'میان‌تنه',mins:12,format:'self',level:'مبتدی',equipment:'زیرانداز اختیاری',desc:'حرکات ساده برای کنترل تنه و ثبات بدن.',ids:['deadbugEasy','birdDogEasy','gluteBridgeHold','wallPlank']},
 {id:'low-impact-cardio',title:'هوازی کم‌فشار',emoji:'💚',type:'هوازی',mins:15,format:'guided',level:'مبتدی',equipment:'بدون وسیله',desc:'قدم‌های جانبی و حرکت‌های بدون پرش با شدت قابل تنظیم.',ids:['stepTouch','lowImpactJacks','sideStep','cooldownWalk']}];
 function renderPrograms(){
+ if(!window.__RASTA_PREMIUM_CHECK_STARTED){window.__RASTA_PREMIUM_CHECK_STARTED=true;(async()=>{try{const c=window.__rastaSupabaseClient,u=window.__RASTA_AUTH_USER;if(!c||!u)return;const {data:subs,error}=await c.from('subscriptions').select('plan_id,status,starts_at,ends_at,created_at').eq('user_id',u.id).order('created_at',{ascending:false}).limit(10);if(error)throw error;const now=Date.now();window.__RASTA_PREMIUM_ACTIVE=(subs||[]).some(x=>x.plan_id==='premium'&&x.status==='active'&&(!x.starts_at||new Date(x.starts_at).getTime()<=now)&&(!x.ends_at||new Date(x.ends_at).getTime()>now));renderPrograms()}catch(e){window.__RASTA_PREMIUM_ACTIVE=false;console.warn('Rasta premium access check failed',e);renderPrograms()}})();}
+ const premiumUnlocked=window.__RASTA_PREMIUM_ACTIVE===true;
  const active=rastaPrograms.find(p=>p.id===activeProgram);
  $('activeprogramlabel').textContent=active?`${active.title} · ${active.weeks} هفته · ${active.days} جلسه در هفته`:'هنوز برنامهٔ چند‌هفته‌ای انتخاب نکرده‌ای.';
  $('activeprogramprogress').innerHTML=`<span style="width:${active?Math.min(100,(history.filter(h=>h.programId===active.id).length/(active.weeks*active.days))*100):0}%"></span>`;
- $('programgrid').innerHTML=rastaPrograms.map(p=>`<article class="programcard"><div class="programhero">${p.emoji}</div><h3>${p.title}</h3><p>${p.desc}</p><div class="programmeta"><span class="pill">${p.weeks} هفته</span><span class="pill">${p.days} جلسه/هفته</span><span class="pill">${p.minutes} دقیقه</span><span class="pill">${p.level}</span></div><p><b>هدف:</b> ${p.goal}</p><div class="actions"><button class="btn dark" data-program="${p.id}">${activeProgram===p.id?'برنامه فعال است':'انتخاب و شروع'}</button><button class="btn ghost" data-programpreview="${p.id}">نمایش برنامه</button></div></article>`).join('');
+ $('programgrid').innerHTML=rastaPrograms.map(p=>`<article class="programcard ${premiumUnlocked?'':'rasta-locked-card'}"><div class="programhero">${p.emoji}<span class="rasta-lock-mark" aria-label="پریمیوم">🔒</span></div><div class="split" style="gap:6px"><h3>${p.title}</h3><span class="pill ${premiumUnlocked?'':'rasta-premium-pill'}">${premiumUnlocked?'💎 پریمیوم فعال':'🔒 پریمیوم'}</span></div><p>${p.desc}</p><div class="programmeta"><span class="pill">${p.weeks} هفته</span><span class="pill">${p.days} جلسه/هفته</span><span class="pill">${p.minutes} دقیقه</span><span class="pill">${p.level}</span></div><p><b>هدف:</b> ${p.goal}</p><div class="actions"><button class="btn ${premiumUnlocked?'dark':'ghost'}" data-program="${p.id}">${premiumUnlocked?(activeProgram===p.id?'برنامه فعال است':'انتخاب و شروع'):'🔒 مشاهده اشتراک پریمیوم'}</button><button class="btn ghost" data-programpreview="${p.id}">پیش‌نمایش برنامه</button></div></article>`).join('');
  if(active){$('programschedule').innerHTML=active.templates.map((t,i)=>`<div class="programday"><div><b>${['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه'][i%6]} · ${t[0]}</b><p style="margin:4px 0 0">${t[1]} · ${t[2].map(id=>getex(id)?.name||id).join('، ')}</p></div><button class="mini fill" data-programday="${i}">رفتن به تمرین</button></div>`).join('')}else $('programschedule').innerHTML='<div class="empty">برای نمایش زمان‌بندی، یک برنامه انتخاب کن.</div>';
 }
-function enrollProgram(id){const p=rastaPrograms.find(x=>x.id===id);if(!p)return;activeProgram=id;localStorage.setItem('rasta-active-program',JSON.stringify(id));plan=p.templates.map((t,i)=>({title:t[0],type:t[1],mins:p.minutes,ids:[...t[2]],programId:p.id,programWeek:1,programDay:i+1}));activeDay=0;save();renderPrograms();renderTraining();renderToday();toast('برنامه «'+p.title+'» فعال شد. روزهای تمرین به برنامه تو اضافه شدند.');}
+function enrollProgram(id){const p=rastaPrograms.find(x=>x.id===id);if(!p)return;if(window.__RASTA_PREMIUM_ACTIVE!==true){toast('برای فعال‌کردن برنامه‌های چند‌هفته‌ای، اشتراک پریمیوم لازم است.');goto('plans');return}activeProgram=id;localStorage.setItem('rasta-active-program',JSON.stringify(id));plan=p.templates.map((t,i)=>({title:t[0],type:t[1],mins:p.minutes,ids:[...t[2]],programId:p.id,programWeek:1,programDay:i+1}));activeDay=0;save();renderPrograms();renderTraining();renderToday();toast('برنامه «'+p.title+'» فعال شد. روزهای تمرین به برنامه تو اضافه شدند.');}
 function renderExplore(){
  const types=['همه',...new Set(rastaWorkouts.map(w=>w.type))];$('workoutfilters').innerHTML=types.map(t=>`<button class="filter ${exploreType===t?'active':''}" data-workouttype="${t}">${t}</button>`).join('');
  let arr=rastaWorkouts.filter(w=>(exploreType==='همه'||w.type===exploreType)&&(w.title+' '+w.type+' '+w.desc+' '+w.equipment+' '+w.level).toLowerCase().includes(exploreQuery.toLowerCase())&&(exploreDuration==='all'||w.mins<=+exploreDuration)&&(exploreFormat==='all'||w.format===exploreFormat));
@@ -1072,7 +1081,14 @@ function toggleFavorite(id){const i=rastaFavorites.indexOf(id);if(i>=0)rastaFavo
 // Existing views are enhanced without removing the original training/nutrition workflows.
 const oldGoto=goto;goto=function(v,skipHistory=false){oldGoto(v,skipHistory);if(v==='programs')renderPrograms();if(v==='explore')renderExplore();};
 window.history.replaceState({rastaView:'today'},'',window.location.href);
-window.addEventListener('popstate',function(event){const previousView=event.state&&event.state.rastaView;if(previousView){goto(previousView,true);} });
+window.addEventListener('popstate',function(event){
+ const current=document.querySelector('.view.active')?.id?.replace('view-','')||'today';
+ if($('modalback')?.classList.contains('open')){closemodal();if(current!=='today')goto('today',true);return;}
+ if(current!=='today'){goto('today',true);window.history.pushState({rastaView:'today'},'',window.location.href);return;}
+ const previousView=event.state&&event.state.rastaView;if(previousView&&previousView!=='today')goto('today',true);
+ });
+ document.addEventListener('backbutton',function(event){const current=document.querySelector('.view.active')?.id?.replace('view-','')||'today';if($('modalback')?.classList.contains('open')){event.preventDefault?.();closemodal();return;}if(current!=='today'){event.preventDefault?.();goto('today');window.history.replaceState({rastaView:'today'},'',window.location.href);}});
+ document.addEventListener('keydown',function(event){if(event.key==='Escape'&&$('modalback')?.classList.contains('open'))closemodal();});
 
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.fav){toggleFavorite(b.dataset.fav);return}
