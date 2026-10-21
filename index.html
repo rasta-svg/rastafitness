@@ -1361,5 +1361,18 @@ fetch('./version.json?check='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json
   <button type="button" class="rasta-tour-next" id="rasta-tour-next">بزن بریم! ←</button>
  </div>
 </div>
+<div id="rasta-offline-banner" role="status" aria-live="polite" style="display:none;position:fixed;top:10px;left:10px;right:10px;z-index:20000;max-width:680px;margin:auto;padding:10px 14px;border:1px solid #d7c47b;border-radius:12px;background:#fff8df;color:#5d4b19;box-shadow:0 4px 18px #0002;font:12px/1.9 Tahoma,sans-serif;text-align:center">
+  📴 حالت آفلاین: بخش‌های ذخیره‌شده و اطلاعات این دستگاه در دسترس‌اند؛ ورود جدید، همگام‌سازی و امکانات وابسته به سرور تا اتصال دوباره کار نمی‌کنند.
+</div>
+<script>
+(function(){
+ const banner=document.getElementById('rasta-offline-banner');
+ if(!banner)return;
+ const update=()=>{banner.style.display=navigator.onLine?'none':'block';};
+ window.addEventListener('online',update);
+ window.addEventListener('offline',update);
+ update();
+})();
+</script>
 
 </body></html>
