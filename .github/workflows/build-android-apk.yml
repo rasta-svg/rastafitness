@@ -5,6 +5,8 @@ on:
   push:
     paths:
       - "index.html"
+      - "rasta-science-engine.js"
+      - "sw.js"
       - "admin.html"
       - "capacitor.config.json"
       - "package.json"
