@@ -261,7 +261,7 @@ byId('rasta-logout')?.addEventListener('click',async()=>{if(!client)return;await
 })();
 </script>
 <script>
-(()=>{
+window.__rastaStartApp=()=>{
  // Offline/file-origin fallback: keep app usable when the browser blocks localStorage.
  try{const __ls=window.localStorage;__ls.setItem('__rasta_storage_test','1');__ls.removeItem('__rasta_storage_test')}catch(__storageError){const __rastaMemory=new Map();try{Object.defineProperty(window,'localStorage',{configurable:true,value:{getItem:k=>__rastaMemory.has(k)?__rastaMemory.get(k):null,setItem:(k,v)=>__rastaMemory.set(String(k),String(v)),removeItem:k=>__rastaMemory.delete(String(k)),clear:()=>__rastaMemory.clear()}})}catch(__defineError){}}
 
