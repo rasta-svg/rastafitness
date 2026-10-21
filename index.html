@@ -328,6 +328,17 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
  <div class="actions" style="margin-top:14px"><button class="btn ghost" id="nf-save" type="button">ذخیره پرونده تغذیه‌ای</button><button class="btn dark" id="nf-generate" type="button">ساخت برنامه اختصاصی</button></div>
  <div id="nf-status" class="tip" role="status" aria-live="polite" style="margin-top:12px">هنوز پرونده تغذیه‌ای تکمیل نشده است.</div>
  <div id="nf-result" style="margin-top:12px"></div>
+
+ <div class="panel" style="margin-top:14px">
+  <h3>جستجوی مرجع علمی مواد غذایی</h3>
+  <p>جستجو در USDA FoodData Central؛ اطلاعات مرجع به‌تنهایی تأیید آلرژن یا مناسب‌بودن غذا برای یک فرد نیست و تا زمان بازبینی وارد رژیم خودکار نمی‌شود.</p>
+  <div class="formgrid">
+   <label class="field">نام ماده غذایی<input id="nf-food-search" type="search" maxlength="100" placeholder="مثلاً oats، lentils یا chicken"></label>
+   <div class="field" style="justify-content:end"><button class="btn ghost" id="nf-food-search-btn" type="button">جستجو در USDA</button></div>
+  </div>
+  <div id="nf-food-search-status" class="tip" role="status" aria-live="polite">برای جستجوی مرجع، وارد حساب رستا شو.</div>
+  <div id="nf-food-search-results"></div>
+ </div>
 </div>
 
 <div class="sectionhead"><div><h2>برنامه غذایی ایرانی</h2><p>صبحانه، ناهار، شام و میان‌وعده؛ با امکان پیشنهاد یا انتخاب دستی</p></div><button class="btn dark" id="suggestfood">پیشنهاد وعده‌ها</button></div>
@@ -1154,6 +1165,38 @@ function nutritionFillForm(a){
  set('nf-age',a.age_years);set('nf-sex',a.sex||'unspecified');set('nf-height',a.height_cm);set('nf-weight',a.current_weight_kg);set('nf-target-weight',a.target_weight_kg);set('nf-goal',a.goal||'general_health');set('nf-activity',a.activity_level||'moderate');set('nf-diet',a.diet_style||'iranian_mixed');set('nf-budget',a.budget_level||'moderate');set('nf-meals',a.meals_per_day||4);
  set('nf-liked',(a.liked_foods||[]).join('، '));set('nf-disliked',(a.disliked_foods||[]).join('، '));set('nf-allergies',(a.allergies||[]).join('، '));set('nf-intolerances',(a.intolerances||[]).join('، '));set('nf-conditions',(a.health_conditions||[]).join('، '));set('nf-notes',a.notes||'');if($('nf-pregnancy'))$('nf-pregnancy').checked=!!a.pregnant_or_breastfeeding;if($('nf-consent'))$('nf-consent').checked=!!a.consent_to_store_health_data;
 }
+async function rastaNutritionSearchFoods(){
+ const query=String($('nf-food-search')?.value||'').trim();
+ const status=$('nf-food-search-status');const results=$('nf-food-search-results');
+ if(!query||query.length<2){status.textContent='نام غذا را با حداقل دو نویسه وارد کن.';return}
+ const c=window.__rastaSupabaseClient;
+ if(!c){status.textContent='اتصال امن به حساب رستا برقرار نیست؛ وارد حساب شو و دوباره تلاش کن.';return}
+ status.textContent='در حال جستجو در پایگاه داده مرجع USDA…';results.replaceChildren();
+ try{
+  const {data,error}=await c.functions.invoke('nutrition-food-search',{body:{query}});
+  if(error){
+   let msg=error.message||'جستجو ناموفق بود.';
+   try{const detail=await error.context?.json();if(detail?.message)msg=detail.message;else if(detail?.error==='USDA_API_KEY_MISSING')msg=detail.message}catch(e){}
+   status.textContent=msg;return;
+  }
+  if(data?.error){status.textContent=data.message||'جستجوی مرجع ناموفق بود.';return}
+  const foodsFound=Array.isArray(data?.foods)?data.foods:[];
+  if(!foodsFound.length){status.textContent='نتیجه‌ای پیدا نشد. نام انگلیسی یا نام عمومی ماده غذایی را امتحان کن.';return}
+  status.textContent='نتایج مرجع: '+fa(foodsFound.length)+' مورد. مقادیر معمولاً برای ۱۰۰ گرم هستند؛ برای غذاهای ترکیبی، برندها و روش پخت باید بررسی بیشتری انجام شود.';
+  for(const f of foodsFound){
+   const card=document.createElement('div');card.className='historyitem';
+   const body=document.createElement('div');
+   const title=document.createElement('b');title.textContent=String(f.description||'نامشخص');body.appendChild(title);
+   const details=document.createElement('small');
+   const parts=['انرژی '+(f.energy_kcal==null?'نامشخص':Math.round(f.energy_kcal)+' kcal'),'پروتئین '+(f.protein_g==null?'نامشخص':f.protein_g+' g'),'کربوهیدرات '+(f.carbohydrate_g==null?'نامشخص':f.carbohydrate_g+' g'),'چربی '+(f.fat_g==null?'نامشخص':f.fat_g+' g'),'فیبر '+(f.fiber_g==null?'نامشخص':f.fiber_g+' g')];
+   details.textContent=parts.join(' · ')+' · مبنا: ۱۰۰ گرم';body.appendChild(details);
+   const source=document.createElement('a');source.href='https://fdc.nal.usda.gov/food/'+encodeURIComponent(String(f.fdc_id||''));source.target='_blank';source.rel='noopener noreferrer';source.textContent='مشاهده منبع رسمی USDA';source.style.display='inline-block';source.style.marginTop='5px';source.style.fontSize='11px';body.appendChild(source);
+   const warning=document.createElement('small');warning.textContent='برای رژیم خودکار استفاده نمی‌شود تا تطبیق غذا، حالت پخت و آلرژن‌ها بررسی شود.';warning.style.display='block';warning.style.color='var(--muted)';body.appendChild(warning);
+   card.appendChild(body);results.appendChild(card);
+  }
+ }catch(e){status.textContent='جستجوی مرجع انجام نشد. اتصال یا تنظیمات کلید USDA را بررسی کن.'}
+}
+
 function nutritionStatus(msg){const el=$('nf-status');if(el)el.textContent=msg}
 function nutritionValidate(a){
  if(!a.consent_to_store_health_data)return 'برای ذخیره اطلاعات تغذیه‌ای و سلامت، ابتدا رضایت آگاهانه را علامت بزن.';
@@ -1368,6 +1411,7 @@ if(b.id==='musclefood'){profile.muscle=$('musclefocus').value;profile.musclegoal
 if(b.id==='saveprogress'){['measurestart','measurecurrent','strengthstart','strengthcurrent'].forEach(k=>progress[k]=$(k).value);save();toast('اندازه‌ها و شاخص‌های پیشرفت ذخیره شد.');return}
 if(b.id==='analyzeprogress'){['measurestart','measurecurrent','strengthstart','strengthcurrent'].forEach(k=>progress[k]=$(k).value);save();let out=[];let ms=+progress.measurestart,mc=+progress.measurecurrent,ss=+progress.strengthstart,sc=+progress.strengthcurrent;let weeks=$('plateauweeks').value,adh=$('adherence').value,sleep=$('sleepquality').value,prot=$('proteincheck').value; if(progress.measurestart!==''&&progress.measurecurrent!==''&&Number.isFinite(ms)&&Number.isFinite(mc))out.push(mc>ms?'اندازه ثبت‌شده افزایش داشته؛ شرایط اندازه‌گیری را یکسان نگه دار و روند را دنبال کن.':mc<ms?'اندازه ثبت‌شده کاهش داشته؛ مشخص کن این تغییر با هدف تو سازگار است یا نه.':'اندازه ثبت‌شده فعلاً ثابت است؛ این به‌تنهایی به معنی نبود پیشرفت نیست.');if(progress.strengthstart!==''&&progress.strengthcurrent!==''&&Number.isFinite(ss)&&Number.isFinite(sc))out.push(sc>ss?'قدرت/وزنه ثبت‌شده افزایش یافته؛ این هم یکی از نشانه‌های پیشرفت است.':sc<ss?'قدرت/وزنه کمتر شده؛ خستگی، خواب، تکنیک و ریکاوری را بررسی کن.':'قدرت ثبت‌شده ثابت است؛ کیفیت حرکت و تکرارها را هم بررسی کن.');if(adh==='low')out.push('اولویت اول: برنامه‌ای واقع‌بینانه انتخاب کن و چند هفته منظم اجرا کن؛ فعلاً حجم تمرین را بیشتر نکن.');else if(adh==='medium')out.push('ثبات برنامه را بهتر کن؛ تعداد جلسات قابل انجام را مشخص کن و همان را پیگیری کن.');if(sleep==='low')out.push('خواب کمتر از ۶ ساعت می‌تواند ریکاوری را مختل کند؛ در صورت امکان زمان خواب را تدریجی افزایش بده.');else if(sleep==='medium')out.push('اگر امکان دارد خواب را به حدود ۷ تا ۹ ساعت نزدیک کن.');if(prot==='no')out.push('در هر وعده یک منبع پروتئین بگنجان: تخم‌مرغ، مرغ، ماهی، لبنیات یا حبوبات؛ مقدار مناسب به وزن و شرایطت بستگی دارد.');else if(prot==='maybe')out.push('برای یک هفته وعده‌ها را ثبت کن تا مشخص شود انرژی و پروتئین کافی دریافت می‌کنی یا نه.');if(weeks==='1')out.push('یک یا دو هفته برای نتیجه‌گیری زود است؛ روند را چند هفته با شرایط یکسان بسنج.');else if(weeks==='3')out.push('برای ۲ تا ۴ هفته توقف، تکنیک، دامنه حرکت، تعداد تکرار و ثبت وزنه‌ها را بازبینی کن؛ اگر فرم خوب است، فقط یک متغیر را آرام افزایش بده.');else out.push('اگر بیش از ۴ هفته توقف داری، حجم و شدت تمرین، تغذیه، خواب و ریکاوری را بازبینی کن؛ یک هفته سبک‌تر یا مشورت با مربی واجد صلاحیت می‌تواند کمک کند.');out.push('راهکار ایمن: با فرم صحیح در محدوده تکرار تعیین‌شده تمرین کن؛ وقتی همه ست‌ها با فرم خوب کامل شدند، وزنه یا تکرار را اندک‌اندک افزایش بده. برای عضله هدف معمولاً بین جلسات سخت زمان بازیابی بگذار.');let el=$('progressresult');el.style.display='block';el.innerHTML='<b>پیشنهادهای متناسب با پاسخ‌ها</b><ul>'+out.map(x=>'<li style="margin:6px 0">'+x+'</li>').join('')+'</ul>';return}
 
+if(b.id==='nf-food-search-btn'){rastaNutritionSearchFoods();return}
 if(b.id==='nf-save'){rastaNutritionSaveAssessment(nutritionReadForm());return}
 if(b.id==='nf-generate'){rastaNutritionGenerate();return}
 if(b.id==='suggestfood'){proposeFood();return}
