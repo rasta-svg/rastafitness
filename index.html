@@ -735,7 +735,7 @@ function save(){localStorage.setItem('rasta-training-mode',JSON.stringify(traini
 function toast(s){let t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),2300)}
 function modal(title,html){$('modaltitle').textContent=title;$('modalbody').innerHTML=html;$('modalback').classList.add('open')}
 function closemodal(){$('modalback').classList.remove('open')}
-function goto(v){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();scrollTo({top:0,behavior:'smooth'})}
+function goto(v,skipHistory=false){if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();scrollTo({top:0,behavior:'smooth'})}
 async function renderPlans(){
  const box=$('rasta-plan-cards'),status=$('rasta-plan-status');
  if(!box||!status)return;
@@ -958,7 +958,9 @@ function startRastaSession(ids,title,mins,format='self',programId=null){
 }
 function toggleFavorite(id){const i=rastaFavorites.indexOf(id);if(i>=0)rastaFavorites.splice(i,1);else rastaFavorites.push(id);localStorage.setItem('rasta-favorites',JSON.stringify(rastaFavorites));renderLibrary();if($('view-explore').classList.contains('active'))renderExplore();toast(i>=0?'از علاقه‌مندی‌ها حذف شد.':'به علاقه‌مندی‌ها اضافه شد.');}
 // Existing views are enhanced without removing the original training/nutrition workflows.
-const oldGoto=goto;goto=function(v){oldGoto(v);if(v==='programs')renderPrograms();if(v==='explore')renderExplore();};
+const oldGoto=goto;goto=function(v,skipHistory=false){oldGoto(v,skipHistory);if(v==='programs')renderPrograms();if(v==='explore')renderExplore();};
+window.history.replaceState({rastaView:'today'},'',window.location.href);
+window.addEventListener('popstate',function(event){const previousView=event.state&&event.state.rastaView;if(previousView){goto(previousView,true);} });
 
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.fav){toggleFavorite(b.dataset.fav);return}
