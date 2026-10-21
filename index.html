@@ -290,6 +290,14 @@ const handleSubmit=async(e)=>{
   notice(msg);
  }finally{setBusy(false,mode==='signup'?'ایجاد حساب شخصی ←':mode==='forgot'?'ارسال لینک بازیابی ←':'ورود امن به رَستا ←')}
 };
+// Immediate tap feedback for mobile browsers; the form submit handler performs the actual request.
+byId('auth-submit').addEventListener('click',()=>{
+ if(!client){notice('اتصال ورود آماده نیست. اتصال اینترنت را بررسی کن و صفحه را دوباره باز کن.');return}
+ if(!byId('auth-submit').disabled){
+  byId('auth-submit').textContent='در حال بررسی ورود…';
+  byId('auth-notice').className='auth-notice';
+ }
+});
 byId('rasta-auth-form').addEventListener('submit',handleSubmit);
 if(client)client.auth.onAuthStateChange((event,session)=>{
  if(event==='PASSWORD_RECOVERY'){
