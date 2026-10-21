@@ -685,6 +685,8 @@ if(client)client.auth.onAuthStateChange((event,session)=>{
 byId('rasta-logout')?.addEventListener('click',async()=>{
  try{originalStorage.removeItem('__rasta_offline_user')}catch(e){}
  if(client&&navigator.onLine){try{await client.auth.signOut()}catch(e){console.warn('Online sign-out unavailable',e)}}
+ // Ensure a cached Supabase session cannot silently reopen the account after an offline logout.
+ try{for(let i=originalStorage.length-1;i>=0;i--){const k=originalStorage.key(i);if(k&&k.startsWith('sb-'))originalStorage.removeItem(k)}}catch(e){}
  window.__RASTA_OFFLINE_MODE=false;
  location.reload();
 });
