@@ -225,7 +225,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <button class="active" data-view="today"><span class="ico">☀️</span>امروز من</button>
 <button data-view="training"><span class="ico">🏋️</span>برنامه تمرینی</button>
 <button data-view="programs"><span class="ico">🗓️</span>برنامه‌های چند‌هفته‌ای</button>
-<button data-view="premium-fitness"><span class="ico">💎</span>ورزش و رژیم پریمیوم</button>
+<button data-view="premium-fitness"><span class="ico">💎</span>ورزش و رژیم ورزش و تغذیهٔ حرفه‌ای‌ها</button>
 <button data-view="explore"><span class="ico">🔎</span>کشف تمرین‌ها</button>
 <button data-view="library"><span class="ico">🧍</span>فعالیت‌های ورزشی</button>
 <button data-view="nutrition"><span class="ico">🥗</span>برنامه غذایی ایرانی</button>
@@ -257,14 +257,14 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 </section>
 <section class="view" id="view-programs">
 <div class="sectionhead"><div><h2>برنامه‌های تمرینی رَستا</h2><p>برنامه‌های ساختارمند با هدف، سطح، زمان‌بندی هفتگی و امکان شروع یا تعویض برنامه.</p></div></div>
-<div class="panel rasta-premium-entry" style="margin-bottom:14px;border:1px solid #c9a65a;background:linear-gradient(135deg,#fffdf4,#f7f0d9)"><div class="split" style="gap:12px"><div><b>🔒 ورزش و رژیم غذایی پریمیوم</b><p style="margin:5px 0 0">۴۰ مسیر هدف‌محور شامل تمرین‌های عملی و الگوی غذایی مرتبط؛ پس از فعال‌شدن اشتراک پریمیوم باز می‌شوند.</p></div><button class="btn dark" type="button" data-goto="plans">مشاهده قیمت و اشتراک</button></div></div>
+<div class="panel rasta-premium-entry" style="margin-bottom:14px;border:1px solid #c9a65a;background:linear-gradient(135deg,#fffdf4,#f7f0d9)"><div class="split" style="gap:12px"><div><b>🔒 ورزش و رژیم غذایی ورزش و تغذیهٔ حرفه‌ای‌ها</b><p style="margin:5px 0 0">۴۰ مسیر هدف‌محور شامل تمرین‌های عملی و الگوی غذایی مرتبط؛ پس از فعال‌شدن اشتراک ورزش و تغذیهٔ حرفه‌ای‌ها باز می‌شوند.</p></div><button class="btn dark" type="button" data-goto="plans">مشاهده قیمت و اشتراک</button></div></div>
  <div class="panel" style="margin-bottom:14px"><b>برنامه فعال من</b><p id="activeprogramlabel" style="margin:6px 0 0">هنوز برنامهٔ چند‌هفته‌ای انتخاب نکرده‌ای.</p><div id="activeprogramprogress" class="bar"><span style="width:0"></span></div></div>
 <div class="grid3" id="programgrid"></div>
 <div class="sectionhead"><div><h2>برنامه هفتگی من</h2><p>با انتخاب برنامه، روزهای آن در برنامه تمرینی اضافه می‌شوند و قابل ویرایش‌اند.</p></div><button class="btn ghost" data-goto="training">ویرایش تمرین‌ها</button></div><div class="panel" id="programschedule"><div class="empty">برای نمایش زمان‌بندی، یک برنامه انتخاب کن.</div></div>
 </section>
 <section class="view" id="view-premium-fitness">
-<div class="sectionhead"><div><h2>💎 ورزش و رژیم غذایی پریمیوم</h2><p>۴۰ مسیر هدف‌محور؛ هر مسیر همراه با برنامه تمرین عملی، الگوی غذایی روزانه و نکات پیشرفت.</p></div><span class="pill rasta-premium-pill">دسترسی ویژه</span></div>
-<div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ رَستا پریمیوم</span><h2>فقط یک هدف انتخاب کن؛ مسیرش را دنبال کن</h2><p>از کات و عضله‌سازی تا HIIT، انعطاف، قدرت و چرخه کربوهیدرات. پس از تأیید اشتراک ۳۰ روزه، تمام ۴۰ برنامه باز می‌شوند.</p><div class="rasta-hero-points"><span>✓ تمرین‌های مرحله‌به‌مرحله</span><span>✓ پیشنهاد غذایی متناسب با هدف</span><span>✓ دسترسی به همه برنامه‌ها با یک اشتراک</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>۴۰ برنامه</strong><small>تمرین + تغذیه</small></div></div>
+<div class="sectionhead"><div><h2>💎 ورزش و رژیم غذایی ورزش و تغذیهٔ حرفه‌ای‌ها</h2><p>۴۰ مسیر هدف‌محور؛ هر مسیر همراه با برنامه تمرین عملی، الگوی غذایی روزانه و نکات پیشرفت.</p></div><span class="pill rasta-premium-pill">دسترسی ویژه</span></div>
+<div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ رَستا ورزش و تغذیهٔ حرفه‌ای‌ها</span><h2>فقط یک هدف انتخاب کن؛ مسیرش را دنبال کن</h2><p>از کات و عضله‌سازی تا HIIT، انعطاف، قدرت و چرخه کربوهیدرات. پس از تأیید اشتراک ۳۰ روزه، تمام ۴۰ برنامه باز می‌شوند.</p><div class="rasta-hero-points"><span>✓ تمرین‌های مرحله‌به‌مرحله</span><span>✓ پیشنهاد غذایی متناسب با هدف</span><span>✓ دسترسی به همه برنامه‌ها با یک اشتراک</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>۴۰ برنامه</strong><small>تمرین + تغذیه</small></div></div>
 <div id="rasta-premium-catalog-status" class="tip" style="margin-bottom:14px">در حال بررسی وضعیت اشتراک…</div>
 <div class="searchrow"><input class="search" id="rasta-premium-search" placeholder="جست‌وجوی هدف؛ مثلاً کات، قدرت یا HIIT"></div>
 <div class="filters" id="rasta-premium-filters"></div>
@@ -322,14 +322,14 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <div id="rasta-contact-history" class="panel"><p class="muted">در حال دریافت پیام‌ها…</p></div></section>
 <section class="view" id="view-plans">
 <div class="sectionhead"><div><h2>اشتراک و تعرفه‌های رستا</h2><p>طرح مناسب خودت را برای امکانات بیشتر انتخاب کن.</p></div><span class="pill">پرداخت کارت‌به‌کارت</span></div>
-<div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>اشتراک پریمیوم ۳۰ روزه، دسترسی به ۴۰ مسیر هدف‌محور ورزش و تغذیه را باز می‌کند؛ هر مسیر شامل تمرین‌های عملی و الگوی غذایی مرتبط است. برنامه‌های پایه و کتابخانه عمومی همچنان رایگان می‌مانند.</p><div class="rasta-hero-points"><button type="button" data-plan-request="premium" style="cursor:pointer">🔒 برنامه‌های تمرینی ویژه · مشاهده قیمت</button><span>✦ پرداخت یک‌باره برای ۳۰ روز</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>پریمیوم</strong><small>۳۰ روز دسترسی</small></div></div>
+<div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>اشتراک ورزش و تغذیهٔ حرفه‌ای‌ها ۳۰ روزه، دسترسی به ۴۰ مسیر هدف‌محور ورزش و تغذیه را باز می‌کند؛ هر مسیر شامل تمرین‌های عملی و الگوی غذایی مرتبط است. برنامه‌های پایه و کتابخانه عمومی همچنان رایگان می‌مانند.</p><div class="rasta-hero-points"><button type="button" data-plan-request="premium" style="cursor:pointer">🔒 برنامه‌های تمرینی ویژه · مشاهده قیمت</button><span>✦ پرداخت یک‌باره برای ۳۰ روز</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>ورزش و تغذیهٔ حرفه‌ای‌ها</strong><small>۳۰ روز دسترسی</small></div></div>
 <div class="tip" style="margin-bottom:14px"><b>پرداخت کارت‌به‌کارت</b>اشتراک ویژه ورزشکار با کارت‌به‌کارت قابل درخواست است. پس از ثبت شماره پیگیری، مدیر واریز را بررسی می‌کند؛ اشتراک فقط پس از تأیید واقعی پرداخت فعال می‌شود.</div>
 <div id="rasta-plan-status" class="panel" style="margin-bottom:14px"><h3>وضعیت اشتراک شما</h3><p>در حال دریافت اطلاعات…</p></div>
 <div id="rasta-premium-content" class="panel" style="display:none;margin-bottom:14px"></div>
 <div id="rasta-plan-cards" class="grid2"><div class="empty">در حال بارگذاری تعرفه‌ها…</div></div>
 <div class="panel" style="margin-top:14px">
 <h3>🔎 راهنمای شفاف امکانات رایگان و پولی</h3>
-<p>این فهرست مشخص می‌کند کدام امکانات اکنون رایگان‌اند و کدام مورد نیاز به پرداخت دارد. برای دیدن مبلغ و شرایط اشتراک، روی دکمهٔ پریمیوم بزن.</p>
+<p>این فهرست مشخص می‌کند کدام امکانات اکنون رایگان‌اند و کدام مورد نیاز به پرداخت دارد. برای دیدن مبلغ و شرایط اشتراک، روی دکمهٔ ورزش و تغذیهٔ حرفه‌ای‌ها بزن.</p>
 <div class="grid2" style="margin-top:10px">
 <div class="panel" style="margin:0;border:1px solid var(--line)">
 <h3>🟢 رایگان و قابل استفاده</h3>
@@ -344,12 +344,12 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <p class="rasta-payment-note">این امکانات در کد فعلی به اشتراک پولی وابسته نشده‌اند.</p>
 </div>
 <div class="panel" style="margin:0;border:1px solid #c9a65a">
-<h3>🔒 پریمیوم؛ نیازمند پرداخت</h3>
+<h3>🔒 ورزش و تغذیهٔ حرفه‌ای‌ها؛ نیازمند پرداخت</h3>
 <ul class="rasta-plan-features">
-<li>دسترسی ۳۰ روزه به ۴۰ مسیر هدف‌محور ورزش و رژیم غذایی پریمیوم</li><li>جزئیات عملی تمرین، پیشنهاد تعداد ست/تکرار و الگوی غذایی مرتبط با هر هدف</li>
+<li>دسترسی ۳۰ روزه به ۴۰ مسیر هدف‌محور ورزش و رژیم غذایی ورزش و تغذیهٔ حرفه‌ای‌ها</li><li>جزئیات عملی تمرین، پیشنهاد تعداد ست/تکرار و الگوی غذایی مرتبط با هر هدف</li>
 </ul>
 <p class="rasta-payment-note">پس از پرداخت و تأیید مدیر، دسترسی ۳۰ روزه فعال می‌شود. تمدید خودکار وجود ندارد.</p>
-<button class="rasta-plan-cta" type="button" data-plan-request="premium" style="width:100%">🔒 مشاهده قیمت و درخواست پریمیوم</button>
+<button class="rasta-plan-cta" type="button" data-plan-request="premium" style="width:100%">🔒 مشاهده قیمت و درخواست ورزش و تغذیهٔ حرفه‌ای‌ها</button>
 </div>
 </div>
 <div class="tip" style="margin-top:12px"><b>شفافیت درباره امکانات در حال آماده‌سازی</b>گزارش پیشرفت پیشرفته هنوز به‌طور کامل به قفل اشتراک وصل نشده است؛ بنابراین فعلاً آن را به‌عنوان قابلیت پولی فعال معرفی نمی‌کنیم. پنل مربی و باشگاه نیز فعلاً قابل خرید نیستند و در مرحله آماده‌سازی‌اند.</div>
@@ -559,7 +559,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 </div>
 </section>
 </main></div>
-<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="premium-fitness"><span>💎</span>پریمیوم</button><button type="button" data-open-all-menus aria-expanded="false"><span>☰</span>همه منوها</button></nav>
+<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="premium-fitness"><span>💎</span>ورزش و تغذیهٔ حرفه‌ای‌ها</button><button type="button" data-open-all-menus aria-expanded="false"><span>☰</span>همه منوها</button></nav>
 <div id="rasta-all-menus" class="rasta-all-menus" aria-hidden="true">
  <div class="rasta-all-menus-backdrop" data-close-all-menus></div>
  <section class="rasta-all-menus-sheet" role="dialog" aria-modal="true" aria-label="همه بخش‌های رستا">
@@ -568,7 +568,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
    <button data-view="today"><span>☀️</span>امروز من</button>
    <button data-view="training"><span>🏋️</span>برنامه تمرینی</button>
    <button data-view="programs"><span>🗓️</span>برنامه‌های چند‌هفته‌ای</button>
-   <button data-view="premium-fitness"><span>💎</span>ورزش و رژیم پریمیوم</button>
+   <button data-view="premium-fitness"><span>💎</span>ورزش و رژیم ورزش و تغذیهٔ حرفه‌ای‌ها</button>
    <button data-view="explore"><span>🔎</span>کشف تمرین‌ها</button>
    <button data-view="library"><span>🧍</span>فعالیت‌های ورزشی</button>
    <button data-view="nutrition"><span>🥗</span>برنامه غذایی ایرانی</button>
@@ -945,7 +945,7 @@ if(contactForm)contactForm.addEventListener('submit',async e=>{
 });
 const contactRefresh=$('rasta-contact-refresh');if(contactRefresh)contactRefresh.addEventListener('click',renderContactMessages);
 
-function goto(v,skipHistory=false){if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();scrollTo({top:0,behavior:'smooth'})}
+function goto(v,skipHistory=false){if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم ورزش و تغذیهٔ حرفه‌ای‌ها',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();scrollTo({top:0,behavior:'smooth'})}
 async function renderPlans(){
  const box=$('rasta-plan-cards'),status=$('rasta-plan-status');
  if(!box||!status)return;
@@ -970,11 +970,11 @@ async function renderPlans(){
   }
   const activePlanName=active?escapeHtml((plans||[]).find(p=>p.id===active.plan_id)?.name_fa||active.plan_id):'';
   const activeUntil=active?.ends_at?new Date(active.ends_at).toLocaleDateString('fa-IR'):'';
-  status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>'+(active?'اشتراک فعال: '+activePlanName:'در حال حاضر اشتراک پولی فعالی ثبت نشده است.')+'</p>'+(active?.plan_id==='premium'&&activeUntil?'<p class="rasta-payment-note">اعتبار پریمیوم تا '+escapeHtml(activeUntil)+' است؛ تمدید خودکار انجام نمی‌شود.</p>':'')+(pendingPayment?'<p class="pill">یک درخواست کارت‌به‌کارت در انتظار بررسی است.</p>':'');
+  status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>'+(active?'اشتراک فعال: '+activePlanName:'در حال حاضر اشتراک پولی فعالی ثبت نشده است.')+'</p>'+(active?.plan_id==='premium'&&activeUntil?'<p class="rasta-payment-note">اعتبار ورزش و تغذیهٔ حرفه‌ای‌ها تا '+escapeHtml(activeUntil)+' است؛ تمدید خودکار انجام نمی‌شود.</p>':'')+(pendingPayment?'<p class="pill">یک درخواست کارت‌به‌کارت در انتظار بررسی است.</p>':'');
   const premiumBox=$('rasta-premium-content');
   if(premiumBox){
    premiumBox.style.display='block';
-   premiumBox.innerHTML='<div class="split" style="gap:10px;flex-wrap:wrap"><h3>🔒 برنامه‌های تمرینی ویژه</h3><span class="pill rasta-premium-pill">پریمیوم</span></div><p>این برنامه‌ها برای حساب‌های دارای اشتراک فعال پریمیوم باز می‌شوند. برنامه‌های معمولی و امکانات پایه رایگان می‌مانند.</p><button class="rasta-plan-cta" type="button" data-plan-request="premium">🔒 مشاهده قیمت و درخواست پریمیوم</button>';
+   premiumBox.innerHTML='<div class="split" style="gap:10px;flex-wrap:wrap"><h3>🔒 برنامه‌های تمرینی ویژه</h3><span class="pill rasta-premium-pill">ورزش و تغذیهٔ حرفه‌ای‌ها</span></div><p>این برنامه‌ها برای حساب‌های دارای اشتراک فعال ورزش و تغذیهٔ حرفه‌ای‌ها باز می‌شوند. برنامه‌های معمولی و امکانات پایه رایگان می‌مانند.</p><button class="rasta-plan-cta" type="button" data-plan-request="premium">🔒 مشاهده قیمت و درخواست ورزش و تغذیهٔ حرفه‌ای‌ها</button>';
    if(active?.plan_id==='premium'){
     const {data:premiumPrograms,error:premiumProgramsError}=await client.from('premium_programs')
      .select('id,title,description,duration_weeks,content')
@@ -1005,7 +1005,7 @@ async function renderPlans(){
      premiumBox.innerHTML='<div class="split" style="gap:8px;flex-wrap:wrap"><h3>💎 برنامه‌های تمرینی ویژه</h3><span class="pill">دسترسی تأییدشده</span></div><p class="rasta-payment-note">این محتوا از Supabase بارگیری می‌شود و دسترسی آن در سمت سرور با وضعیت اشتراک کنترل می‌شود.</p><div class="grid3">'+cards+'</div>';
     }else{
      premiumBox.style.display='block';
-     premiumBox.innerHTML='<div class="empty">هنوز برنامه منتشرشده‌ای برای اشتراک پریمیوم ثبت نشده است.</div>';
+     premiumBox.innerHTML='<div class="empty">هنوز برنامه منتشرشده‌ای برای اشتراک ورزش و تغذیهٔ حرفه‌ای‌ها ثبت نشده است.</div>';
     }
    }
   }
@@ -1016,7 +1016,7 @@ async function renderPlans(){
    const price=Number(p.price_irr)===0?'رایگان':toman(p.price_irr)+' تومان';
    const period=isPremium?' / ۳۰ روز':p.billing_interval==='year'?' / سالانه':p.billing_interval==='month'?' / ماهانه':'';
    const features=(Array.isArray(p.features)?p.features:[]).map(f=>'<li>'+escapeHtml(String(f))+'</li>').join('');
-   return '<article class="rasta-plan-card '+(isPremium?'rasta-plan-card-premium':isFree?'rasta-plan-card-free':'')+'"><div class="split"><h3>'+escapeHtml(p.name_fa)+'</h3><span class="rasta-plan-label">'+label+'</span></div><p class="rasta-plan-description">'+escapeHtml(p.description_fa||'')+'</p><div class="rasta-plan-price">'+price+'<small>'+period+'</small></div><ul class="rasta-plan-features">'+features+'</ul>'+(isPremium?'<p class="rasta-plan-renewal">پرداخت یک‌باره برای ۳۰ روز؛ تمدید خودکار ندارد. فعال‌سازی پس از بررسی و تأیید مدیر انجام می‌شود.</p>':'')+'<button class="rasta-plan-cta" type="button" data-plan-request="'+escapeHtml(p.id)+'" '+(isPremium?'':'disabled')+'>'+(isFree?'طرح رایگان':isPremium?'درخواست فعال‌سازی پریمیوم':'به‌زودی')+'</button></article>';
+   return '<article class="rasta-plan-card '+(isPremium?'rasta-plan-card-premium':isFree?'rasta-plan-card-free':'')+'"><div class="split"><h3>'+escapeHtml(p.name_fa)+'</h3><span class="rasta-plan-label">'+label+'</span></div><p class="rasta-plan-description">'+escapeHtml(p.description_fa||'')+'</p><div class="rasta-plan-price">'+price+'<small>'+period+'</small></div><ul class="rasta-plan-features">'+features+'</ul>'+(isPremium?'<p class="rasta-plan-renewal">پرداخت یک‌باره برای ۳۰ روز؛ تمدید خودکار ندارد. فعال‌سازی پس از بررسی و تأیید مدیر انجام می‌شود.</p>':'')+'<button class="rasta-plan-cta" type="button" data-plan-request="'+escapeHtml(p.id)+'" '+(isPremium?'':'disabled')+'>'+(isFree?'طرح رایگان':isPremium?'درخواست فعال‌سازی ورزش و تغذیهٔ حرفه‌ای‌ها':'به‌زودی')+'</button></article>';
   }).join('')||'<div class="empty">فعلاً تعرفه‌ای ثبت نشده است.</div>';
  }catch(err){
   status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>دریافت اطلاعات اشتراک فعلاً انجام نشد.</p>';
@@ -1031,7 +1031,7 @@ async function openManualPayment(planId){
  if(!client){toast('اتصال حساب کاربری برقرار نیست.');return}
  const {data:{user}}=await client.auth.getUser();
  if(!user){toast('برای خرید اشتراک ابتدا وارد حساب رستا شوید.');return}
- modal('درخواست اشتراک پریمیوم', '<div class="empty">در حال دریافت اطلاعات کارت…</div>');
+ modal('درخواست اشتراک ورزش و تغذیهٔ حرفه‌ای‌ها', '<div class="empty">در حال دریافت اطلاعات کارت…</div>');
  try{
   const {data,error}=await client.functions.invoke('rasta-manual-payments',{body:{action:'config'}});
   if(error)throw error;
@@ -1254,12 +1254,12 @@ async function renderPremiumFitness(){
  if(!client){status.innerHTML='<b>برای بررسی اشتراک اتصال حساب لازم است.</b><br><button class="btn dark" data-goto="plans">مشاهده اشتراک و پرداخت</button>';drawRastaPremiumCatalog();return}
  try{
   const {data:{user},error:userError}=await client.auth.getUser();if(userError)throw userError;
-  if(!user){status.innerHTML='<b>برای استفاده از برنامه‌های پریمیوم وارد حساب شو.</b><br><button class="btn dark" data-goto="plans">ورود به اشتراک</button>';drawRastaPremiumCatalog();return}
+  if(!user){status.innerHTML='<b>برای استفاده از برنامه‌های ورزش و تغذیهٔ حرفه‌ای‌ها وارد حساب شو.</b><br><button class="btn dark" data-goto="plans">ورود به اشتراک</button>';drawRastaPremiumCatalog();return}
   const {data:subs,error:subError}=await client.from('subscriptions').select('plan_id,status,starts_at,ends_at,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(10);
   if(subError)throw subError;
   const now=Date.now(),active=(subs||[]).find(x=>x.plan_id==='premium'&&x.status==='active'&&x.starts_at&&x.ends_at&&new Date(x.starts_at).getTime()<=now&&new Date(x.ends_at).getTime()>now);
   rastaPremiumActive=active?.plan_id==='premium';
-  status.innerHTML=rastaPremiumActive?'<b>اشتراک پریمیوم شما فعال است.</b> همه برنامه‌های هدف‌محور برایت باز هستند؛ یکی را انتخاب کن تا جزئیات تمرین و تغذیه را ببینی.':'<b>🔒 برنامه‌های هدف‌محور ۳۰ روزه با اشتراک پریمیوم باز می‌شوند.</b> پس از پرداخت و تأیید مدیر، دسترسی ۳۰ روزه به همه برنامه‌ها فعال می‌شود. <button class="btn dark" data-plan-request="premium" style="margin-right:8px">مشاهده قیمت و درخواست پرداخت</button>';
+  status.innerHTML=rastaPremiumActive?'<b>اشتراک ورزش و تغذیهٔ حرفه‌ای‌ها شما فعال است.</b> همه برنامه‌های هدف‌محور برایت باز هستند؛ یکی را انتخاب کن تا جزئیات تمرین و تغذیه را ببینی.':'<b>🔒 برنامه‌های هدف‌محور ۳۰ روزه با اشتراک ورزش و تغذیهٔ حرفه‌ای‌ها باز می‌شوند.</b> پس از پرداخت و تأیید مدیر، دسترسی ۳۰ روزه به همه برنامه‌ها فعال می‌شود. <button class="btn dark" data-plan-request="premium" style="margin-right:8px">مشاهده قیمت و درخواست پرداخت</button>';
  }catch(e){status.innerHTML='<b>وضعیت اشتراک دریافت نشد.</b> اتصال را بررسی کن و دوباره تلاش کن. <button class="btn ghost" data-goto="plans">مشاهده اشتراک</button>';rastaPremiumActive=false}
  drawRastaPremiumCatalog();
 }
@@ -1268,7 +1268,7 @@ function drawRastaPremiumCatalog(){
  const cats=['همه','کاهش چربی','حجم‌گیری','قدرت و توان','هوازی و استقامت','تعادل و انعطاف','ریکاوری و روش تمرین','تغذیه'];
  filters.innerHTML=cats.map(c=>'<button class="filter '+(rastaPremiumFilter===c?'active':'')+'" data-premium-filter="'+c+'">'+c+'</button>').join('');
  const arr=rastaPremiumPlans.filter(p=>(rastaPremiumFilter==='همه'||(rastaPremiumFilter==='کاهش چربی'&&['چربی‌کاهش'].includes(p.family))||(rastaPremiumFilter==='حجم‌گیری'&&['حجم','بازترکیب'].includes(p.family))||(rastaPremiumFilter==='قدرت و توان'&&['قدرت','توان','آمادگی','عملکردی'].includes(p.family))||(rastaPremiumFilter==='هوازی و استقامت'&&['هوازی','تناوبی','سرعتی','چابکی','استقامت'].includes(p.family))||(rastaPremiumFilter==='تعادل و انعطاف'&&['تعادل','تقارن','نقاط ضعف','فعال‌سازی','انعطاف','ثبات'].includes(p.family))||(rastaPremiumFilter==='ریکاوری و روش تمرین'&&['دوره‌بندی','ریکاوری','شدت تمرین'].includes(p.family))||(rastaPremiumFilter==='تغذیه'&&['تغذیه'].includes(p.family)))&&(p.title+' '+p.desc+' '+p.family).toLowerCase().includes(rastaPremiumQuery.toLowerCase()));
- grid.innerHTML=arr.map(p=>{const chosen=rastaPremiumSelectedPlan===p.id;return '<article class="workoutcard" style="border:1px solid '+(chosen?'#c9a65a':rastaPremiumActive?'#c9a65a':'var(--line)')+'"><div class="split"><div class="wemoji">'+p.emoji+'</div><span class="pill '+(chosen?'rasta-premium-pill':'')+'">'+(chosen?'✓ هدف انتخاب‌شده':rastaPremiumActive?'پریمیوم باز':'🔒 پریمیوم')+'</span></div><h3>'+escapeHtml(p.title)+'</h3><p>'+escapeHtml(p.desc)+'</p><div class="programmeta"><span class="pill">'+escapeHtml(p.family)+'</span><span class="pill">برنامه ۳۰ روزه تمرین + تغذیه</span></div><div class="actions"><button class="btn '+(chosen?'dark':'ghost')+'" data-premium-select="'+p.id+'">'+(chosen?'غیرفعال‌کردن این هدف':'انتخاب این هدف')+'</button><button class="btn '+(rastaPremiumActive?'dark':'ghost')+'" data-premium-plan="'+p.id+'">'+(rastaPremiumActive?'مشاهده برنامه ۳۰ روزه':'بازکردن با اشتراک')+'</button></div></article>'}).join('')||'<div class="empty">برنامه‌ای با این جست‌وجو پیدا نشد.</div>';
+ grid.innerHTML=arr.map(p=>{const chosen=rastaPremiumSelectedPlan===p.id;return '<article class="workoutcard" style="border:1px solid '+(chosen?'#c9a65a':rastaPremiumActive?'#c9a65a':'var(--line)')+'"><div class="split"><div class="wemoji">'+p.emoji+'</div><span class="pill '+(chosen?'rasta-premium-pill':'')+'">'+(chosen?'✓ هدف انتخاب‌شده':rastaPremiumActive?'ورزش و تغذیهٔ حرفه‌ای‌ها باز':'🔒 ورزش و تغذیهٔ حرفه‌ای‌ها')+'</span></div><h3>'+escapeHtml(p.title)+'</h3><p>'+escapeHtml(p.desc)+'</p><div class="programmeta"><span class="pill">'+escapeHtml(p.family)+'</span><span class="pill">برنامه ۳۰ روزه تمرین + تغذیه</span></div><div class="actions"><button class="btn '+(chosen?'dark':'ghost')+'" data-premium-select="'+p.id+'">'+(chosen?'غیرفعال‌کردن این هدف':'انتخاب این هدف')+'</button><button class="btn '+(rastaPremiumActive?'dark':'ghost')+'" data-premium-plan="'+p.id+'">'+(rastaPremiumActive?'مشاهده برنامه ۳۰ روزه':'بازکردن با اشتراک')+'</button></div></article>'}).join('')||'<div class="empty">برنامه‌ای با این جست‌وجو پیدا نشد.</div>';
 }
 let rastaPremiumOpenedPlan=null;
 function renderRastaPremiumWeek(weekNo){
@@ -1284,15 +1284,15 @@ function renderRastaPremiumWeek(weekNo){
 }
 async function openRastaPremiumPlan(id,weekNo=1){
  const p=rastaPremiumPlans.find(x=>x.id===id);if(!p)return;
- if(!rastaPremiumActive){modal('قفل پریمیوم','<div class="tip"><b>'+escapeHtml(p.title)+'</b><p>'+escapeHtml(p.desc)+'</p><p>هدف را می‌توانی انتخاب کنی؛ برای دیدن برنامه کامل ۳۰ روزه تمرین و تغذیه، اشتراک پریمیوم ۳۰ روزه را تهیه کن.</p><button class="btn dark" data-premium-select="'+p.id+'">انتخاب این هدف</button> <button class="btn dark" data-plan-request="premium">مشاهده قیمت و درخواست پرداخت</button></div>');return}
- const client=window.__rastaSupabaseClient;if(!client){toast('اتصال امن به محتوای پریمیوم برقرار نیست.');return}
+ if(!rastaPremiumActive){modal('قفل ورزش و تغذیهٔ حرفه‌ای‌ها','<div class="tip"><b>'+escapeHtml(p.title)+'</b><p>'+escapeHtml(p.desc)+'</p><p>هدف را می‌توانی انتخاب کنی؛ برای دیدن برنامه کامل ۳۰ روزه تمرین و تغذیه، اشتراک ورزش و تغذیهٔ حرفه‌ای‌ها ۳۰ روزه را تهیه کن.</p><button class="btn dark" data-premium-select="'+p.id+'">انتخاب این هدف</button> <button class="btn dark" data-plan-request="premium">مشاهده قیمت و درخواست پرداخت</button></div>');return}
+ const client=window.__rastaSupabaseClient;if(!client){toast('اتصال امن به محتوای ورزش و تغذیهٔ حرفه‌ای‌ها برقرار نیست.');return}
  modal(p.title,'<div class="empty">در حال دریافت برنامه ۳۰ روزه از سرور…</div>');
  try{
   const {data:program,error}=await client.from('premium_programs').select('slug,title,description,duration_weeks,content').eq('slug',id).eq('is_published',true).single();
   if(error)throw error;
   const c=program?.content&&typeof program.content==='object'?program.content:{};
   rastaPremiumOpenedPlan={p,program,c};$('modaltitle').textContent=(program.title||p.title)+' · برنامه ۳۰ روزه';renderRastaPremiumWeek(weekNo);
- }catch(err){$('modalbody').innerHTML='<div class="tip"><b>برنامه از سرور دریافت نشد.</b><p>برای محافظت از محتوای پریمیوم، جزئیات فقط از مسیر امن سرور نمایش داده می‌شوند. اتصال و وضعیت اشتراک را بررسی کن.</p></div>';console.error('premium plan fetch error',err)}
+ }catch(err){$('modalbody').innerHTML='<div class="tip"><b>برنامه از سرور دریافت نشد.</b><p>برای محافظت از محتوای ورزش و تغذیهٔ حرفه‌ای‌ها، جزئیات فقط از مسیر امن سرور نمایش داده می‌شوند. اتصال و وضعیت اشتراک را بررسی کن.</p></div>';console.error('premium plan fetch error',err)}
 }
 document.addEventListener('click',e=>{
  const filter=e.target.closest('[data-premium-filter]');if(filter){rastaPremiumFilter=filter.getAttribute('data-premium-filter');drawRastaPremiumCatalog();return}
@@ -1530,7 +1530,7 @@ function startRastaOnboarding(){
   {icon:'🌱',title:'سلام '+safeName+' جان! خوش اومدی 💚',copy:'خیلی خوشحالیم که به خانواده رَستا پیوستی! اینجا قرار نیست عجله کنی؛ قدم‌به‌قدم با هم برای تحرک بیشتر، غذای بهتر و حال خوب پیش می‌ریم.',hint:'برای آشنایی با رستا، روی پنجره بزن.'},
   {icon:'☀️',title:'۱. امروز من',copy:'اینجا صفحه شروع توست. خلاصه فعالیت‌ها، کالری و پروتئین برنامه‌ریزی‌شده و پیشنهاد تمرین امروز را می‌بینی. برای شروع سریع، دکمه‌های تمرین یا برنامه غذایی را لمس کن.'},
   {icon:'🏋️',view:'training',title:'۲. برنامه تمرینی',copy:'برای دیدن و تنظیم تمرین‌های روزانه‌ات وارد این بخش شو. می‌توانی روز و مدت تمرین را تغییر بدهی، حرکت اضافه کنی و تمرین انجام‌شده را ثبت کنی. اگر تازه‌کاری، از تعداد کمتر شروع کن.'},
-  {icon:'💎',view:'premium-fitness',title:'برنامه‌های ویژه ورزش و رژیم پریمیوم',copy:'در این قسمت ۴۰ مسیر هدف‌محور تمرین و تغذیه را می‌بینی. هر برنامه تمرین‌های عملی و الگوی غذایی دارد؛ پیش از خرید، قیمت و شرایط اشتراک را بررسی کن.'},
+  {icon:'💎',view:'premium-fitness',title:'برنامه‌های ویژه ورزش و رژیم ورزش و تغذیهٔ حرفه‌ای‌ها',copy:'در این قسمت ۴۰ مسیر هدف‌محور تمرین و تغذیه را می‌بینی. هر برنامه تمرین‌های عملی و الگوی غذایی دارد؛ پیش از خرید، قیمت و شرایط اشتراک را بررسی کن.'},
   {icon:'🗓️',view:'programs',title:'۳. برنامه‌های چند‌هفته‌ای',copy:'اگر دوست داری با برنامه منظم جلو بروی، یکی از برنامه‌های چند‌هفته‌ای را بررسی و انتخاب کن. برنامه انتخاب‌شده به زمان‌بندی تمرینت کمک می‌کند؛ هر وقت لازم بود می‌توانی آن را ویرایش کنی.'},
   {icon:'🔎',view:'explore',title:'۴. کشف تمرین‌ها',copy:'برای پیدا کردن تمرین‌های مناسب، حرکت‌ها را جست‌وجو کن و بر اساس امکانات یا هدف خودت بگرد. اگر اسم یک حرکت را نمی‌دانی، از جست‌وجو و دسته‌بندی‌ها کمک بگیر.'},
   {icon:'🧍',view:'library',title:'۵. فعالیت‌های ورزشی',copy:'کتابخانه حرکات برای یاد گرفتن تمرین‌هاست. یک کارت را لمس کن تا توضیح حرکت، روش اجرای ساده، تعداد پیشنهادی و نسخه آسان‌تر را ببینی. حرکت را آرام انجام بده و اگر درد غیرعادی داشتی، متوقف شو.'},
@@ -1589,7 +1589,7 @@ function startRastaOnboarding(){
   $('rasta-tour-progress-fill').style.width=((index+1)/steps.length*100)+'%';
   $('rasta-tour-hint').textContent=step.hint||'برای دیدن بخش بعدی، روی همین پنجره بزن 👆';
   $('rasta-tour-next').textContent=index===0?'بزن بریم! ←':index===steps.length-1?'شروع می‌کنم 🌿':'بخش بعدی ←';
-  $('rasta-tour-extra').innerHTML=step.extra==='menu'?'<div class="rasta-tour-menu"><span>☀️ امروز من</span><span>🏋️ برنامه تمرینی</span><span>🗓️ برنامه‌های چند‌هفته‌ای</span><span>💎 ورزش و رژیم پریمیوم</span><span>🔎 کشف تمرین‌ها</span><span>🧍 فعالیت‌های ورزشی</span><span>🥗 برنامه غذایی ایرانی</span><span>📈 گزارش و سابقه</span><span>💎 اشتراک و تعرفه‌ها</span><span>⚙️ تنظیمات شخصی</span><span>📘 راهنمای استفاده</span></div>':'';
+  $('rasta-tour-extra').innerHTML=step.extra==='menu'?'<div class="rasta-tour-menu"><span>☀️ امروز من</span><span>🏋️ برنامه تمرینی</span><span>🗓️ برنامه‌های چند‌هفته‌ای</span><span>💎 ورزش و رژیم ورزش و تغذیهٔ حرفه‌ای‌ها</span><span>🔎 کشف تمرین‌ها</span><span>🧍 فعالیت‌های ورزشی</span><span>🥗 برنامه غذایی ایرانی</span><span>📈 گزارش و سابقه</span><span>💎 اشتراک و تعرفه‌ها</span><span>⚙️ تنظیمات شخصی</span><span>📘 راهنمای استفاده</span></div>':'';
   positionRastaTourTarget(step);
  };
  $('rasta-tour-skip').addEventListener('click',e=>{e.stopPropagation();finish()});
