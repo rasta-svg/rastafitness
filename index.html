@@ -161,6 +161,8 @@ const setMode=(next)=>{
  byId('auth-subtitle').textContent=next==='signup'?'یک حساب بساز تا برنامه‌ها و پیشرفتت در فضای شخصی خودت بماند.':next==='forgot'?'ایمیلت را وارد کن تا لینک بازیابی رمز برایت ارسال شود.':next==='reset'?'برای امنیت حساب، یک رمز تازه و قوی انتخاب کن.':'وارد فضای شخصی‌ات شو و ادامه مسیرت را از همان‌جا دنبال کن.';
  byId('auth-submit').innerHTML=next==='signup'?'ایجاد حساب شخصی <span aria-hidden="true">←</span>':next==='forgot'?'ارسال لینک بازیابی <span aria-hidden="true">←</span>':next==='reset'?'ثبت رمز جدید <span aria-hidden="true">←</span>':'ورود امن به رَستا <span aria-hidden="true">←</span>';
  byId('auth-password').autocomplete=(next==='signup'||next==='reset')?'new-password':'current-password';
+ byId('auth-password').placeholder=next==='reset'?'رمز جدید، حداقل ۸ نویسه':'حداقل ۸ نویسه';
+ document.querySelector('label[for="auth-password"]').textContent=next==='reset'?'رمز عبور جدید':'رمز عبور';
  byId('auth-legal').innerHTML=(next==='forgot'||next==='reset')?'برای امنیت حساب، رمز عبور خود را فقط در همین صفحه امن تغییر بده.':'با ورود به رَستا، اطلاعات و برنامه‌های شخصی‌ات در حساب خودت نگهداری می‌شود.<br><strong>حساب امن · فضای شخصی · مسیر اختصاصی</strong>';
  document.querySelectorAll('[data-auth-mode]').forEach(b=>b.classList.toggle('active',b.dataset.authMode===next));
 };
@@ -255,7 +257,8 @@ byId('rasta-logout')?.addEventListener('click',async()=>{if(!client)return;await
  try{
   const {data,error}=await client.auth.getSession();
   if(error)throw error;
-  if(data.session?.user){await showApp(data.session.user)}
+  const recoveryLink=/type=recovery/i.test(location.hash+' '+location.search);
+  if(data.session?.user&&!recoveryLink){await showApp(data.session.user)}
  }catch(e){notice('بررسی نشست ورود انجام نشد. صفحه را دوباره بارگذاری کن.')}
 })();
 })();
