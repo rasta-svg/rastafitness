@@ -35,12 +35,14 @@ Deno.serve(async (req: Request) => {
     const { data, error } = await db.from("payment_settings")
       .select("card_number,cardholder_name,instructions").eq("id", true).maybeSingle();
     if (error) return json({ error: "دریافت اطلاعات کارت ممکن نشد." }, 500);
+    const { data: plan } = await db.from("subscription_plans").select("price_irr").eq("id", "premium").maybeSingle();
     return json({ config: data ? {
       card_number: data.card_number || "",
       cardholder_name: data.cardholder_name || "",
       instructions: data.instructions || "",
       enabled: /^\d{16}$/.test(data.card_number || "") && Boolean(data.cardholder_name),
-    } : { card_number: "", cardholder_name: "", instructions: "", enabled: false } });
+      price_toman: Math.round(Number(plan?.price_irr || 0) / 10),
+    } : { card_number: "", cardholder_name: "", instructions: "", enabled: false, price_toman: Math.round(Number(plan?.price_irr || 0) / 10) } });
   }
 
   if (action === "submit") {
