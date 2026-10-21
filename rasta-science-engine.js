@@ -119,7 +119,7 @@ function buildProgram({profile={},exercises=[],durationMinutes=30}){
  const focuses=sessionFocuses(profile,days),used=new Set(),out=[];
  const requestedFocus=text(profile.sessionFocus||'متعادل');
  if(requestedFocus!=='متعادل'&&focuses.length){const mapped=requestedFocus==='میان تنه'?'میان تنه':requestedFocus;focuses[0]=mapped;}
- const blocked=includes(profile.limitations,['ابتدا با متخصص','مشورت با متخصص']);
+ const blocked=includes(profile.limitations,['ابتدا با متخصص','مشورت با متخصص','مشورت']);
  if(blocked)return {blocked:true,warning:'با توجه به گزینه محدودیت انتخاب‌شده، برنامه خودکار ساخته نشد. ابتدا با پزشک یا فیزیوتراپیست/متخصص واجد صلاحیت مشورت کن.',days:[]};
  for(let i=0;i<days;i++){
   const focus=focuses[i],mins=clamp(Number(durationMinutes)||30,10,150);
