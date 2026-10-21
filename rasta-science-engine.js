@@ -34,6 +34,7 @@ function equipmentAllowed(e,p){
 function safeForLimit(e,p){
  const hay=text([e.name,e.muscle,e.type,e.desc,e.equipment].join(' '));
  const lowImpact=includes(p.limitations,['کم‌فشار'])||includes(p.adaptation,['کم‌فشار'])||includes(p.exercisePreference,['بدون پرش']);
+ if(includes(p.level,['مبتدی'])&&includes(e.level,['پیشرفته']))return false;
  if(lowImpact && includes(hay,['پرش','جامپ','برپی','دویدن سریع'])) return false;
  if(includes(p.limitations,['زانو']) && includes(hay,['لانج','جامپ','پرش','استپ‌آپ','دویدن'])) return false;
  if(includes(p.limitations,['کمر']) && includes(hay,['ددلیفت','خم‌شدن از لگن','چرخش شدید'])) return false;
