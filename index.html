@@ -1194,7 +1194,7 @@ if(!window.__rastaAutoRefreshStarted){
 
 function startRastaOnboarding(){
  const overlay=$('rasta-onboarding-overlay'),card=$('rasta-onboarding-card');
- if(!overlay||!card)return;
+ if(!overlay||!card){setTimeout(startRastaOnboarding,0);return;}
  let alreadySeen=false;
  try{alreadySeen=localStorage.getItem('rasta-onboarding-complete-v1')==='yes'}catch(e){}
  if(alreadySeen)return;
