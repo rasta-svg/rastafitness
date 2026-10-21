@@ -55,6 +55,16 @@
     min-width:0 !important;
     margin-inline:auto !important;
   }
+  /* Only force the authenticated dashboard into a block layout; never reveal it while login is active. */
+  #rasta-app-shell.layout[style*="display: grid"] {
+    display:block !important;
+    width:100vw !important;
+    max-width:100vw !important;
+    min-width:0 !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    margin:0 !important;
+    overflow-x:hidden !important;
+  }
   #rasta-app-shell.layout {
     /* Keep visibility controlled by the auth script's inline display state. */
     width:100% !important;
