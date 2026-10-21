@@ -103,6 +103,41 @@
   #rasta-app-shell img, #rasta-app-shell svg, #rasta-app-shell input,
   #rasta-app-shell select, #rasta-app-shell textarea { max-width:100%; }
 }
+
+/* Rasta Fitness premium page: black & gold, scoped to subscription view */
+#view-plans .rasta-premium-hero{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px;padding:clamp(20px,3vw,32px);margin:0 0 15px;border:1px solid #79602c;border-radius:20px;background:radial-gradient(circle at 8% 0%,#41351c 0,transparent 42%),linear-gradient(135deg,#101010,#1b1914 65%,#111);color:#f6f0df;box-shadow:0 12px 30px #1a160b18;overflow:hidden}
+#view-plans .rasta-gold-kicker{display:inline-flex;align-items:center;gap:7px;color:#e8cd7b;border:1px solid #806b38;border-radius:999px;padding:6px 11px;font-size:10px;font-weight:900}
+#view-plans .rasta-premium-hero h2{font-size:clamp(23px,3vw,34px);line-height:1.55;margin:12px 0 6px;color:#f3d98b}
+#view-plans .rasta-premium-hero p{color:#d0c9b8;font-size:12px;line-height:2;margin:0;max-width:680px}
+#view-plans .rasta-hero-points{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+#view-plans .rasta-hero-points span{border:1px solid #4a4029;background:#ffffff08;border-radius:9px;padding:7px 9px;color:#e4dbc3;font-size:10px}
+#view-plans .rasta-hero-mark{min-width:155px;text-align:center;border:1px solid #9b7b36;border-radius:16px;padding:18px 15px;background:linear-gradient(145deg,#292216,#15130f)}
+#view-plans .rasta-hero-mark .rasta-crown{font-size:30px;color:#e4c367;display:block;margin-bottom:6px}
+#view-plans .rasta-hero-mark strong{display:block;color:#f3d98b;font-size:17px}
+#view-plans .rasta-hero-mark small{display:block;color:#c4bba6;font-size:10px;margin-top:6px}
+#view-plans #rasta-plan-status{border-color:#d5c18a;background:#fbf8ee}
+#view-plans .rasta-plan-card{display:flex;flex-direction:column;gap:11px;min-width:0;border:1px solid var(--line);border-radius:17px;padding:17px;background:var(--paper);box-shadow:var(--shadow)}
+#view-plans .rasta-plan-card h3{margin:0;font-size:16px}
+#view-plans .rasta-plan-card .rasta-plan-description{font-size:11px;line-height:1.9;color:var(--muted);margin:0}
+#view-plans .rasta-plan-label{display:inline-flex;align-items:center;border-radius:999px;padding:5px 9px;font-size:9px;font-weight:900;background:#f0eee5;color:#696858}
+#view-plans .rasta-plan-card-premium{background:radial-gradient(circle at 100% 0%,#40341b 0,transparent 38%),linear-gradient(145deg,#171715,#0e0e0d);border:1px solid #9c7d3d;color:#f5efde;box-shadow:0 14px 32px #18140b24}
+#view-plans .rasta-plan-card-premium .rasta-plan-label{background:#40351e;color:#f1d887;border:1px solid #826a33}
+#view-plans .rasta-plan-card-premium h3{color:#f3d98b}
+#view-plans .rasta-plan-card-premium .rasta-plan-description{color:#d0c8b5}
+#view-plans .rasta-plan-price{font-size:clamp(24px,3vw,31px);font-weight:900;letter-spacing:-.5px;color:var(--green);line-height:1.6}
+#view-plans .rasta-plan-card-premium .rasta-plan-price{color:#f3d98b}
+#view-plans .rasta-plan-price small{font-size:10px;font-weight:500;letter-spacing:0;color:var(--muted)}
+#view-plans .rasta-plan-card-premium .rasta-plan-price small{color:#c8bea7}
+#view-plans .rasta-plan-features{margin:0;padding-right:18px;font-size:11px;line-height:2.1}
+#view-plans .rasta-plan-card-premium .rasta-plan-features{color:#e1d9c5}
+#view-plans .rasta-plan-renewal{font-size:10px;line-height:1.9;color:#e2d4a9;border:1px solid #4e4228;background:#ffffff06;border-radius:10px;padding:9px;margin:0}
+#view-plans .rasta-plan-cta{width:100%;border:0;border-radius:11px;padding:12px 14px;font-weight:900;font-size:11px;background:#d8b65f;color:#17140d}
+#view-plans .rasta-plan-cta:hover{background:#ebcd79}
+#view-plans .rasta-plan-cta:disabled{cursor:not-allowed;background:#e9e7df;color:#96968a}
+#view-plans .rasta-plan-card-premium .rasta-plan-cta:disabled{background:#51472e;color:#bdb092}
+#view-plans .rasta-plan-card-free{background:#fffefa}
+#view-plans .rasta-payment-note{font-size:10px;color:#786b45;line-height:1.9}
+@media(max-width:700px){#view-plans .rasta-premium-hero{grid-template-columns:1fr;gap:14px;padding:20px;border-radius:16px}#view-plans .rasta-hero-mark{display:grid;grid-template-columns:auto 1fr;align-items:center;text-align:right;column-gap:10px;padding:12px}#view-plans .rasta-hero-mark .rasta-crown{grid-row:span 2;margin:0}#view-plans .rasta-hero-mark small{margin-top:2px}#view-plans .rasta-plan-card{padding:14px}}
 </style>
 </head>
 <body>
@@ -214,6 +249,7 @@
 <div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
 <section class="view" id="view-plans">
 <div class="sectionhead"><div><h2>اشتراک و تعرفه‌های رستا</h2><p>طرح مناسب خودت را برای امکانات بیشتر انتخاب کن.</p></div><span class="pill">پرداخت کارت‌به‌کارت</span></div>
+<div class="rasta-premium-hero"><div><span class="rasta-gold-kicker">✦ اشتراک ویژه رستا</span><h2>فراتر از محدودیت‌ها</h2><p>با امکانات پیشرفته‌تر، مسیر تمرین و پیشرفتت را هدفمند دنبال کن. امکانات پایه و سوابق شخصی‌ات حتی بدون اشتراک پولی در دسترس می‌مانند.</p><div class="rasta-hero-points"><span>✦ برنامه‌های تمرینی ویژه</span><span>✦ گزارش پیشرفت پیشرفته</span><span>✦ بدون تمدید خودکار</span></div></div><div class="rasta-hero-mark"><span class="rasta-crown">♛</span><strong>پریمیوم</strong><small>۳۰ روز دسترسی</small></div></div>
 <div class="tip" style="margin-bottom:14px"><b>پرداخت کارت‌به‌کارت</b>اشتراک ویژه ورزشکار با کارت‌به‌کارت قابل درخواست است. پس از ثبت شماره پیگیری، مدیر واریز را بررسی می‌کند؛ اشتراک فقط پس از تأیید واقعی پرداخت فعال می‌شود.</div>
 <div id="rasta-plan-status" class="panel" style="margin-bottom:14px"><h3>وضعیت اشتراک شما</h3><p>در حال دریافت اطلاعات…</p></div>
 <div id="rasta-premium-content" class="panel" style="display:none;margin-bottom:14px"></div>
@@ -480,15 +516,25 @@ async function renderPlans(){
   if(user){
    const {data:subs,error:subError}=await client.from('subscriptions').select('plan_id,status,starts_at,ends_at,created_at').eq('user_id',user.id).order('created_at',{ascending:false}).limit(10);
    if(subError)throw subError;
-   active=(subs||[]).find(s=>s.status==='active'&&(!s.ends_at||new Date(s.ends_at)>new Date()));
+   const nowMs=Date.now();
+   active=(subs||[]).find(s=>s.status==='active'&&(!s.starts_at||new Date(s.starts_at).getTime()<=nowMs)&&(!s.ends_at||new Date(s.ends_at).getTime()>nowMs));
    const {data:pending}=await client.from('payment_transactions').select('id,status,created_at').eq('user_id',user.id).eq('provider','manual_card_transfer').eq('status','pending').order('created_at',{ascending:false}).limit(1).maybeSingle();
    pendingPayment=pending||null;
   }
-  status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>'+(active?'اشتراک فعال: '+escapeHtml((plans||[]).find(p=>p.id===active.plan_id)?.name_fa||active.plan_id):'در حال حاضر اشتراک پولی فعالی ثبت نشده است.')+'</p>'+(pendingPayment?'<p class="pill">یک درخواست کارت‌به‌کارت در انتظار بررسی است.</p>':'');
+  const activePlanName=active?escapeHtml((plans||[]).find(p=>p.id===active.plan_id)?.name_fa||active.plan_id):'';
+  const activeUntil=active?.ends_at?new Date(active.ends_at).toLocaleDateString('fa-IR'):'';
+  status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>'+(active?'اشتراک فعال: '+activePlanName:'در حال حاضر اشتراک پولی فعالی ثبت نشده است.')+'</p>'+(active?.plan_id==='premium'&&activeUntil?'<p class="rasta-payment-note">اعتبار پریمیوم تا '+escapeHtml(activeUntil)+' است؛ تمدید خودکار انجام نمی‌شود.</p>':'')+(pendingPayment?'<p class="pill">یک درخواست کارت‌به‌کارت در انتظار بررسی است.</p>':'');
   const premiumBox=$('rasta-premium-content');
   if(premiumBox){if(active?.plan_id==='premium'){premiumBox.style.display='block';premiumBox.innerHTML='<div class="split"><h3>💎 فضای ویژه ورزشکاران</h3><span class="pill">اشتراک فعال</span></div><p>دسترسی ویژه تا '+escapeHtml(new Date(active.ends_at).toLocaleDateString('fa-IR'))+' فعال است.</p><div class="grid3"><article class="workoutcard"><div class="wemoji">💪</div><h3>برنامه قدرت پیشرفته</h3><p>جلسه ساختاریافته بالاتنه و پایین‌تنه با ثبت ست و تکرار.</p><span class="pill">ویژه اعضا</span></article><article class="workoutcard"><div class="wemoji">📈</div><h3>پیگیری پیشرفت</h3><p>ثبت منظم شاخص‌های تمرین و بازبینی روند پیشرفت.</p><span class="pill">ویژه اعضا</span></article><article class="workoutcard"><div class="wemoji">🗓️</div><h3>برنامه ماهانه</h3><p>الگوی چهار هفته‌ای تمرین همراه با روزهای بازیابی.</p><span class="pill">ویژه اعضا</span></article></div>';}else{premiumBox.style.display='none';premiumBox.innerHTML='';}}
   const toman=n=>Math.round(Number(n||0)/10).toLocaleString('fa-IR');
-  box.innerHTML=(plans||[]).map(p=>'<article class="panel" style="display:flex;flex-direction:column;gap:10px"><div class="split"><h3 style="margin:0">'+escapeHtml(p.name_fa)+'</h3><span class="pill">'+(p.id==='free'?'پایه':p.id==='premium'?'ورزشکار':p.id==='trainer'?'مربی':'باشگاه')+'</span></div><p style="margin:0">'+escapeHtml(p.description_fa||'')+'</p><div style="font-size:23px;font-weight:900;color:var(--green)">'+(Number(p.price_irr)===0?'رایگان':toman(p.price_irr)+' تومان')+'<small style="font-size:10px;font-weight:400;color:var(--muted)">'+(p.billing_interval==='month'?' / ماهانه':p.billing_interval==='year'?' / سالانه':'')+'</small></div><ul style="margin:0;padding-right:18px;font-size:11px;line-height:2">'+(Array.isArray(p.features)?p.features:[]).map(f=>'<li>'+escapeHtml(String(f))+'</li>').join('')+'</ul><button class="btn ghost" type="button" data-plan-request="'+escapeHtml(p.id)+'" '+(p.id!=='premium'?'disabled':'')+'>'+(p.id==='free'?'طرح پایه':p.id==='premium'?'خرید اشتراک':'به‌زودی')+'</button></article>').join('')||'<div class="empty">فعلاً تعرفه‌ای ثبت نشده است.</div>';
+  box.innerHTML=(plans||[]).map(p=>{
+   const isPremium=p.id==='premium',isFree=p.id==='free';
+   const label=isFree?'رایگان':isPremium?'ویژه ورزشکار':p.id==='trainer'?'مربی':'باشگاه';
+   const price=Number(p.price_irr)===0?'رایگان':toman(p.price_irr)+' تومان';
+   const period=isPremium?' / ۳۰ روز':p.billing_interval==='year'?' / سالانه':p.billing_interval==='month'?' / ماهانه':'';
+   const features=(Array.isArray(p.features)?p.features:[]).map(f=>'<li>'+escapeHtml(String(f))+'</li>').join('');
+   return '<article class="rasta-plan-card '+(isPremium?'rasta-plan-card-premium':isFree?'rasta-plan-card-free':'')+'"><div class="split"><h3>'+escapeHtml(p.name_fa)+'</h3><span class="rasta-plan-label">'+label+'</span></div><p class="rasta-plan-description">'+escapeHtml(p.description_fa||'')+'</p><div class="rasta-plan-price">'+price+'<small>'+period+'</small></div><ul class="rasta-plan-features">'+features+'</ul>'+(isPremium?'<p class="rasta-plan-renewal">پرداخت یک‌باره برای ۳۰ روز؛ تمدید خودکار ندارد. فعال‌سازی پس از بررسی و تأیید مدیر انجام می‌شود.</p>':'')+'<button class="rasta-plan-cta" type="button" data-plan-request="'+escapeHtml(p.id)+'" '+(isPremium?'':'disabled')+'>'+(isFree?'طرح رایگان':isPremium?'درخواست فعال‌سازی پریمیوم':'به‌زودی')+'</button></article>';
+  }).join('')||'<div class="empty">فعلاً تعرفه‌ای ثبت نشده است.</div>';
  }catch(err){
   status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>دریافت اطلاعات اشتراک فعلاً انجام نشد.</p>';
   box.innerHTML='<div class="empty">خطا در دریافت تعرفه‌ها. لطفاً بعداً دوباره تلاش کن.</div>';
@@ -502,7 +548,7 @@ async function openManualPayment(planId){
  if(!client){toast('اتصال حساب کاربری برقرار نیست.');return}
  const {data:{user}}=await client.auth.getUser();
  if(!user){toast('برای خرید اشتراک ابتدا وارد حساب رستا شوید.');return}
- modal('خرید اشتراک ویژه ورزشکار', '<div class="empty">در حال دریافت اطلاعات کارت…</div>');
+ modal('درخواست اشتراک پریمیوم', '<div class="empty">در حال دریافت اطلاعات کارت…</div>');
  try{
   const {data,error}=await client.functions.invoke('rasta-manual-payments',{body:{action:'config'}});
   if(error)throw error;
@@ -513,9 +559,9 @@ async function openManualPayment(planId){
   const {data:pricePlan}=await client.from('subscription_plans').select('price_irr').eq('id',planId).single();
   const amountToman=Math.round(Number(pricePlan?.price_irr||0)/10).toLocaleString('fa-IR');
   const card=String(cfg.card_number||'');
-  $('modalbody').innerHTML='<div class="panel" style="margin:0 0 12px"><p style="margin-top:0">مبلغ اشتراک یک‌ماهه</p><h2 style="font-size:26px">'+escapeHtml(amountToman)+' تومان</h2><p>به نام: <b>'+escapeHtml(cfg.cardholder_name)+'</b></p><div class="split" style="margin-top:10px;gap:8px;flex-wrap:wrap"><strong dir="ltr" style="font-size:18px;letter-spacing:1px">'+escapeHtml(card.replace(/(\d{4})(?=\d)/g,'$1-'))+'</strong><button type="button" class="btn secondary" id="copy-rasta-card">کپی شماره کارت</button></div></div><div class="tip" style="margin-bottom:12px">'+escapeHtml(cfg.instructions||'پس از واریز، شماره پیگیری را ثبت کنید.')+'</div><form id="manual-payment-form"><label class="field">شماره پیگیری / شناسه واریز<input id="transfer-reference" required minlength="3" maxlength="100" autocomplete="off" placeholder="شماره پیگیری درج‌شده در رسید"></label><label class="field">زمان واریز (اختیاری)<input id="transfer-time" maxlength="80" placeholder="مثلاً امروز ساعت ۱۴:۳۰"></label><div class="tip">پس از ثبت، وضعیت درخواست «در انتظار بررسی» خواهد بود. لطفاً تا تأیید مدیر از ارسال دوباره درخواست خودداری کنید.</div><button class="btn dark" id="submit-manual-payment" type="submit" style="width:100%;margin-top:12px">ثبت درخواست بررسی پرداخت</button></form>';
+  $('modalbody').innerHTML='<div class="panel" style="margin:0 0 12px"><p style="margin-top:0">مبلغ اشتراک ۳۰ روزه</p><h2 style="font-size:26px">'+escapeHtml(amountToman)+' تومان</h2><p class="rasta-payment-note">پرداخت یک‌باره است و تمدید خودکار ندارد؛ دسترسی ۳۰ روز پس از تأیید مدیر فعال می‌شود.</p><p>به نام: <b>'+escapeHtml(cfg.cardholder_name)+'</b></p><div class="split" style="margin-top:10px;gap:8px;flex-wrap:wrap"><strong dir="ltr" style="font-size:18px;letter-spacing:1px">'+escapeHtml(card.replace(/(\d{4})(?=\d)/g,'$1-'))+'</strong><button type="button" class="btn secondary" id="copy-rasta-card">کپی شماره کارت</button></div></div><div class="tip" style="margin-bottom:12px">'+escapeHtml(cfg.instructions||'پس از واریز، شماره پیگیری را ثبت کنید.')+'</div><form id="manual-payment-form"><label class="field">شماره پیگیری / شناسه واریز<input id="transfer-reference" required minlength="3" maxlength="100" autocomplete="off" placeholder="شماره پیگیری درج‌شده در رسید"></label><label class="field">زمان واریز (اختیاری)<input id="transfer-time" maxlength="80" placeholder="مثلاً امروز ساعت ۱۴:۳۰"></label><div class="tip">پس از ثبت، وضعیت درخواست «در انتظار بررسی» خواهد بود. لطفاً تا تأیید مدیر از ارسال دوباره درخواست خودداری کنید.</div><button class="btn dark" id="submit-manual-payment" type="submit" style="width:100%;margin-top:12px">ثبت درخواست بررسی پرداخت</button></form>';
   $('copy-rasta-card').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(card);toast('شماره کارت کپی شد.')}catch{toast('کپی خودکار ممکن نیست؛ شماره کارت را دستی کپی کنید.')}});
-  $('manual-payment-form').addEventListener('submit',async e=>{e.preventDefault();const btn=$('submit-manual-payment');btn.disabled=true;btn.textContent='در حال ثبت…';try{const {data:result,error:submitError}=await client.functions.invoke('rasta-manual-payments',{body:{action:'submit',plan_id:'premium',transfer_reference:$('transfer-reference').value.trim(),transfer_time:$('transfer-time').value.trim()}});if(submitError)throw submitError;if(result?.error)throw new Error(result.error);$('modalbody').innerHTML='<div class="tip"><b>درخواست پرداخت ثبت شد</b>درخواست شما با موفقیت ثبت شد و تا بررسی و تأیید مدیر، اشتراک فعال نمی‌شود. شناسه درخواست: <span dir="ltr">'+escapeHtml(result?.transaction?.id||'ثبت‌شده')+'</span></div>';toast('درخواست پرداخت ثبت شد.')}catch(err){toast(err.message||'ثبت درخواست انجام نشد.');btn.disabled=false;btn.textContent='ثبت درخواست بررسی پرداخت'}});
+  $('manual-payment-form').addEventListener('submit',async e=>{e.preventDefault();const btn=$('submit-manual-payment');btn.disabled=true;btn.textContent='در حال ثبت…';try{const {data:result,error:submitError}=await client.functions.invoke('rasta-manual-payments',{body:{action:'submit',plan_id:'premium',transfer_reference:$('transfer-reference').value.trim(),transfer_time:$('transfer-time').value.trim()}});if(submitError)throw submitError;if(result?.error)throw new Error(result.error);$('modalbody').innerHTML='<div class="tip"><b>درخواست پرداخت ثبت شد</b>درخواست شما ثبت شد؛ تا تأیید مدیر اشتراک فعال نمی‌شود. این اشتراک تمدید خودکار ندارد. شناسه درخواست: <span dir="ltr">'+escapeHtml(result?.transaction?.id||'ثبت‌شده')+'</span></div>';toast('درخواست پرداخت ثبت شد.')}catch(err){toast(err.message||'ثبت درخواست انجام نشد.');btn.disabled=false;btn.textContent='ثبت درخواست بررسی پرداخت'}});
  }catch(err){$('modalbody').innerHTML='<div class="empty">دریافت اطلاعات پرداخت ناموفق بود. لطفاً دوباره تلاش کنید.</div>';console.error('manual payment config error',err)}
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-plan-request]');if(!b)return;const id=b.getAttribute('data-plan-request');if(id==='free')return;openManualPayment(id)});
