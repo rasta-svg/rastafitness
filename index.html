@@ -779,10 +779,10 @@ document.addEventListener('input',e=>{if(e.target.id==='workoutsearch'){exploreQ
 document.addEventListener('change',e=>{if(e.target.id==='workoutduration'){exploreDuration=e.target.value;renderExplore()}if(e.target.id==='workoutformat'){exploreFormat=e.target.value;renderExplore()}});
 
 async function rastaRunFullSync(){
- const button=$('rasta-sync-now'),status=$('sync-status'),detail=$('sync-detail'),last=$('sync-last');
+ const button=$('rasta-sync-now')||$('rasta-home-sync'),status=$('sync-status'),detail=$('sync-detail'),last=$('sync-last');
  const client=window.__rastaSupabaseClient,user=window.__RASTA_AUTH_USER;
- if(!client||!user){status.textContent='ورود لازم است';detail.textContent='برای همگام‌سازی امن ابتدا وارد حساب رستا شو.';return}
- button.disabled=true;button.textContent='در حال همگام‌سازی…';status.textContent='در حال اتصال';
+ if(!client||!user){if(status)status.textContent='ورود لازم است';if(detail)detail.textContent='برای همگام‌سازی امن ابتدا وارد حساب رستا شو.';toast('برای همگام‌سازی ابتدا وارد حساب رستا شو.');return}
+ if(button){button.disabled=true;button.textContent='در حال همگام‌سازی…'}if(status)status.textContent='در حال اتصال';
  const keys=['rasta-training-mode','rasta-profile','rasta-plan','rasta-food-'+today,'rasta-history','rasta-progress','rasta-favorites','rasta-saved-workouts'];
  try{
   const local={};for(const k of keys){const v=localStorage.getItem(k);if(v!==null){try{local[k]=JSON.parse(v)}catch{local[k]=v}}}
@@ -794,10 +794,10 @@ async function rastaRunFullSync(){
   const [exRes,foodRes]=await Promise.all([client.from('exercises').select('*').limit(500),client.from('foods').select('*').eq('is_public',true).limit(500)]);const notes=[];
   if(!exRes.error){localStorage.setItem('rasta-cloud-exercises-cache',JSON.stringify(exRes.data||[]));notes.push('حرکات ورزشی')}else notes.push('فهرست حرکات در دسترس نبود');
   if(!foodRes.error){localStorage.setItem('rasta-cloud-foods-cache',JSON.stringify(foodRes.data||[]));notes.push('غذاهای عمومی')}else notes.push('فهرست غذاها در دسترس نبود');
-  status.textContent=conflicts.length?'تعارض‌ها حفظ شدند':'همگام‌سازی انجام شد';detail.textContent=conflicts.length?'نسخه ابری و نسخه محلی متفاوت‌اند؛ نسخه محلی جداگانه حفظ شد: '+conflicts.join('، '):'اطلاعات ادغام شد. محتوای دریافت‌شده: '+notes.join(' و ')+'.';
-  last.textContent='آخرین تلاش: '+new Intl.DateTimeFormat('fa-IR',{dateStyle:'medium',timeStyle:'short'}).format(new Date());toast(conflicts.length?'همگام‌سازی انجام شد؛ تعارض‌ها حفظ شدند.':'همگام‌سازی با موفقیت انجام شد.');
- }catch(e){status.textContent='همگام‌سازی ناموفق';detail.textContent='اتصال یا دسترسی دیتابیس انجام نشد؛ اطلاعات محلی حفظ شده است. '+(e&&e.message||'');toast('همگام‌سازی انجام نشد؛ اطلاعات محلی حفظ شد.')}
- finally{button.disabled=false;button.textContent='همگام‌سازی اطلاعات و محتوا'}
+  if(status)status.textContent=conflicts.length?'تعارض‌ها حفظ شدند':'همگام‌سازی انجام شد';if(detail)detail.textContent=conflicts.length?'نسخه ابری و نسخه محلی متفاوت‌اند؛ نسخه محلی جداگانه حفظ شد: '+conflicts.join('، '):'اطلاعات ادغام شد. محتوای دریافت‌شده: '+notes.join(' و ')+'.';
+  if(last)last.textContent='آخرین تلاش: '+new Intl.DateTimeFormat('fa-IR',{dateStyle:'medium',timeStyle:'short'}).format(new Date());toast(conflicts.length?'همگام‌سازی انجام شد؛ تعارض‌ها حفظ شدند.':'همگام‌سازی با موفقیت انجام شد.');
+ }catch(e){if(status)status.textContent='همگام‌سازی ناموفق';if(detail)detail.textContent='اتصال یا دسترسی دیتابیس انجام نشد؛ اطلاعات محلی حفظ شده است. '+(e&&e.message||'');toast('همگام‌سازی انجام نشد؛ اطلاعات محلی حفظ شد.')}
+ finally{if(button){button.disabled=false;button.textContent='همگام‌سازی اطلاعات و محتوا'}}
 }
 async function rastaSaveUiStateAndReload(){
  try{
