@@ -177,14 +177,13 @@ function nextLoad({weight=0,repsCompleted=0,repsTarget=12,setsCompleted=0,setsTa
  if(!goodForm)return {action:'hold',message:'وزنه را افزایش نده؛ ابتدا فرم و کنترل حرکت را بهتر کن.'};
  if(includes(progression,['ثابت']))return {action:'hold',message:'روش پیشرفت انتخابی حفظ بار است؛ فعلاً وزنه یا حجم را افزایش نده.'};
  if(includes(progression,['تکنیک']))return {action:'hold',message:'روش انتخابی اولویت تکنیک است؛ تا تثبیت فرم، بار را افزایش نده.'};
- if(includes(progression,['حجم']))return {action:'consider_sets',message:'اگر ریکاوری خوب است، به‌جای افزایش وزنه فقط یک ست به یک حرکت اضافه کن و واکنش را پایش کن.'};
- if(setsCompleted>=setsTarget&&repsCompleted>=repsTarget)return {action:'small_increase',weightSuggestion:weight>0?Math.round(weight*1.025*2)/2:null,message:'اگر این عملکرد در جلسه بعد هم با فرم مناسب تکرار شد، افزایش کوچک وزنه را بررسی کن.'};
+ if(setsCompleted>=setsTarget&&repsCompleted>=repsTarget){if(includes(progression,['حجم']))return {action:'consider_sets',message:'اگر ریکاوری خوب است، به‌جای افزایش وزنه فقط یک ست به یک حرکت اضافه کن و واکنش را پایش کن.'};return {action:'small_increase',weightSuggestion:weight>0?Math.round(weight*1.025*2)/2:null,message:'اگر این عملکرد در جلسه بعد هم با فرم مناسب تکرار شد، افزایش کوچک وزنه را بررسی کن.'};}
  return {action:'hold',message:'تا کامل شدن هدف تکرار با فرم مناسب، بار فعلی را حفظ کن.'};
 }
 function recoveryAdvice({sleepHours=null,soreness='unknown',pain=false,energy='normal'}={}){
  if(pain)return {status:'stop',message:'تمرین را متوقف کن؛ درد شدید، ناگهانی یا پایدار نیازمند ارزیابی تخصصی است.'};
- if(soreness==='high'||energy==='low'||(Number.isFinite(+sleepHours)&&+sleepHours<5))return {status:'reduce',message:'امروز شدت یا حجم را کم کن یا بازیابی فعال انتخاب کن؛ تمرین سنگین را به زمان مناسب‌تری موکول کن.'};
- if(Number.isFinite(+sleepHours)&&+sleepHours<7)return {status:'caution',message:'با خواب کم، شدت را بر اساس احساس و کیفیت فرم تنظیم کن.'};
+ if(soreness==='high'||energy==='low'||(sleepHours!==null&&sleepHours!==undefined&&sleepHours!==''&&Number.isFinite(Number(sleepHours))&&Number(sleepHours)<5))return {status:'reduce',message:'امروز شدت یا حجم را کم کن یا بازیابی فعال انتخاب کن؛ تمرین سنگین را به زمان مناسب‌تری موکول کن.'};
+ if(sleepHours!==null&&sleepHours!==undefined&&sleepHours!==''&&Number.isFinite(Number(sleepHours))&&Number(sleepHours)<7)return {status:'caution',message:'با خواب کم، شدت را بر اساس احساس و کیفیت فرم تنظیم کن.'};
  return {status:'normal',message:'طبق برنامه پیش برو و فرم صحیح را بر افزایش بار مقدم بدان.'};
 }
 root.RastaScienceEngine={version:VERSION,buildProgram,prescription,estimateNutrition,analyzeProgress,nextLoad,recoveryAdvice,equipmentAllowed,safeForLimit};
