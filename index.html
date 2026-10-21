@@ -1165,6 +1165,22 @@ function nutritionFillForm(a){
  set('nf-age',a.age_years);set('nf-sex',a.sex||'unspecified');set('nf-height',a.height_cm);set('nf-weight',a.current_weight_kg);set('nf-target-weight',a.target_weight_kg);set('nf-goal',a.goal||'general_health');set('nf-activity',a.activity_level||'moderate');set('nf-diet',a.diet_style||'iranian_mixed');set('nf-budget',a.budget_level||'moderate');set('nf-meals',a.meals_per_day||4);
  set('nf-liked',(a.liked_foods||[]).join('، '));set('nf-disliked',(a.disliked_foods||[]).join('، '));set('nf-allergies',(a.allergies||[]).join('، '));set('nf-intolerances',(a.intolerances||[]).join('، '));set('nf-conditions',(a.health_conditions||[]).join('، '));set('nf-notes',a.notes||'');if($('nf-pregnancy'))$('nf-pregnancy').checked=!!a.pregnant_or_breastfeeding;if($('nf-consent'))$('nf-consent').checked=!!a.consent_to_store_health_data;
 }
+async function rastaNutritionSaveReferenceFood(f,button){
+ if(button){button.disabled=true;button.textContent='در حال ذخیره…'}
+ const c=window.__rastaSupabaseClient;
+ if(!c){nutritionStatus('برای ذخیره ماده غذایی مرجع، وارد حساب رستا شو.');if(button){button.disabled=false;button.textContent='ذخیره برای بازبینی'}return}
+ try{
+  const {data:{user},error:ue}=await c.auth.getUser();if(ue)throw ue;if(!user){nutritionStatus('برای ذخیره ماده غذایی مرجع، وارد حساب رستا شو.');return}
+  const sourceId=String(f.fdc_id||'');if(!sourceId)throw new Error('شناسه منبع غذایی موجود نیست.');
+  const {data:existing,error:lookupError}=await c.from('foods').select('id').eq('owner_id',user.id).eq('source_record_id',sourceId).maybeSingle();
+  if(lookupError)throw lookupError;
+  if(existing){nutritionStatus('این ماده غذایی قبلاً در بانک شخصی تو ثبت شده است.');if(button)button.textContent='قبلاً ذخیره شده';return}
+  const row={owner_id:user.id,name_fa:'مرجع USDA: '+String(f.description||'غذای بدون نام').slice(0,180),name_en:String(f.description||'').slice(0,180),category:String(f.food_category||'reference_import').slice(0,80),basis_grams:100,energy_kcal:f.energy_kcal,protein_g:f.protein_g,carbohydrate_g:f.carbohydrate_g,fat_g:f.fat_g,fiber_g:f.fiber_g,calcium_mg:f.calcium_mg,sodium_mg:f.sodium_mg,data_source:'USDA FoodData Central',data_quality:'source_import_pending_review',data_source_url:'https://fdc.nal.usda.gov/food/'+encodeURIComponent(sourceId),source_record_id:sourceId,allergens:[],allergens_reviewed:false,dietary_tags:[],is_public:false};
+  const {error}=await c.from('foods').insert(row);if(error)throw error;
+  nutritionStatus('ماده غذایی در بانک شخصی تو با وضعیت «نیازمند بازبینی» ذخیره شد؛ هنوز وارد رژیم خودکار نمی‌شود.');if(button){button.disabled=true;button.textContent='ذخیره شد · نیازمند بازبینی'}toast('ماده غذایی مرجع ذخیره شد.');
+ }catch(e){nutritionStatus('ذخیره ماده غذایی انجام نشد: '+(e?.message||'خطای ارتباط'));if(button){button.disabled=false;button.textContent='ذخیره برای بازبینی'}}
+}
+
 async function rastaNutritionSearchFoods(){
  const query=String($('nf-food-search')?.value||'').trim();
  const status=$('nf-food-search-status');const results=$('nf-food-search-results');
@@ -1192,6 +1208,7 @@ async function rastaNutritionSearchFoods(){
    details.textContent=parts.join(' · ')+' · مبنا: ۱۰۰ گرم';body.appendChild(details);
    const source=document.createElement('a');source.href='https://fdc.nal.usda.gov/food/'+encodeURIComponent(String(f.fdc_id||''));source.target='_blank';source.rel='noopener noreferrer';source.textContent='مشاهده منبع رسمی USDA';source.style.display='inline-block';source.style.marginTop='5px';source.style.fontSize='11px';body.appendChild(source);
    const warning=document.createElement('small');warning.textContent='برای رژیم خودکار استفاده نمی‌شود تا تطبیق غذا، حالت پخت و آلرژن‌ها بررسی شود.';warning.style.display='block';warning.style.color='var(--muted)';body.appendChild(warning);
+   const saveBtn=document.createElement('button');saveBtn.type='button';saveBtn.className='btn ghost';saveBtn.textContent='ذخیره برای بازبینی';saveBtn.style.marginTop='8px';saveBtn.addEventListener('click',()=>rastaNutritionSaveReferenceFood(f,saveBtn));body.appendChild(saveBtn);
    card.appendChild(body);results.appendChild(card);
   }
  }catch(e){status.textContent='جستجوی مرجع انجام نشد. اتصال یا تنظیمات کلید USDA را بررسی کن.'}
@@ -1288,7 +1305,7 @@ function nutritionBuildPlan(a,targets,dayOffset=0){
    const liked=(a.liked_foods||[]).some(x=>{const n=nutritionNormalize(x);return n&&hay.includes(n)});
    const budgetPenalty=a.budget_level==='economical'&&/(ماهی|میگو|کباب کوبیده|گوشت|بادام|گردو|مغزها)/.test(hay)?65:0;
    const varietyPenalty=((foods.indexOf(f)+dayOffset*11+slotIndex*5)%Math.min(candidates.length,7))*3.5;
-   const score=Math.abs(f.cal*qty-target)-(liked?35:0)+budgetPenalty+varietyPenalty;
+   const targetP=targets.target_protein_g*share;const targetC=targets.target_carbohydrate_g*share;const targetF=targets.target_fat_g*share;const macroPenalty=Math.abs(f.p*qty-targetP)*3+Math.abs(f.c*qty-targetC)*.45+Math.abs(f.f*qty-targetF)*.8;const score=Math.abs(f.cal*qty-target)-(liked?35:0)+budgetPenalty+varietyPenalty+macroPenalty;
    return {f,qty,score}
   }).sort((x,y)=>x.score-y.score);
   const pick=scored[0];used.add(pick.f.id);result[key]=[{id:pick.f.id,qty:Math.round(pick.qty*100)/100}];
