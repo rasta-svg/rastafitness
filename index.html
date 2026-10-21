@@ -1191,7 +1191,64 @@ if(!window.__rastaAutoRefreshStarted){
  setInterval(()=>{rastaAutoRefresh();rastaCheckGitHubVersion()},60000);
  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){rastaAutoRefresh();rastaCheckGitHubVersion()}});
 }
-profileLoad();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderTraining();renderLibrary();renderNutrition();renderHistory();renderToday();renderPrograms();renderExplore();
+
+function startRastaOnboarding(){
+ const overlay=$('rasta-onboarding-overlay'),card=$('rasta-onboarding-card');
+ if(!overlay||!card)return;
+ let alreadySeen=false;
+ try{alreadySeen=localStorage.getItem('rasta-onboarding-complete-v1')==='yes'}catch(e){}
+ if(alreadySeen)return;
+ const user=window.__RASTA_AUTH_USER||{};
+ let profileName='';
+ try{profileName=$('pname')?.value?.trim()||''}catch(e){}
+ const name=String(user.user_metadata?.full_name||profileName||'دوست خوبم').trim();
+ const safeName=name||'دوست خوبم';
+ const steps=[
+  {icon:'🌱',title:'سلام '+safeName+' جان! خوش اومدی 💚',copy:'خیلی خوشحالیم که به خانواده رَستا پیوستی! اینجا قرار نیست عجله کنی؛ قدم‌به‌قدم با هم برای تحرک بیشتر، غذای بهتر و حال خوب پیش می‌ریم.',hint:'برای آشنایی با رستا، روی پنجره بزن.'},
+  {icon:'☀️',title:'۱. امروز من',copy:'اینجا صفحه شروع توست. خلاصه فعالیت‌ها، کالری و پروتئین برنامه‌ریزی‌شده و پیشنهاد تمرین امروز را می‌بینی. برای شروع سریع، دکمه‌های تمرین یا برنامه غذایی را لمس کن.'},
+  {icon:'🏋️',title:'۲. برنامه تمرینی',copy:'برای دیدن و تنظیم تمرین‌های روزانه‌ات وارد این بخش شو. می‌توانی روز و مدت تمرین را تغییر بدهی، حرکت اضافه کنی و تمرین انجام‌شده را ثبت کنی. اگر تازه‌کاری، از تعداد کمتر شروع کن.'},
+  {icon:'🗓️',title:'۳. برنامه‌های چند‌هفته‌ای',copy:'اگر دوست داری با برنامه منظم جلو بروی، یکی از برنامه‌های چند‌هفته‌ای را بررسی و انتخاب کن. برنامه انتخاب‌شده به زمان‌بندی تمرینت کمک می‌کند؛ هر وقت لازم بود می‌توانی آن را ویرایش کنی.'},
+  {icon:'🔎',title:'۴. کشف تمرین‌ها',copy:'برای پیدا کردن تمرین‌های مناسب، حرکت‌ها را جست‌وجو کن و بر اساس امکانات یا هدف خودت بگرد. اگر اسم یک حرکت را نمی‌دانی، از جست‌وجو و دسته‌بندی‌ها کمک بگیر.'},
+  {icon:'🧍',title:'۵. فعالیت‌های ورزشی',copy:'کتابخانه حرکات برای یاد گرفتن تمرین‌هاست. یک کارت را لمس کن تا توضیح حرکت، روش اجرای ساده، تعداد پیشنهادی و نسخه آسان‌تر را ببینی. حرکت را آرام انجام بده و اگر درد غیرعادی داشتی، متوقف شو.'},
+  {icon:'🥗',title:'۶. برنامه غذایی ایرانی',copy:'اینجا غذاهای ایرانی را برای صبحانه، ناهار، شام و میان‌وعده پیدا می‌کنی. غذا را انتخاب کن تا اطلاعات و سهم پیشنهادی آن را ببینی و به برنامه روزت اضافه کنی. مقدارها و کالری‌ها تقریبی‌اند.'},
+  {icon:'📈',title:'۷. گزارش و سابقه',copy:'تمرین‌ها و فعالیت‌هایی را که ثبت می‌کنی در این قسمت دنبال کن. هرچه ثبت‌ها دقیق‌تر باشند، راحت‌تر می‌فهمی چقدر پیش رفته‌ای. اگر هنوز چیزی ثبت نکرده‌ای، نگران نباش؛ از امروز شروع کن.'},
+  {icon:'💎',title:'۸. اشتراک و تعرفه‌ها',copy:'در این قسمت امکانات پایه و گزینه‌های ویژه را بررسی می‌کنی. پیش از پرداخت، توضیحات و قیمت نمایش‌داده‌شده را با دقت بخوان. برای استفاده از امکانات پایه، لازم نیست بدون بررسی اشتراک بخری.'},
+  {icon:'⚙️',title:'۹. تنظیمات شخصی',copy:'نام نمایشی، هدف، محل و سطح تمرین، زمان و تعداد روزهای ورزش را اینجا تنظیم کن. بعد از تغییر، «ذخیره تنظیمات» را بزن تا پیشنهادها بیشتر با شرایط تو هماهنگ شوند.'},
+  {icon:'📘',title:'۱۰. راهنمای استفاده',copy:'اگر بعداً فراموش کردی هر بخش چطور کار می‌کند، به راهنمای استفاده برگرد. می‌توانی آموزش‌ها را هر زمان خواستی دوباره بخوانی.'},
+  {icon:'🧭',title:'این هم منوی رَستا، برای تو! 💚',copy:'هر وقت خواستی بین بخش‌ها جابه‌جا شوی، از منوی برنامه استفاده کن. در گوشی، منوی پایین صفحه را به چپ و راست بکش تا گزینه‌های بیشتری ببینی. حالا آماده‌ای مسیرت را با خیال راحت شروع کنی!',extra:'menu',hint:'برای پایان آموزش، روی همین پنجره یا «شروع می‌کنم» بزن.'}
+ ];
+ let index=0,closed=false;
+ const finish=()=>{
+  if(closed)return;closed=true;
+  try{localStorage.setItem('rasta-onboarding-complete-v1','yes')}catch(e){}
+  overlay.classList.remove('show');overlay.setAttribute('aria-hidden','true');
+ };
+ const advance=()=>{
+  if(closed)return;
+  if(index>=steps.length-1){finish();return}
+  index++;paint();
+ };
+ const paint=()=>{
+  const step=steps[index];
+  $('rasta-tour-icon').textContent=step.icon;
+  $('rasta-tour-title').textContent=step.title;
+  $('rasta-tour-copy').textContent=step.copy;
+  $('rasta-tour-kicker').textContent='راهنمای دوستانه رَستا · '+(index+1)+' از '+steps.length;
+  $('rasta-tour-progress-fill').style.width=((index+1)/steps.length*100)+'%';
+  $('rasta-tour-hint').textContent=step.hint||'برای دیدن بخش بعدی، روی همین پنجره بزن 👆';
+  $('rasta-tour-next').textContent=index===0?'بزن بریم! ←':index===steps.length-1?'شروع می‌کنم 🌿':'بخش بعدی ←';
+  $('rasta-tour-extra').innerHTML=step.extra==='menu'?'<div class="rasta-tour-menu"><span>☀️ امروز من</span><span>🏋️ برنامه تمرینی</span><span>🗓️ برنامه‌های چند‌هفته‌ای</span><span>🔎 کشف تمرین‌ها</span><span>🧍 فعالیت‌های ورزشی</span><span>🥗 برنامه غذایی ایرانی</span><span>📈 گزارش و سابقه</span><span>💎 اشتراک و تعرفه‌ها</span><span>⚙️ تنظیمات شخصی</span><span>📘 راهنمای استفاده</span></div>':'';
+ };
+ $('rasta-tour-skip').addEventListener('click',e=>{e.stopPropagation();finish()});
+ $('rasta-tour-next').addEventListener('click',e=>{e.stopPropagation();advance()});
+ card.addEventListener('click',e=>{if(e.target.closest('button'))return;advance()});
+ card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();advance()}if(e.key==='Escape')finish()});
+ overlay.addEventListener('click',e=>{if(e.target===overlay)advance()});
+ overlay.setAttribute('aria-hidden','false');
+ paint();overlay.classList.add('show');
+}
+
+profileLoad();startRastaOnboarding();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderTraining();renderLibrary();renderNutrition();renderHistory();renderToday();renderPrograms();renderExplore();
 try{
  const saved=JSON.parse(sessionStorage.getItem('rasta-update-ui-state')||'null');
  if(saved){sessionStorage.removeItem('rasta-update-ui-state');Object.entries(saved.fields||{}).forEach(([id,state])=>{const el=$(id);if(!el)return;if(state&&Object.prototype.hasOwnProperty.call(state,'checked'))el.checked=state.checked;else if(state&&Object.prototype.hasOwnProperty.call(state,'value'))el.value=state.value});if(saved.activeView&&saved.activeView!=='today')goto(saved.activeView);if(Number.isFinite(saved.scrollY))setTimeout(()=>scrollTo(0,saved.scrollY),100)}
@@ -1202,5 +1259,38 @@ fetch('./version.json?check='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json
 
 </script>
 
+
+
+<style>
+#rasta-onboarding-overlay{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:18px;background:rgba(15,28,20,.68);backdrop-filter:blur(5px);direction:rtl}
+#rasta-onboarding-overlay.show{display:flex}
+#rasta-onboarding-card{position:relative;width:min(100%,430px);max-height:min(84vh,680px);overflow:auto;background:#fffdf7;color:#23382b;border:1px solid rgba(255,255,255,.7);border-radius:25px;padding:24px 21px 20px;box-shadow:0 24px 80px rgba(0,0,0,.28);cursor:pointer;animation:rastaTourIn .22s ease-out;outline:none}
+@keyframes rastaTourIn{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+#rasta-onboarding-card .rasta-tour-skip{position:absolute;left:14px;top:14px;border:1px solid #dce4d8;background:#f2f5ee;color:#526452;border-radius:999px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer}
+#rasta-onboarding-card .rasta-tour-icon{width:66px;height:66px;display:grid;place-items:center;border-radius:20px;background:#e8f1df;font-size:32px;margin:8px auto 14px}
+#rasta-onboarding-card .rasta-tour-kicker{text-align:center;color:#64805d;font-size:11px;font-weight:800;letter-spacing:.2px}
+#rasta-onboarding-card h2{font-size:22px;line-height:1.7;text-align:center;margin:8px 0;color:#294e3b}
+#rasta-onboarding-card .rasta-tour-copy{font-size:14px;line-height:2;text-align:center;color:#5a675c;margin:0 0 15px}
+#rasta-onboarding-card .rasta-tour-hint{font-size:11px;text-align:center;color:#7c897b;margin-top:12px}
+#rasta-onboarding-card .rasta-tour-progress{height:5px;border-radius:99px;background:#e8ece4;overflow:hidden;margin:15px 0 0}
+#rasta-onboarding-card .rasta-tour-progress span{display:block;height:100%;border-radius:99px;background:#78a66a;transition:width .2s}
+#rasta-onboarding-card .rasta-tour-next{display:block;width:100%;border:0;border-radius:13px;background:#294e3b;color:#fff;padding:13px;font-size:14px;font-weight:800;margin-top:14px;cursor:pointer}
+#rasta-onboarding-card .rasta-tour-menu{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px}
+#rasta-onboarding-card .rasta-tour-menu span{background:#f0f4ec;border:1px solid #e2e9dc;border-radius:10px;padding:9px 7px;font-size:11px;text-align:right}
+@media(max-width:380px){#rasta-onboarding-card{padding:22px 16px 17px}#rasta-onboarding-card h2{font-size:20px}#rasta-onboarding-card .rasta-tour-copy{font-size:13px}}
+</style>
+<div id="rasta-onboarding-overlay" role="dialog" aria-modal="true" aria-label="راهنمای شروع رستا">
+ <div id="rasta-onboarding-card" tabindex="0">
+  <button type="button" class="rasta-tour-skip" id="rasta-tour-skip">رد کردن آموزش</button>
+  <div class="rasta-tour-icon" id="rasta-tour-icon">🌱</div>
+  <div class="rasta-tour-kicker" id="rasta-tour-kicker">راهنمای دوستانه رستا</div>
+  <h2 id="rasta-tour-title">به رستا خوش آمدی!</h2>
+  <p class="rasta-tour-copy" id="rasta-tour-copy"></p>
+  <div id="rasta-tour-extra"></div>
+  <div class="rasta-tour-progress"><span id="rasta-tour-progress-fill" style="width:0%"></span></div>
+  <div class="rasta-tour-hint" id="rasta-tour-hint">برای دیدن بخش بعدی، روی همین پنجره بزن 👆</div>
+  <button type="button" class="rasta-tour-next" id="rasta-tour-next">بزن بریم! ←</button>
+ </div>
+</div>
 
 </body></html>
