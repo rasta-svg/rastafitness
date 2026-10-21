@@ -99,7 +99,8 @@
     z-index:100 !important;
     padding-bottom:calc(7px + env(safe-area-inset-bottom)) !important;
   }
-  #rasta-app-shell .mobilebar button { flex:1 0 auto; min-width:42px; }
+  #rasta-app-shell .mobilebar button { flex:0 0 auto !important; min-width:58px !important; padding:2px 7px; }
+  .mobilebar { justify-content:flex-start !important; gap:3px; }
   #rasta-app-shell img, #rasta-app-shell svg, #rasta-app-shell input,
   #rasta-app-shell select, #rasta-app-shell textarea { max-width:100%; }
 }
@@ -280,7 +281,7 @@
 </div>
 </section>
 </main></div>
-<nav class="mobilebar"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="explore"><span>🔎</span>کشف</button><button data-view="library"><span>🧍</span>حرکات</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button data-view="history"><span>📈</span>سابقه</button><button data-view="plans"><span>💎</span>اشتراک</button></nav>
+<nav class="mobilebar"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="explore"><span>🔎</span>کشف</button><button data-view="library"><span>🧍</span>حرکات</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button data-view="history"><span>📈</span>سابقه</button><button data-view="plans"><span>💎</span>اشتراک</button><button data-view="profile"><span>⚙️</span>تنظیمات</button><button data-view="guide"><span>📘</span>راهنما</button></nav>
 <div class="modalback" id="modalback"><div class="modal"><div class="modalhead"><h2 id="modaltitle">جزئیات</h2><button class="close" id="modalclose">بستن ✕</button></div><div id="modalbody"></div></div></div><div class="toast" id="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -350,7 +351,7 @@ const showApp=async(user)=>{
  };
  sendPresence(document.visibilityState==='visible'?'active':'background');
  if(window.__rastaPresenceTimer)clearInterval(window.__rastaPresenceTimer);
- window.__rastaPresenceTimer=setInterval(()=>sendPresence(document.visibilityState==='visible'?'active':'background'),45000);
+ window.__rastaPresenceTimer=setInterval(()=>sendPresence(document.visibilityState==='visible'?'active':'background'),20000);
  if(!window.__rastaPresenceVisibilityBound){document.addEventListener('visibilitychange',()=>{const u=window.__RASTA_AUTH_USER;if(!u)return;try{window.__rastaSupabaseClient?.from('user_presence').upsert({user_id:u.id,last_seen:new Date().toISOString(),app_state:document.visibilityState==='visible'?'active':'background'},{onConflict:'user_id'}).then(()=>{}).catch(()=>{})}catch(e){}});window.__rastaPresenceVisibilityBound=true;}
 };
 const handleSubmit=async(e)=>{
