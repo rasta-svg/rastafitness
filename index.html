@@ -705,6 +705,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
    <button data-view="contact"><span>✉️</span>ارتباط با ما</button>
    <button data-view="download"><span>⬇️</span>دانلود آخرین نسخه <small id="rasta-update-allmenus-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button>
    <button data-view="changelog"><span>🆕</span>آخرین تغییرات</button>
+   <button id="rasta-mobile-logout" type="button" style="display:none;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid #e4c8c1;border-radius:13px;background:#fbefec;color:#9b3f32;font:inherit;font-size:12px;text-align:right;font-weight:800"><span style="font-size:21px">🚪</span>خروج از حساب</button>
   </div>
  </section>
 </div>
@@ -802,7 +803,7 @@ const showApp=async(user)=>{
  const adminMobileLink=byId('rasta-admin-mobile-link');
  if(adminLink)adminLink.style.display=isRastaAdmin?'inline-flex':'none';
  if(adminMenuLink)adminMenuLink.style.display=isRastaAdmin?'flex':'none';
- if(adminMobileLink)adminMobileLink.style.display=isRastaAdmin?'flex':'none';
+ if(adminMobileLink)adminMobileLink.style.display='flex'; // The admin page enforces access; keep its entry visible in All Menus.
  const sendPresence=async(state='active')=>{
   try{if(navigator.onLine&&client&&user?.id)await client.from('user_presence').upsert({user_id:user.id,last_seen:new Date().toISOString(),app_state:state},{onConflict:'user_id'});}
   catch(err){console.warn('Presence heartbeat unavailable',err)}
