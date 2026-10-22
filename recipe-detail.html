@@ -491,7 +491,8 @@ async function load() {
     if (f.storage_fa) notes.push('نگهداری: ' + f.storage_fa);
     if (f.recipe_notes_fa) notes.push(f.recipe_notes_fa);
     if (f.dietary_tags && f.dietary_tags.length) notes.push('برچسب‌ها: ' + f.dietary_tags.join('، '));
-    notes.push(f.allergens_reviewed ? 'آلرژن‌ها: ' + (f.allergens || 'ثبت نشده') : 'آلرژن‌ها هنوز بررسی و تأیید نشده‌اند.');
+    notes.push(f.allergens && f.allergens.length ? 'آلرژن‌های احتمالی (تخمینی و تأییدنشده): ' + f.allergens.join('، ') : 'آلرژن مشخصی در برآورد ثبت نشده؛ این به معنی بدون آلرژن بودن قطعی نیست.');
+    if (!f.allergens_reviewed) notes.push('هشدار: فهرست آلرژن‌ها تأیید نشده است؛ مواد واقعی و احتمال آلودگی متقاطع باید بررسی شود.');
     text('notes', notes.join(' · '));
   } catch (error) {
     text('name', 'بارگذاری اطلاعات ناموفق بود');
