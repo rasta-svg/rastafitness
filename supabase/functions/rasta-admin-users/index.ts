@@ -26,6 +26,29 @@ Deno.serve(async (req: Request) => {
     return new Response(JSON.stringify({ error: "دسترسی غیرمجاز است." }), { status: 403, headers: cors });
   }
 
+  let requestBody: Record<string, unknown> = {};
+  try { requestBody = await req.json(); } catch { requestBody = {}; }
+  if (requestBody.action === "delete_user") {
+    const targetId = String(requestBody.user_id || "");
+    const confirmEmail = String(requestBody.confirm_email || "").trim().toLowerCase();
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(targetId)) {
+      return new Response(JSON.stringify({ error: "شناسهٔ حساب نامعتبر است." }), { status: 400, headers: cors });
+    }
+    if (targetId === user.id) return new Response(JSON.stringify({ error: "حساب مدیر جاری را نمی‌توان از داخل پنل حذف کرد." }), { status: 409, headers: cors });
+    const { data: targetData, error: targetError } = await adminClient.auth.admin.getUserById(targetId);
+    const target = targetData?.user;
+    if (targetError || !target) return new Response(JSON.stringify({ error: "حساب انتخاب‌شده پیدا نشد." }), { status: 404, headers: cors });
+    if (!target.email || target.email.toLowerCase() !== confirmEmail) {
+      return new Response(JSON.stringify({ error: "ایمیل تأیید با ایمیل حساب انتخاب‌شده مطابقت ندارد." }), { status: 400, headers: cors });
+    }
+    if (target.email.toLowerCase() === "elida600000@gmail.com") {
+      return new Response(JSON.stringify({ error: "حساب اصلی مدیر از این مسیر قابل حذف نیست." }), { status: 409, headers: cors });
+    }
+    const { error: deleteError } = await adminClient.auth.admin.deleteUser(targetId, false);
+    if (deleteError) return new Response(JSON.stringify({ error: "حذف حساب انجام نشد: " + deleteError.message }), { status: 500, headers: cors });
+    return new Response(JSON.stringify({ ok: true, deleted_user_id: targetId }), { status: 200, headers: cors });
+  }
+
   const { data, error } = await adminClient.auth.admin.listUsers({ page: 1, perPage: 1000 });
   if (error) return new Response(JSON.stringify({ error: "دریافت کاربران انجام نشد." }), { status: 500, headers: cors });
 
