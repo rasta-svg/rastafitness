@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - "index.html"
+      - "nutrition-bank.html"
       - "rasta-science-engine.js"
       - "sw.js"
       - "admin.html"
@@ -53,6 +54,7 @@ jobs:
         run: |
           mkdir -p www resources
           cp index.html www/index.html
+          cp nutrition-bank.html www/nutrition-bank.html
           cp rasta-science-engine.js www/rasta-science-engine.js
           cp admin.html www/admin.html
           cp -R assets www/assets
