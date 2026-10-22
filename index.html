@@ -391,18 +391,17 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <div id="rasta-download-release-info" class="muted" style="font-size:13px;margin-top:12px">در حال بررسی آخرین نسخه منتشرشده…</div>
 </div></section>
 <section class="view" id="view-changelog">
-<div class="sectionhead"><div><h2>🆕 آخرین تغییرات رستا</h2><p>شماره نسخه و امکاناتی که در هر به‌روزرسانی تغییر کرده‌اند.</p></div><span class="pill">نسخه فعلی: ۲٫۰٫۰</span></div>
-<div class="panel" style="border:1px solid var(--green);padding:clamp(16px,3vw,24px)">
-<div class="split" style="align-items:flex-start;gap:12px;flex-wrap:wrap"><div><div class="eyebrow">آخرین تغییرات</div><h2 style="margin:4px 0">ورژن شماره ۲٫۰٫۰</h2><p class="muted" style="margin:0">انتشار: ۲۲ اکتبر ۲۰۲۶</p></div><span class="pill">جدیدترین نسخه</span></div>
-<ul style="line-height:2.1;padding-right:22px;margin-top:16px">
-<li><b>نسخه‌بندی برنامه:</b> نمایش شماره نسخه و ایجاد آرشیو تغییرات در خود نرم‌افزار.</li>
-<li><b>ثبت‌نام و حساب کاربری:</b> راهنمای روشن‌تر تأیید ایمیل Rasta fitness و دکمه Confirm email address؛ بهبود روند خروج از حساب.</li>
-<li><b>بانک غذا:</b> افزودن فیلتر برای برخی غذاهای محلی نامتداول و مواد غذایی فصلی، با هدف کاربردی‌تر شدن پیشنهادها.</li>
-<li><b>برنامه تمرینی:</b> بهبود تنظیم ست، تکرار و زمان استراحت بر اساس هدف تمرین؛ از جمله عضله‌سازی، قدرت و استقامت.</li>
-<li><b>نسخه اندروید:</b> تنظیم ساخت APK با شماره نسخه هماهنگ با نسخه نرم‌افزار و بسته‌بندی ZIP.</li>
-</ul></div>
-<details class="panel" open style="margin-top:12px"><summary style="cursor:pointer;font-weight:900">تاریخچه نسخه ۱٫۰٫۰</summary><p style="line-height:2">نسخه پایه رستا فیتنس: بخش‌های اصلی تمرین، تغذیه، حساب کاربری، گزارش پیشرفت و اشتراک‌ها.</p></details>
-<p class="muted" style="font-size:12px;line-height:1.9;margin-top:12px">در به‌روزرسانی‌های بعدی، نسخه جدید در بالای این صفحه اضافه می‌شود و نسخه‌های قبلی در تاریخچه باقی می‌مانند.</p>
+<div class="sectionhead"><div><h2>🆕 آخرین تغییرات رستا</h2><p>این صفحه اطلاعات آخرین نسخه منتشرشده را مستقیماً دریافت می‌کند.</p></div><span class="pill" id="rasta-changelog-version">در حال بررسی نسخه…</span></div>
+<div class="panel" id="rasta-changelog-panel" style="border:1px solid var(--green);padding:clamp(16px,3vw,24px)">
+<div class="eyebrow">آخرین انتشار رسمی</div><h2 id="rasta-changelog-title" style="margin:4px 0">در حال دریافت آخرین تغییرات…</h2>
+<p class="muted" id="rasta-changelog-date" style="margin:0">لطفاً چند لحظه صبر کن.</p>
+<div id="rasta-changelog-notes" style="line-height:2.1;margin-top:16px;overflow-wrap:anywhere">اطلاعات آخرین نسخه در حال بارگذاری است.</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+<button type="button" class="btn dark" data-view="download">دانلود آخرین نسخه</button>
+<button type="button" class="btn ghost" id="rasta-changelog-retry">بررسی دوباره</button>
+</div>
+<p class="muted" id="rasta-changelog-status" role="status" aria-live="polite" style="font-size:12px;margin-top:12px">شماره نسخه از انتشار رسمی خوانده می‌شود.</p>
+</div>
 </section>
 <section class="view" id="view-contact">
 <div class="sectionhead"><div><h2>✉️ ارتباط با ما</h2><p>پیامت مستقیم در صندوق پیام‌های مدیر ثبت می‌شود؛ پاسخ مدیر را نیز همین‌جا می‌بینی.</p></div></div>
@@ -1098,7 +1097,34 @@ async function loadRastaLatestRelease(){
   if(infoEl){const date=release.published_at?new Date(release.published_at).toLocaleDateString('fa-IR'):'';infoEl.textContent='آخرین انتشار: '+(release.name||release.tag_name)+(date?' · تاریخ انتشار: '+date:'')+' · لینک دانلود ثابت';}
  }catch(e){if(infoEl)infoEl.textContent='پیوندهای دانلود ثابت هستند؛ برای دیدن آخرین انتشار، «مشاهده نسخه‌ها و تغییرات» را بزن.';}
 }
-function goto(v,skipHistory=false){checkRastaForUpdate();if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما',download:'دانلود آخرین نسخه',changelog:'آخرین تغییرات'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();if(v==='download')loadRastaLatestRelease();scrollTo({top:0,behavior:'smooth'})}
+function goto(v,skipHistory=false){checkRastaForUpdate();if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما',download:'دانلود آخرین نسخه',changelog:'آخرین تغییرات'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();if(v==='download')loadRastaLatestRelease();if(v==='changelog')loadRastaChangelog();scrollTo({top:0,behavior:'smooth'})}
+async function loadRastaChangelog(){
+ const title=$('rasta-changelog-title'),date=$('rasta-changelog-date'),notes=$('rasta-changelog-notes'),version=$('rasta-changelog-version'),status=$('rasta-changelog-status');
+ if(!title||!notes)return;
+ title.textContent='در حال دریافت آخرین تغییرات…';notes.textContent='اطلاعات آخرین نسخه در حال بارگذاری است.';
+ if(!navigator.onLine){title.textContent='اتصال اینترنت در دسترس نیست';notes.textContent='برای دیدن آخرین تغییرات به اینترنت وصل شو و «بررسی دوباره» را بزن.';if(status)status.textContent='نسخه آنلاین برای دریافت تغییرات لازم است.';return}
+ try{
+  const res=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/releases/latest?check='+Date.now(),{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+  if(!res.ok)throw new Error('release '+res.status);
+  const rel=await res.json();
+  const name=String(rel.name||rel.tag_name||'آخرین نسخه رستا فیتنس');
+  const body=String(rel.body||'').trim();
+  const match=(body.match(/(?:نسخه برنامه|App version)\\s*[:：]\\s*v?([0-9]+\\.[0-9]+\\.[0-9]+)/i)||[])[1]||(name.match(/v([0-9]+\\.[0-9]+\\.[0-9]+)/i)||[])[1];
+  const build=(name.match(/build[- ]?(\\d+)/i)||[])[1]||(String(rel.tag_name||'').match(/build[- ]?(\\d+)/i)||[])[1];
+  if(version)version.textContent=(match?'نسخه '+match:'آخرین نسخه')+(build?' · بیلد '+build:'');
+  title.textContent=name;
+  if(date)date.textContent=rel.published_at?'انتشار: '+new Date(rel.published_at).toLocaleString('fa-IR',{dateStyle:'long',timeStyle:'short'}):'آخرین انتشار رسمی';
+  const clean=body.split(/\\n+/).map(x=>x.trim()).filter(x=>x&&!/^Commit\\s*:/i.test(x)&&!/^این نسخه با کلید ثابت/i.test(x));
+  if(clean.length){const ul=document.createElement('ul');ul.style.cssText='line-height:2.1;padding-right:22px;margin:0';clean.forEach(line=>{const li=document.createElement('li');li.textContent=line;ul.appendChild(li)});notes.replaceChildren(ul)}
+  else notes.textContent='برای این انتشار توضیحات جداگانه‌ای ثبت نشده است. عنوان نسخه بالا آخرین نسخه منتشرشده را نشان می‌دهد.';
+  if(status)status.textContent='اطلاعات آخرین انتشار با موفقیت به‌روز شد.';
+ }catch(e){
+  title.textContent='دریافت آخرین تغییرات ناموفق بود';
+  notes.textContent='ارتباط با سرویس نسخه‌ها برقرار نشد. اتصال اینترنت را بررسی کن و «بررسی دوباره» را بزن.';
+  if(status)status.textContent='خطا در دریافت اطلاعات نسخه؛ صفحه را دوباره بررسی کن.';
+ }
+}
+document.addEventListener('click',e=>{if(e.target.closest('#rasta-changelog-retry'))loadRastaChangelog()});
 async function renderPlans(){
  const box=$('rasta-plan-cards'),status=$('rasta-plan-status');
  if(!box||!status)return;
