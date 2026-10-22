@@ -72,6 +72,7 @@ jobs:
       - name: Set Android version from package.json
         run: |
           VERSION="$(node -p "require('./package.json').version")"
+          echo "APP_VERSION=$VERSION" >> "$GITHUB_ENV"
           VERSION_CODE="$(node -e "const [a,b,c]=process.argv[1].split('.').map(Number); process.stdout.write(String(a*10000+b*100+c))" "$VERSION")"
           python3 - "$VERSION" "$VERSION_CODE" <<'PY'
           import re, sys
@@ -199,9 +200,11 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
-          name: Rasta Fitness Android build ${{ github.run_number }}
+          name: Rasta Fitness v${{ env.APP_VERSION }} (build ${{ github.run_number }})
           body: |
-            نسخه اندروید امضاشده رَستا فیتنس.
+            نسخه برنامه: v${{ env.APP_VERSION }}
+
+            فایل‌های این انتشار در لینک دانلود ثابت آخرین نسخه قرار می‌گیرند.
 
             Commit: ${{ github.sha }}
 
