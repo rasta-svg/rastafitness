@@ -16,7 +16,7 @@
 ## تغییرات فنی انجام‌شده در این مرحله
 - گردش‌کار اندروید طوری تنظیم شد که تغییر در `tests/**` و `docs/science-engine.md` هم build و آزمون‌های انتشار را فعال کند.
 - شاخص `exercises_content_reviewed_by_idx` به `public.exercises(content_reviewed_by)` اضافه شد.
-- سه سیاست RLS جدول `user_app_sync_state` با `TO authenticated` و `(select auth.uid())` بازسازی شدند؛ شرط مالکیت در SELECT/INSERT/UPDATE حفظ شد.
+- سه سیاست RLS جدول `user_app_sync_state` و سه سیاست جدول `user_presence` با `TO authenticated` و `(select auth.uid())` بازسازی شدند؛ شرط مالکیت در SELECT/INSERT/UPDATE حفظ شد.
 - اجرای SQL تأیید کرد که شاخص وجود دارد و هر سه سیاست sync برقرار هستند.
 
 ## یافته‌های امنیتی/عملکردی که همچنان نیاز به اقدام دارند
