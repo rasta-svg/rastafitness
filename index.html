@@ -1427,7 +1427,7 @@ if(b.id==='savecustomprogram'){
  profile.customProgram=rastaPremiumGeneratedProgram;profile.muscle=rastaPremiumGeneratedProgram.muscle;profile.musclegoal=rastaPremiumGeneratedProgram.goal;save();
  const client=window.__rastaSupabaseClient;let cloudSaved=false;
  if(client){try{const auth=await client.auth.getUser();if(auth.error)throw auth.error;const user=auth.data?.user;if(user){const row={owner_id:user.id,title:rastaPremiumGeneratedProgram.title,goal:rastaPremiumGeneratedProgram.goal,days_per_week:rastaPremiumGeneratedProgram.days.length,mode:'hybrid',status:'active',notes:JSON.stringify(rastaPremiumGeneratedProgram)};const result=await client.from('workout_plans').insert(row);if(result.error)throw result.error;cloudSaved=true}}catch(e){console.warn('Cloud workout plan save failed',e)}}
- plan=rastaPremiumGeneratedProgram.days;activeDay=0;save();closeModal();profileLoad();renderTraining();renderToday();toast(cloudSaved?'برنامه در پروفایل و حساب ابری ذخیره شد.':'برنامه در پروفایل همین دستگاه ذخیره شد؛ همگام‌سازی ابری انجام نشد.');return
+ plan=rastaPremiumGeneratedProgram.days;activeDay=0;save();closemodal();profileLoad();renderTraining();renderToday();toast(cloudSaved?'برنامه در پروفایل و حساب ابری ذخیره شد.':'برنامه در پروفایل همین دستگاه ذخیره شد؛ همگام‌سازی ابری انجام نشد.');return
 }
 if(b.id==='applytrainingproposal'){let proposal=read('rasta-training-proposal',null);if(proposal){if(Array.isArray(proposal.days)&&proposal.days.length){plan=proposal.days;activeDay=0}else{plan[activeDay]={...plan[activeDay],...proposal,ids:[...(proposal.ids||[])]}}localStorage.removeItem('rasta-training-proposal');save();closemodal();renderTraining();renderToday();renderPrograms();toast('برنامه پیشنهادی تمرین اعمال شد.')}return}
 if(b.id==='applyfoodproposal'){applyFoodProposal();closemodal();return}
@@ -1476,7 +1476,7 @@ if(b.id==='buildmuscle'){
  const m=$('musclefocus').value,g=$('musclegoal').value;
  const client=window.__rastaSupabaseClient;let hasPremium=false;
  if(client){try{const auth=await client.auth.getUser();if(auth.error)throw auth.error;const user=auth.data?.user;if(user){const sub=await client.from('subscriptions').select('plan_id,status,starts_at,ends_at').eq('user_id',user.id).eq('plan_id','premium').eq('status','active').order('created_at',{ascending:false}).limit(5);if(sub.error)throw sub.error;const now=Date.now();hasPremium=(sub.data||[]).some(x=>(!x.starts_at||new Date(x.starts_at).getTime()<=now)&&(!x.ends_at||new Date(x.ends_at).getTime()>now));}}catch(e){toast('وضعیت اشتراک بررسی نشد؛ از بخش اشتراک دوباره بررسی کن.');return}}
- if(!hasPremium){toast('ساخت برنامه حرفه‌ای عضله‌سازی ویژه اشتراک پولی «ورزش و تغذیه حرفه‌ای‌ها» است.');showView('plans');return}
+ if(!hasPremium){toast('ساخت برنامه حرفه‌ای عضله‌سازی ویژه اشتراک پولی «ورزش و تغذیه حرفه‌ای‌ها» است.');goto('plans');return}
  profile.muscle=m;profile.musclegoal=g;profile.goal='عضله‌سازی و افزایش حجم';profile.priorityMuscle=m;
  const generated=window.RastaScienceEngine?.buildProgram({profile,exercises:ex,durationMinutes:durationMinutes(profile.duration)});
  if(!generated||generated.blocked){toast(generated?.warning||'موتور برنامه‌ریزی در دسترس نیست.');return}
