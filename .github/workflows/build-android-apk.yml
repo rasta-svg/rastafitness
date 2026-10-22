@@ -79,8 +79,8 @@ jobs:
           version, code = sys.argv[1], sys.argv[2]
           p = Path("android/app/build.gradle")
           s = p.read_text()
-          s, n1 = re.subn(r'(?m)^(\\s*versionCode\\s+)\\d+', lambda m: m.group(1) + code, s, count=1)
-          s, n2 = re.subn(r'(?m)^(\\s*versionName\\s+)[\'"][^\'"]*[\'"]', lambda m: m.group(1) + '"' + version + '"', s, count=1)
+          s, n1 = re.subn(r'(?m)^(\s*versionCode\s+)\d+', lambda m: m.group(1) + code, s, count=1)
+          s, n2 = re.subn(r'(?m)^(\s*versionName\s+)[\'"][^\'"]*[\'"]', lambda m: m.group(1) + '"' + version + '"', s, count=1)
           if n1 != 1 or n2 != 1:
               raise SystemExit("Could not set Android versionCode/versionName")
           p.write_text(s)
