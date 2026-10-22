@@ -106,8 +106,8 @@ function sessionFocuses(p,days){
  if(includes(goal,['چربی']))return Array.from({length:days},(_,i)=>i%3===2?'هوازی':'تمام بدن');
  return Array.from({length:days},(_,i)=>['بالاتنه','پایین تنه','تمام بدن','هوازی','بالاتنه','پایین تنه','تحرک'][i%7]);
 }
-function prescription(e,p){
- const level=text(p.level||'مبتدی'),intensity=text(p.intensity||'متوسط');
+function prescription(e,p,focus=''){
+ const level=text(p.level||'مبتدی'),intensity=text(p.intensity||'متوسط'),goal=text(p.goal||'');
  const isCardio=includes(e.type,['هوازی','استقامتی','HIIT']),isMobility=includes(e.type,['انعطاف','یوگا','پیلاتس','تحرک']);
  let sets=Number(e.sets)||3, reps=String(e.reps||'8–12'), rir=3, rest=60;
  if(includes(level,['مبتدی'])){sets=Math.min(3,sets);rir=3}
@@ -122,6 +122,13 @@ function prescription(e,p){
  else if(includes(p.restTime,['2–3','120–180']))rest=150;
  else if(includes(p.restTime,['خودتنظیم']))rest=90;
  else rest=75;
+ if(!isCardio&&!isMobility){
+  if(includes(goal,['عضله','حجم','هایپرتروفی','بدنسازی'])){sets=includes(level,['مبتدی'])?2:3;reps='8–12';rir=includes(level,['مبتدی'])?3:2;rest=90;}
+  else if(includes(goal,['قدرت حداکثری','افزایش قدرت','قدرت و توان'])){sets=includes(level,['مبتدی'])?2:3;reps='4–6';rir=2;rest=150;}
+  else if(includes(goal,['استقامت'])){sets=2;reps='12–20';rir=3;rest=60;}
+  if(includes(intensity,['سبک'])){sets=Math.max(1,sets-1);rir=4;}
+  if(includes(intensity,['چالش‌برانگیز']))rir=Math.max(1,rir-1);
+ }
  return {sets,reps,restSeconds:rest,rir,tempo:'کنترل‌شده؛ بخش پایین‌رفتن حدود ۲ ثانیه',warmupMinutes:clamp(faNum(p.warmup)||8,0,20),cooldownMinutes:clamp(faNum(p.cooldown)||5,0,20)};
 }
 function buildProgram({profile={},exercises=[],durationMinutes=30}){
@@ -140,7 +147,7 @@ function buildProgram({profile={},exercises=[],durationMinutes=30}){
   if(!chosen.length)return {blocked:true,warning:'با تجهیزات و محدودیت‌های انتخاب‌شده حرکت ایمن کافی در کتابخانه پیدا نشد. تنظیمات را بازبینی کن یا از متخصص راهنمایی بگیر.',days:[]};
   const strengthGoal=includes(profile.goal,['قدرت حداکثری','افزایش قدرت','قدرت و توان']);
   const type=focus==='هوازی'?'هوازی':focus==='تحرک'?'بازیابی':strengthGoal?'قدرتی':'بدنسازی';
-  out.push({title:splitNames[i]+' · '+focus,type,mins,focus,ids:chosen.map(e=>e.id),prescriptions:Object.fromEntries(chosen.map(e=>[e.id,prescription(e,dayProfile,focus)])),warmupMinutes:clamp(faNum(profile.warmup)||8,0,20),cooldownMinutes:clamp(faNum(profile.cooldown)||5,0,20),restRecommendationSeconds:prescription(chosen[0],dayProfile).restSeconds,engineVersion:VERSION});
+  out.push({title:splitNames[i]+' · '+focus,type,mins,focus,ids:chosen.map(e=>e.id),prescriptions:Object.fromEntries(chosen.map(e=>[e.id,prescription(e,dayProfile,focus)])),warmupMinutes:clamp(faNum(profile.warmup)||8,0,20),cooldownMinutes:clamp(faNum(profile.cooldown)||5,0,20),restRecommendationSeconds:prescription(chosen[0],dayProfile,focus).restSeconds,engineVersion:VERSION});
  }
  return {blocked:false,days:out,summary:{sessionsPerWeek:days,focuses,weeklyMinutes:out.reduce((s,d)=>s+d.mins,0),recovery:'بین جلسات سخت عضله مشابه را بازیابی کن؛ درد تیز، سرگیجه یا تنگی نفس غیرعادی علامت توقف تمرین است.'},warning:includes(profile.limitations,['زانو','کمر','شانه','مچ'])?'برنامه با فیلترهای عمومی محدود شده؛ این فیلترها جایگزین ارزیابی پزشکی یا برنامه توان‌بخشی نیستند.':'برنامه عمومی است؛ شدت را با فرم صحیح و توان روزانه تنظیم کن.'};
 }
