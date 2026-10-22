@@ -455,6 +455,12 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <h2>راهنمای استفاده، از صفر 🌱</h2>
 <p>این صفحه فقط برای یادگرفتن کار با رَستا است. هر عنوان را لمس کن تا آموزش ساده همان موضوع باز شود. لازم نیست همه را یک‌باره بخوانی؛ هر وقت به راهنمای یک کار نیاز داشتی، همین‌جا برگرد.</p>
 <p>در این قسمت فقط آموزش می‌بینی؛ هیچ دکمه‌ای برای رفتن به بخش‌های دیگر برنامه لازم نیست. عنوان هر آموزش را لمس کن تا راهنمای همان موضوع باز شود. هر آموزش با زبان ساده و مرحله‌به‌مرحله توضیح می‌دهد چه کاری انجام بدهی و اگر به مشکل خوردی چه چیزی را بررسی کنی.</p>
+<div class="card" style="padding:16px;margin:16px 0;border:1px solid #cbd9b9;background:#f4f7ed">
+ <div class="split" style="gap:12px;flex-wrap:wrap"><div><div class="eyebrow">راهنمای زنده و خودکار</div><h3 style="margin:5px 0">✨ راهنمای امکانات جدید</h3></div><button type="button" class="btn dark" id="rasta-guide-refresh">به‌روزرسانی راهنما</button></div>
+ <p id="rasta-guide-live-status" aria-live="polite">در حال بررسی آخرین نسخه و امکانات تازه…</p>
+ <div id="rasta-guide-live-content" style="display:grid;gap:9px"></div>
+ <p style="font-size:10px;margin-bottom:0">این قسمت با هر بار باز کردن راهنما، توضیحات آخرین انتشار را می‌خواند. برای اینکه قابلیت تازه به‌صورت خودکار اینجا آموزش داده شود، شرح آن باید در یادداشت انتشار نسخه جدید نوشته شود.</p>
+</div>
 <h3>📖 آموزش‌های رَستا</h3>
 <p>هر عنوان زیر یک درس جداگانه است. از هر موضوعی که نیاز داری شروع کن.</p>
 
@@ -636,6 +642,30 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <li><strong>صفحه خطا نشان می‌دهد:</strong> متن خطا را یادداشت کن یا از صفحه عکس بگیر.</li>
 </ul>
 <p>برای درخواست کمک، تصویر صفحه و متن خطا کافی است؛ رمز عبور، کد تأیید و اطلاعات محرمانه را برای کسی نفرست.</p>
+</details>
+
+<details class="card" style="padding:14px;margin:10px 0">
+<summary><strong>🧠 ۱۵. رژیم‌ساز هوشمند؛ ساخت برنامه غذایی</strong></summary>
+<p>این بخش کمک می‌کند برنامه غذایی متناسب‌تری بسازی. پیشنهادها را راهنما بدان، نه نسخه پزشکی.</p>
+<ol><li>از منوی اصلی «برنامه غذایی ایرانی» را باز کن.</li><li>اطلاعاتی را که صفحه درخواست می‌کند، مثل هدف و مشخصات لازم، درست وارد کن.</li><li>اگر گزینه ساخت یا دریافت برنامه را می‌بینی، آن را بزن و تا پایان پردازش صبر کن.</li><li>برنامه و مقدار غذاها را مرور کن و اگر بخشی با شرایط یا حساسیت غذایی تو سازگار نیست، آن را نادیده بگیر و از متخصص کمک بگیر.</li><li>اگر گزینه ذخیره یا ثبت وجود دارد، آن را بزن و پیام نتیجه را بررسی کن.</li></ol>
+</details>
+<details class="card" style="padding:14px;margin:10px 0">
+<summary><strong>💎 ۱۶. ورزش و تغذیهٔ حرفه‌ای‌ها</strong></summary>
+<ol><li>از منو «ورزش و تغذیهٔ حرفه‌ای‌ها» را باز کن.</li><li>کارت‌ها و توضیحات هر قابلیت را بخوان؛ علامت قفل یا نوشته اشتراک یعنی ممکن است آن امکان نیاز به اشتراک داشته باشد.</li><li>روی قابلیت موردنظر بزن و فقط اطلاعاتی را وارد کن که صفحه درخواست می‌کند.</li><li>قبل از خرید، امکانات، قیمت و مدت اشتراک را در بخش «اشتراک و تعرفه‌ها» بررسی کن.</li></ol>
+<p>اگر گزینه‌ای قفل است، به معنی خراب بودن آن نیست؛ ممکن است دسترسی آن به نوع اشتراک وابسته باشد.</p>
+</details>
+<details class="card" style="padding:14px;margin:10px 0">
+<summary><strong>🔐 ۱۷. ورود آسان؛ به‌خاطر سپردن ایمیل و ورود</strong></summary>
+<ol><li>در صفحه ورود، اگر می‌خواهی ایمیلت برای دفعات بعد به خاطر بماند، گزینه «ایمیلم را به خاطر بسپار و وارد نگه دار» را بررسی کن.</li><li>این گزینه را فقط روی گوشی شخصی و امن خودت فعال نگه دار.</li><li>در گوشی مشترک یا عمومی، گزینه را غیرفعال کن و پس از پایان کار از حسابت خارج شو.</li><li>رمز عبور را با دیگران به اشتراک نگذار.</li></ol>
+</details>
+<details class="card" style="padding:14px;margin:10px 0">
+<summary><strong>⬇️ ۱۸. دریافت نسخه جدید و به‌روزرسانی برنامه</strong></summary>
+<ol><li>در منوی برنامه «دانلود آخرین نسخه» را باز کن.</li><li>اگر نسخه جدید معرفی شده، دکمه دانلود را بزن و صبر کن فایل دریافت شود.</li><li>برای نسخه اندروید، فایل APK را باز کن و مراحل نصب گوشی را دنبال کن. فقط فایلی را نصب کن که از صفحه رسمی دانلود رستا دریافت کرده‌ای.</li><li>اگر اندروید اجازه نصب نداد، پیام تنظیمات گوشی را بخوان؛ فقط در صورت اطمینان از منبع فایل ادامه بده.</li><li>بعد از نصب، برنامه را باز کن و برای دیدن قابلیت‌ها بخش «آخرین تغییرات» و همین راهنما را بررسی کن.</li></ol>
+<p>به‌روزرسانی راهنمای داخل برنامه با اتصال اینترنت انجام می‌شود. برای نصب نسخه جدید APK ممکن است لازم باشد فایل را دریافت و نصب کنی.</p>
+</details>
+<details class="card" style="padding:14px;margin:10px 0">
+<summary><strong>📱 ۱۹. پیدا کردن همه منوها در گوشی</strong></summary>
+<ol><li>در پایین صفحه، «همه منوها» را بزن.</li><li>از فهرستی که باز می‌شود، بخش موردنظرت را انتخاب کن؛ مثلاً تغذیه، گزارش، راهنما یا دانلود.</li><li>برای بستن فهرست، علامت بستن را بزن یا یک بخش را انتخاب کن.</li><li>اگر دکمه‌ای واکنش نشان نداد، چند لحظه صبر کن، اینترنت را بررسی کن و برنامه را دوباره باز کن.</li></ol>
 </details>
 
 <div class="card" style="padding:16px;margin-top:18px">
@@ -1097,7 +1127,51 @@ async function loadRastaLatestRelease(){
   if(infoEl){const date=release.published_at?new Date(release.published_at).toLocaleDateString('fa-IR'):'';infoEl.textContent='آخرین انتشار: '+(release.name||release.tag_name)+(date?' · تاریخ انتشار: '+date:'')+' · لینک دانلود ثابت';}
  }catch(e){if(infoEl)infoEl.textContent='پیوندهای دانلود ثابت هستند؛ برای دیدن آخرین انتشار، «مشاهده نسخه‌ها و تغییرات» را بزن.';}
 }
-function goto(v,skipHistory=false){checkRastaForUpdate();if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما',download:'دانلود آخرین نسخه',changelog:'آخرین تغییرات'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();if(v==='download')loadRastaLatestRelease();if(v==='changelog')loadRastaChangelog();scrollTo({top:0,behavior:'smooth'})}
+function goto(v,skipHistory=false){checkRastaForUpdate();if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما',download:'دانلود آخرین نسخه',changelog:'آخرین تغییرات'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();if(v==='download')loadRastaLatestRelease();if(v==='changelog')loadRastaChangelog();if(v==='guide')loadRastaGuideLive();scrollTo({top:0,behavior:'smooth'})}
+async function loadRastaGuideLive(){
+ const status=$('rasta-guide-live-status'),box=$('rasta-guide-live-content');
+ if(!status||!box)return;
+ status.textContent='در حال دریافت توضیحات آخرین نسخه…';
+ box.replaceChildren();
+ if(!navigator.onLine){status.textContent='اینترنت در دسترس نیست؛ آموزش‌های اصلی پایین همین صفحه همچنان قابل استفاده‌اند. برای تازه‌سازی این قسمت، اینترنت را وصل و دوباره امتحان کن.';return}
+ try{
+  const res=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/releases/latest?guide='+Date.now(),{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+  if(!res.ok)throw new Error('release '+res.status);
+  const rel=await res.json();
+  const name=String(rel.name||rel.tag_name||'آخرین نسخه رستا');
+  const body=String(rel.body||'');
+  const lines=body.split(/\r?\n/).map(x=>x.trim().replace(/^[-*•\d.)\s]+/,'')).filter(x=>x&&!/^Commit\s*:/i.test(x)&&!/^نسخه برنامه\s*:/i.test(x)&&!/^این نسخه با کلید ثابت/i.test(x)&&!/^فایل‌های این انتشار/i.test(x));
+  const guideFor=line=>{
+   const s=line.toLowerCase();
+   if(/رژیم|غذا|تغذیه|nutrition|meal|diet/.test(s))return 'از منوی «برنامه غذایی ایرانی» وارد شو، اطلاعات خواسته‌شده را درست تکمیل کن، پیشنهادها را مرور کن و در صورت وجود گزینه ذخیره، نتیجه را ثبت کن.';
+   if(/تمرین|ورزش|حرکت|workout|exercise|fitness/.test(s))return 'از «برنامه تمرینی» یا «کشف تمرین‌ها» وارد شو، توضیح حرکت را بخوان و متناسب با توان خودت شروع کن؛ اگر گزینه ثبت یا پایان وجود دارد، پس از انجام واقعی تمرین آن را بزن.';
+   if(/اشتراک|پریمیوم|پرداخت|premium|subscription|payment/.test(s))return 'بخش «اشتراک و تعرفه‌ها» را باز کن، امکانات و قیمت را بخوان و پیش از پرداخت مطمئن شو دقیقاً چه چیزی دریافت می‌کنی.';
+   if(/به‌روزرسانی|بروزرسانی|نسخه|دانلود|update|release|apk/.test(s))return 'از منوی «دانلود آخرین نسخه» نسخه جدید را بررسی کن. برای APK، فایل را از صفحه رسمی دانلود دریافت و مراحل نصب گوشی را دنبال کن.';
+   if(/ورود|حساب|رمز|login|account|password/.test(s))return 'از صفحه ورود، اطلاعات حساب خودت را وارد کن. اگر گزینه به‌خاطر سپردن ورود را فعال می‌کنی، فقط روی گوشی شخصی و امن این کار را انجام بده.';
+   if(/گزارش|سابقه|تاریخچه|history|report/.test(s))return 'از بخش «گزارش و سابقه» فعالیت‌های ثبت‌شده را ببین. اگر موردی دیده نمی‌شود، بررسی کن قبلاً آن را ثبت کرده باشی.';
+   if(/برنامه چند|هفته|program|plan/.test(s))return 'از بخش «برنامه‌های چند‌هفته‌ای» کارت برنامه را باز کن، توضیح و سطح آن را بخوان و طبق روز یا مرحله‌ای که نمایش داده می‌شود پیش برو.';
+   return 'برای استفاده، بخش مرتبط با این قابلیت را از منوی رستا باز کن، توضیحات روی صفحه را بخوان و مراحل را به‌ترتیب انجام بده. در پایان، اگر دکمه ثبت یا ذخیره دیدی، نتیجه را بررسی کن.';
+  };
+  const heading=document.createElement('div');
+  heading.className='tip';
+  heading.innerHTML='<b>آخرین انتشار: '+escapeHtml(name)+'</b>این بخش هر بار از آخرین انتشار رسمی به‌روز می‌شود.';
+  box.appendChild(heading);
+  if(!lines.length){
+   const p=document.createElement('p');p.textContent='برای این انتشار، یادداشت قابل‌آموزشی ثبت نشده است؛ بنابراین آموزش‌های امکانات اصلی را در ادامه همین صفحه ببین. برای نمایش خودکار راهنمای قابلیت تازه، توضیح کوتاه آن را در یادداشت انتشار نسخه جدید بنویس.';box.appendChild(p);
+  }else{
+   lines.slice(0,12).forEach((line,index)=>{
+    const card=document.createElement('div');card.className='card';card.style.cssText='padding:12px;border:1px solid var(--line);background:var(--paper)';
+    const h=document.createElement('strong');h.textContent=(index+1)+'. '+line;
+    const p=document.createElement('p');p.style.cssText='margin:7px 0 0;line-height:1.9';p.textContent=guideFor(line);
+    card.append(h,p);box.appendChild(card);
+   });
+  }
+  status.textContent='راهنما برای '+name+' بررسی و به‌روز شد.';
+ }catch(err){
+  status.textContent='فعلاً دریافت راهنمای آخرین نسخه ممکن نشد. اتصال اینترنت را بررسی کن یا از آموزش‌های اصلی پایین صفحه استفاده کن.';
+ }
+}
+document.addEventListener('click',e=>{if(e.target.closest('#rasta-guide-refresh'))loadRastaGuideLive()});
 async function loadRastaChangelog(){
  const title=$('rasta-changelog-title'),date=$('rasta-changelog-date'),notes=$('rasta-changelog-notes'),version=$('rasta-changelog-version'),status=$('rasta-changelog-status');
  if(!title||!notes)return;
