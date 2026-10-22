@@ -77,8 +77,8 @@ Deno.serve(async (req: Request) => {
 
   const [plansResult, subscriptionsResult, paymentsResult] = await Promise.all([
     adminClient.from("subscription_plans").select("id,is_active"),
-    adminClient.from("subscriptions").select("id,status,ends_at"),
-    adminClient.from("payment_transactions").select("id,status,amount_irr"),
+    adminClient.from("subscriptions").select("id,plan_id,status,ends_at"),
+    adminClient.from("payment_transactions").select("id,status,amount_irr,subscription_id"),
   ]);
   if (plansResult.error || subscriptionsResult.error || paymentsResult.error) {
     return new Response(JSON.stringify({ error: "دریافت خلاصه اشتراک و پرداخت انجام نشد." }), { status: 500, headers: cors });
@@ -87,9 +87,14 @@ Deno.serve(async (req: Request) => {
   const now = Date.now();
   const subscriptions = subscriptionsResult.data || [];
   const payments = paymentsResult.data || [];
+  const paidSubscriptionIds = new Set(payments
+    .filter((p) => p.status === "succeeded" && p.subscription_id)
+    .map((p) => p.subscription_id));
+  const isCurrentlyActive = (s) => s.status === "active" && (!s.ends_at || new Date(s.ends_at).getTime() > now);
   const billing = {
     activePlans: (plansResult.data || []).filter((p) => p.is_active).length,
-    activeSubscriptions: subscriptions.filter((s) => s.status === "active" && (!s.ends_at || new Date(s.ends_at).getTime() > now)).length,
+    activeSubscriptions: subscriptions.filter(isCurrentlyActive).length,
+    freeSubscriptions: subscriptions.filter((s) => isCurrentlyActive(s) && s.plan_id === "premium" && !paidSubscriptionIds.has(s.id)).length,
     pendingPayments: payments.filter((p) => p.status === "pending").length,
     successfulPayments: payments.filter((p) => p.status === "succeeded").length,
     grossRevenueIrr: payments.filter((p) => p.status === "succeeded").reduce((sum, p) => sum + Number(p.amount_irr || 0), 0),
