@@ -130,6 +130,124 @@ recipes['خوراک ماهی با گوجه']={ingredients:'ماهی ۴ تکه، 
 recipes['ماهی بخارپز']={ingredients:'فیله ماهی ۴ تکه، لیمو، سیر، شوید یا گشنیز، نمک و فلفل',steps:['ماهی را خشک کنید و با سیر، آبلیمو، نمک و فلفل مزه‌دار کنید.','در سبد بخارپز، سبزی معطر و برش‌های لیمو بگذارید و ماهی را روی آن بچینید.','در ظرف را ببندید و با بخار ملایم بپزید تا گوشت ماهی مات و به‌آسانی ورقه‌ورقه شود.','از پخت کامل ماهی اطمینان حاصل کنید و بلافاصله سرو کنید.']};
 recipes['میگو کبابی']={ingredients:'میگو درشت پاک‌شده ۴۰۰ گرم، سیر ۲ حبه، آبلیمو، روغن کم، پاپریکا یا ادویه، نمک و فلفل',steps:['میگو را پاک کنید و کاملاً خشک کنید. با سیر، آبلیمو، ادویه و کمی روغن مخلوط کنید و ۱۵ تا ۲۰ دقیقه در یخچال بگذارید.','میگوها را به سیخ بکشید و روی گریل داغ قرار دهید.','هر طرف را چند دقیقه بپزید تا میگو صورتی و مات شود؛ بیش از حد نپزید تا سفت نشود.','با آبلیمو و سبزیجات سرو کنید.']};
 
-async function load(){const id=new URLSearchParams(location.search).get('id');if(!id){text('name','غذایی انتخاب نشده است');text('category','از بانک غذایی یک مورد را انتخاب کنید.');return}try{const fields='id,name_fa,name_en,category,energy_kcal,protein_g,carbohydrate_g,fat_g,fiber_g,calcium_mg,sodium_mg,basis_grams,portion_name_fa,portion_grams,data_quality,data_source,data_source_url,review_status,verified_at,ingredients_fa,allergens,allergens_reviewed,dietary_tags,preparation_fa,cooking_method_fa,prep_time_minutes,cooking_time_minutes,default_servings,storage_fa,recipe_notes_fa,nutrition_review_status,nutrition_source_note,allergen_review_status';const r=await fetch(API+'/rest/v1/foods?select='+fields+'&id=eq.'+encodeURIComponent(id)+'&is_public=eq.true&limit=1',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}});if(!r.ok)throw Error('HTTP '+r.status);const rows=await r.json();if(!rows.length){text('name','غذا پیدا نشد');text('category','این مورد در بانک عمومی وجود ندارد.');return}const f=rows[0];text('name',f.name_fa);text('category',f.category||'سایر غذاها');document.title=(f.name_fa||'دستور پخت')+' | رستا';const n=[];if(f.energy_kcal!=null)n.push('انرژی '+fa(f.energy_kcal)+' کیلوکالری');if(f.protein_g!=null)n.push('پروتئین '+fa(f.protein_g)+' گرم');if(f.carbohydrate_g!=null)n.push('کربوهیدرات '+fa(f.carbohydrate_g)+' گرم');if(f.fat_g!=null)n.push('چربی '+fa(f.fat_g)+' گرم');if(f.fiber_g!=null)n.push('فیبر '+fa(f.fiber_g)+' گرم');else n.push('فیبر: در انتظار منبع معتبر');if(f.calcium_mg!=null)n.push('کلسیم '+fa(f.calcium_mg)+' میلی‌گرم');else n.push('کلسیم: در انتظار منبع معتبر');if(f.sodium_mg!=null)n.push('سدیم '+fa(f.sodium_mg)+' میلی‌گرم');else n.push('سدیم: در انتظار منبع معتبر');text('nutrition',(n.length?n.join(' · '):'اطلاعات تغذیه‌ای هنوز ثبت نشده است.')+' | مبنا: '+fa(f.basis_grams||100)+' گرم. '+(f.data_quality==='estimated'?'این مقادیر برآورد اولیه و تأییدنشده‌اند.':'داده‌ها باید با منبع معتبر بررسی شوند.'));const recipe=recipes[f.name_fa];const category=(f.category||'').toLowerCase();const fname=(f.name_fa||'').toLowerCase();const recipeCategories=['غذاهای ایرانی','غذاهای جنوبی','غذاهای متنوع','سوپ و آش','iranian_dish','iranian_breakfast','breakfast','iranian_dessert'];const nonRecipe=(!recipeCategories.includes(category)&&!recipe)||/میوه|تنقلات|آجیل|مغز خام|کشمش|خرما|بادام|پسته|گردو|فندق|توت خشک|چیپس|پفک|شکلات|بیسکویت|آب معدنی/.test(fname)||/^(fruit|nuts|iranian_snack|vegetable|vegetables|grain|bread|protein|dairy|legume|سبزیجات|نان و غلات|منابع پروتئین|لبنیات|حبوبات و مغزها)$/.test(category);$('ingredientsCard').style.display=nonRecipe?'none':'';$('methodCard').style.display=nonRecipe?'none':'';if(nonRecipe){text('notes','این مورد ماده غذایی یا تنقلات است و دستور پخت برای آن نمایش داده نمی‌شود.');}else{const genericIngredients=/مواد اولیه رایج و مقادیر دقیق|مواد اولیه و مقادیر دقیق|مواد را وزن کنید، آماده‌سازی اولیه|مرغ؛ پیاز؛ آب‌لیمو یا ماست برای مزه‌دارکردن/.test(f.ingredients_fa||'');text('ingredients',nonRecipe?'':(recipe?recipe.ingredients:(genericIngredients?'مواد اولیه اختصاصی این غذا هنوز بررسی و تأیید نشده است؛ برای جلوگیری از نمایش مواد نامرتبط، این فهرست موقتاً پنهان شده است.':(f.ingredients_fa||'مواد اولیه اختصاصی این مورد هنوز ثبت نشده است.'))));const method=$('method');method.replaceChildren();if(recipe){method.append(steps(recipe.steps));}else if(!nonRecipe){const genericRecipe=/روش متناسب با نوع غذا|برای دستور ترکیبی|مواد را وزن کنید، آماده‌سازی اولیه|برای سالاد، چاشنی را جداگانه اضافه کنید|مواد اولیه رایج و مقادیر دقیق/.test((f.preparation_fa||'')+' '+(f.cooking_method_fa||'')+' '+(f.ingredients_fa||''));const p=document.createElement('p');p.textContent=genericRecipe?'دستور اختصاصی این غذا هنوز بررسی و تأیید نشده است؛ برای جلوگیری از ارائه دستور نادرست، مراحل عمومی نمایش داده نمی‌شوند.':(f.preparation_fa||'دستور مرحله‌به‌مرحله اختصاصی این غذا هنوز ثبت نشده است.');method.append(p);if(f.cooking_method_fa&&!genericRecipe){const p2=document.createElement('p');p2.textContent='روش پخت ثبت‌شده: '+f.cooking_method_fa;method.append(p2)}}if(f.prep_time_minutes!=null||f.cooking_time_minutes!=null){const p=document.createElement('p');p.className='muted';p.textContent='زمان آماده‌سازی: '+(f.prep_time_minutes==null?'ثبت نشده':fa(f.prep_time_minutes)+' دقیقه')+' · زمان پخت: '+(f.cooking_time_minutes==null?'ثبت نشده':fa(f.cooking_time_minutes)+' دقیقه');method.append(p)}const notes=[];if(f.storage_fa)notes.push('نگهداری: '+f.storage_fa);if(f.recipe_notes_fa)notes.push(f.recipe_notes_fa);if(f.dietary_tags?.length)notes.push('برچسب‌ها: '+f.dietary_tags.join('، '));notes.push(f.allergens_reviewed?'آلرژن‌ها: '+(f.allergens||'ثبت نشده'):'آلرژن‌ها هنوز بررسی و تأیید نشده‌اند.');if(nonRecipe)notes.unshift('این مورد ماده اولیه، میوه، تنقلات یا خوراکی آماده است؛ دستور پخت برای آن نمایش داده نمی‌شود.');text('notes',notes.join(' · '));}catch(e){text('name','خطا در دریافت غذا');text('category','اتصال به بانک غذایی ناموفق بود. لطفاً دوباره تلاش کنید.');}}
+async function load() {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) {
+    text('name', 'غذایی انتخاب نشده است');
+    text('category', 'از بانک غذایی یک مورد را انتخاب کنید.');
+    text('nutrition', 'برای نمایش اطلاعات، ابتدا یک غذا را از بانک غذایی انتخاب کنید.');
+    text('ingredients', 'ابتدا یک غذا را از بانک غذایی انتخاب کنید.');
+    text('method', 'ابتدا یک غذا را از بانک غذایی انتخاب کنید.');
+    text('notes', 'پس از انتخاب غذا، نکات نگهداری و آلرژن‌ها نمایش داده می‌شوند.');
+    return;
+  }
+
+  const fields = 'id,name_fa,name_en,category,energy_kcal,protein_g,carbohydrate_g,fat_g,fiber_g,calcium_mg,sodium_mg,basis_grams,portion_name_fa,portion_grams,data_quality,data_source,data_source_url,review_status,verified_at,ingredients_fa,allergens,allergens_reviewed,dietary_tags,preparation_fa,cooking_method_fa,prep_time_minutes,cooking_time_minutes,default_servings,storage_fa,recipe_notes_fa,nutrition_review_status,nutrition_source_note,allergen_review_status';
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    let response;
+    try {
+      response = await fetch(API + '/rest/v1/foods?select=' + fields + '&id=eq.' + encodeURIComponent(id) + '&is_public=eq.true&limit=1', {
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY },
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timeout);
+    }
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const rows = await response.json();
+    if (!rows.length) {
+      text('name', 'غذا پیدا نشد');
+      text('category', 'این مورد در بانک عمومی وجود ندارد یا شناسه آن معتبر نیست.');
+      text('nutrition', 'برای این شناسه اطلاعات تغذیه‌ای پیدا نشد.');
+      text('ingredients', 'غذایی با این شناسه پیدا نشد.');
+      text('method', 'لطفاً از بانک غذایی یک مورد را دوباره انتخاب کنید.');
+      text('notes', 'شناسه غذا معتبر نیست یا این غذا در بانک عمومی منتشر نشده است.');
+      return;
+    }
+
+    const f = rows[0];
+    text('name', f.name_fa);
+    text('category', f.category || 'سایر غذاها');
+    document.title = (f.name_fa || 'دستور پخت') + ' | رستا';
+
+    const nutrition = [];
+    if (f.energy_kcal != null) nutrition.push('انرژی ' + fa(f.energy_kcal) + ' کیلوکالری');
+    if (f.protein_g != null) nutrition.push('پروتئین ' + fa(f.protein_g) + ' گرم');
+    if (f.carbohydrate_g != null) nutrition.push('کربوهیدرات ' + fa(f.carbohydrate_g) + ' گرم');
+    if (f.fat_g != null) nutrition.push('چربی ' + fa(f.fat_g) + ' گرم');
+    nutrition.push(f.fiber_g != null ? 'فیبر ' + fa(f.fiber_g) + ' گرم' : 'فیبر: در انتظار منبع معتبر');
+    nutrition.push(f.calcium_mg != null ? 'کلسیم ' + fa(f.calcium_mg) + ' میلی‌گرم' : 'کلسیم: در انتظار منبع معتبر');
+    nutrition.push(f.sodium_mg != null ? 'سدیم ' + fa(f.sodium_mg) + ' میلی‌گرم' : 'سدیم: در انتظار منبع معتبر');
+    text('nutrition', nutrition.join(' · ') + ' | مبنا: ' + fa(f.basis_grams || 100) + ' گرم. ' +
+      (f.data_quality === 'estimated' ? 'این مقادیر برآورد اولیه و تأییدنشده‌اند.' : 'داده‌ها باید با منبع معتبر بررسی شوند.'));
+
+    const recipe = recipes[f.name_fa];
+    const category = (f.category || '').toLowerCase();
+    const name = (f.name_fa || '').toLowerCase();
+    const recipeCategories = ['غذاهای ایرانی', 'غذاهای جنوبی', 'غذاهای متنوع', 'سوپ و آش', 'iranian_dish', 'iranian_breakfast', 'breakfast', 'iranian_dessert'];
+    const nonRecipe = ((!recipeCategories.includes(category) && !recipe) ||
+      /میوه|تنقلات|آجیل|مغز خام|کشمش|خرما|بادام|پسته|گردو|فندق|توت خشک|چیپس|پفک|شکلات|بیسکویت|آب معدنی/.test(name) ||
+      /^(fruit|nuts|iranian_snack|vegetable|vegetables|grain|bread|protein|dairy|legume|سبزیجات|نان و غلات|منابع پروتئین|لبنیات|حبوبات و مغزها)$/.test(category));
+
+    $('ingredientsCard').style.display = nonRecipe ? 'none' : '';
+    $('methodCard').style.display = nonRecipe ? 'none' : '';
+    const notes = [];
+    if (nonRecipe) {
+      text('ingredients', 'برای این مورد دستور پخت لازم نیست.');
+      text('method', 'این مورد ماده غذایی یا خوراکی آماده است و دستور پخت برای آن نمایش داده نمی‌شود.');
+      notes.push('این مورد ماده اولیه، میوه، تنقلات یا خوراکی آماده است؛ دستور پخت برای آن نمایش داده نمی‌شود.');
+    } else {
+      const genericIngredients = /مواد اولیه رایج و مقادیر دقیق|مواد اولیه و مقادیر دقیق|مواد را وزن کنید، آماده‌سازی اولیه|مرغ؛ پیاز؛ آب‌لیمو یا ماست برای مزه‌دارکردن/.test(f.ingredients_fa || '');
+      text('ingredients', recipe ? recipe.ingredients : (genericIngredients
+        ? 'مواد اولیه اختصاصی این غذا هنوز بررسی و تأیید نشده است؛ برای جلوگیری از نمایش مواد نامرتبط، این فهرست موقتاً پنهان شده است.'
+        : (f.ingredients_fa || 'مواد اولیه اختصاصی این مورد هنوز ثبت نشده است.')));
+
+      const method = $('method');
+      method.replaceChildren();
+      if (recipe) {
+        method.append(steps(recipe.steps));
+      } else {
+        const genericRecipe = /روش متناسب با نوع غذا|برای دستور ترکیبی|مواد را وزن کنید، آماده‌سازی اولیه|برای سالاد، چاشنی را جداگانه اضافه کنید|مواد اولیه رایج و مقادیر دقیق/.test(
+          (f.preparation_fa || '') + ' ' + (f.cooking_method_fa || '') + ' ' + (f.ingredients_fa || '')
+        );
+        const paragraph = document.createElement('p');
+        paragraph.textContent = genericRecipe
+          ? 'دستور اختصاصی این غذا هنوز بررسی و تأیید نشده است؛ برای جلوگیری از ارائه دستور نادرست، مراحل عمومی نمایش داده نمی‌شوند.'
+          : (f.preparation_fa || 'دستور مرحله‌به‌مرحله اختصاصی این غذا هنوز ثبت نشده است.');
+        method.append(paragraph);
+        if (f.cooking_method_fa && !genericRecipe) {
+          const methodNote = document.createElement('p');
+          methodNote.textContent = 'روش پخت ثبت‌شده: ' + f.cooking_method_fa;
+          method.append(methodNote);
+        }
+      }
+      if (f.prep_time_minutes != null || f.cooking_time_minutes != null) {
+        const timeNote = document.createElement('p');
+        timeNote.className = 'muted';
+        timeNote.textContent = 'زمان آماده‌سازی: ' + (f.prep_time_minutes == null ? 'ثبت نشده' : fa(f.prep_time_minutes) + ' دقیقه') +
+          ' · زمان پخت: ' + (f.cooking_time_minutes == null ? 'ثبت نشده' : fa(f.cooking_time_minutes) + ' دقیقه');
+        method.append(timeNote);
+      }
+    }
+
+    if (f.storage_fa) notes.push('نگهداری: ' + f.storage_fa);
+    if (f.recipe_notes_fa) notes.push(f.recipe_notes_fa);
+    if (f.dietary_tags && f.dietary_tags.length) notes.push('برچسب‌ها: ' + f.dietary_tags.join('، '));
+    notes.push(f.allergens_reviewed ? 'آلرژن‌ها: ' + (f.allergens || 'ثبت نشده') : 'آلرژن‌ها هنوز بررسی و تأیید نشده‌اند.');
+    text('notes', notes.join(' · '));
+  } catch (error) {
+    text('name', 'بارگذاری اطلاعات ناموفق بود');
+    text('category', error && error.name === 'AbortError'
+      ? 'پاسخ بانک غذایی بیش از ۱۲ ثانیه طول کشید. اتصال را بررسی و صفحه را دوباره باز کنید.'
+      : 'اتصال به بانک غذایی ناموفق بود. لطفاً اینترنت را بررسی و دوباره تلاش کنید.');
+    text('nutrition', 'اطلاعات تغذیه‌ای در دسترس نیست؛ بارگذاری ناموفق بود.');
+    text('ingredients', 'مواد اولیه به دلیل خطای اتصال بارگذاری نشدند.');
+    text('method', 'مراحل پخت به دلیل خطای اتصال بارگذاری نشدند.');
+    text('notes', 'پس از برقراری اتصال، صفحه را دوباره بارگذاری کنید.');
+    console.error('Rasta recipe detail load failed:', error);
+  }
+}
 load();
 </script></body></html>
