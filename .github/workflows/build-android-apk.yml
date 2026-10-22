@@ -69,6 +69,24 @@ jobs:
           npx capacitor-assets generate --android
           npx cap sync android
 
+      - name: Set Android version from package.json
+        run: |
+          VERSION="$(node -p "require('./package.json').version")"
+          VERSION_CODE="$(node -e "const [a,b,c]=process.argv[1].split('.').map(Number); process.stdout.write(String(a*10000+b*100+c))" "$VERSION")"
+          python3 - "$VERSION" "$VERSION_CODE" <<'PY'
+          import re, sys
+          from pathlib import Path
+          version, code = sys.argv[1], sys.argv[2]
+          p = Path("android/app/build.gradle")
+          s = p.read_text()
+          s, n1 = re.subn(r'(?m)^(\\s*versionCode\\s+)\\d+', lambda m: m.group(1) + code, s, count=1)
+          s, n2 = re.subn(r'(?m)^(\\s*versionName\\s+)[\'"][^\'"]*[\'"]', lambda m: m.group(1) + '"' + version + '"', s, count=1)
+          if n1 != 1 or n2 != 1:
+              raise SystemExit("Could not set Android versionCode/versionName")
+          p.write_text(s)
+          print(f"Android version: {version} (code {code})")
+          PY
+
       - name: Prepare stable Android signing key
         if: ${{ env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
         env:
