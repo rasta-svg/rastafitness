@@ -3,7 +3,7 @@
  */
 (function(root){
 'use strict';
-const VERSION='1.0.0';
+const VERSION='1.1.0';
 const faNum=v=>Number(String(v??'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
 const text=v=>String(v??'').normalize('NFKC').replace(/[يى]/g,'ی').replace(/ك/g,'ک').trim();
 const includes=(v,parts)=>parts.some(p=>text(v).includes(p));
@@ -138,8 +138,9 @@ function buildProgram({profile={},exercises=[],durationMinutes=30}){
   const dayProfile={...profile};if(includes(profile.intensity,['متغیر']))dayProfile.intensity=i%4===3?'چالش‌برانگیز':i%2===1?'سبک':'متوسط';
   const chosen=chooseForFocus(exercises,focus,dayProfile,used,count);
   if(!chosen.length)return {blocked:true,warning:'با تجهیزات و محدودیت‌های انتخاب‌شده حرکت ایمن کافی در کتابخانه پیدا نشد. تنظیمات را بازبینی کن یا از متخصص راهنمایی بگیر.',days:[]};
-  const type=focus==='هوازی'?'هوازی':focus==='تحرک'?'بازیابی':'قدرتی';
-  out.push({title:splitNames[i]+' · '+focus,type,mins,focus,ids:chosen.map(e=>e.id),prescriptions:Object.fromEntries(chosen.map(e=>[e.id,prescription(e,dayProfile)])),warmupMinutes:clamp(faNum(profile.warmup)||8,0,20),cooldownMinutes:clamp(faNum(profile.cooldown)||5,0,20),restRecommendationSeconds:prescription(chosen[0],dayProfile).restSeconds,engineVersion:VERSION});
+  const strengthGoal=includes(profile.goal,['قدرت حداکثری','افزایش قدرت','قدرت و توان']);
+  const type=focus==='هوازی'?'هوازی':focus==='تحرک'?'بازیابی':strengthGoal?'قدرتی':'بدنسازی';
+  out.push({title:splitNames[i]+' · '+focus,type,mins,focus,ids:chosen.map(e=>e.id),prescriptions:Object.fromEntries(chosen.map(e=>[e.id,prescription(e,dayProfile,focus)])),warmupMinutes:clamp(faNum(profile.warmup)||8,0,20),cooldownMinutes:clamp(faNum(profile.cooldown)||5,0,20),restRecommendationSeconds:prescription(chosen[0],dayProfile).restSeconds,engineVersion:VERSION});
  }
  return {blocked:false,days:out,summary:{sessionsPerWeek:days,focuses,weeklyMinutes:out.reduce((s,d)=>s+d.mins,0),recovery:'بین جلسات سخت عضله مشابه را بازیابی کن؛ درد تیز، سرگیجه یا تنگی نفس غیرعادی علامت توقف تمرین است.'},warning:includes(profile.limitations,['زانو','کمر','شانه','مچ'])?'برنامه با فیلترهای عمومی محدود شده؛ این فیلترها جایگزین ارزیابی پزشکی یا برنامه توان‌بخشی نیستند.':'برنامه عمومی است؛ شدت را با فرم صحیح و توان روزانه تنظیم کن.'};
 }
