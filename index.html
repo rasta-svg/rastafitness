@@ -1084,6 +1084,28 @@ function save(){localStorage.setItem('rasta-training-mode',JSON.stringify(traini
 function toast(s){let t=$('toast');t.textContent=s;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),2300)}
 function modal(title,html){$('modaltitle').textContent=title;$('modalbody').innerHTML=html;$('modalback').classList.add('open')}
 function closemodal(){$('modalback').classList.remove('open')}
+/* Reliable close handling: use capture phase so nested menu/modal handlers cannot swallow the close tap. */
+document.addEventListener('click',function(e){
+ const closeAll=e.target.closest('[data-close-all-menus],.rasta-all-menus-close');
+ if(closeAll){
+  e.preventDefault();e.stopImmediatePropagation();
+  const panel=document.getElementById('rasta-all-menus');
+  if(panel){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');}
+  document.querySelectorAll('[data-open-all-menus]').forEach(function(btn){btn.setAttribute('aria-expanded','false')});
+  return;
+ }
+ const closeModalButton=e.target.closest('#modalclose,#cancelmodal');
+ if(closeModalButton){
+  e.preventDefault();e.stopImmediatePropagation();
+  const back=document.getElementById('modalback');if(back)back.classList.remove('open');
+ }
+},true);
+document.addEventListener('keydown',function(e){
+ if(e.key!=='Escape')return;
+ const panel=document.getElementById('rasta-all-menus');
+ if(panel&&panel.classList.contains('open')){panel.classList.remove('open');panel.setAttribute('aria-hidden','true');document.querySelectorAll('[data-open-all-menus]').forEach(function(btn){btn.setAttribute('aria-expanded','false')});}
+ const back=document.getElementById('modalback');if(back&&back.classList.contains('open'))back.classList.remove('open');
+});
 async function renderContactMessages(){
  const box=$('rasta-contact-history');if(!box)return;const client=window.__rastaSupabaseClient;
  if(!client){box.innerHTML='<p class="muted">سرویس حساب در دسترس نیست. اتصال اینترنت را بررسی کن.</p>';return}
