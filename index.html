@@ -1062,7 +1062,7 @@ if(contactForm)contactForm.addEventListener('submit',async e=>{
 });
 const contactRefresh=$('rasta-contact-refresh');if(contactRefresh)contactRefresh.addEventListener('click',renderContactMessages);
 
-async const RASTA_APP_VERSION='2.0.1';
+const RASTA_APP_VERSION='2.0.1';
 let rastaUpdateCheckInFlight=false;
 async function checkRastaForUpdate(){
  if(rastaUpdateCheckInFlight||!navigator.onLine)return;
@@ -1086,7 +1086,7 @@ async function checkRastaForUpdate(){
   // A failed network check must not interrupt the user's normal app experience.
  }finally{rastaUpdateCheckInFlight=false}
 }
-function loadRastaLatestRelease(){
+async function loadRastaLatestRelease(){
  const versionEl=byId('rasta-download-version'),infoEl=byId('rasta-download-release-info');
  try{
   const res=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/releases/latest',{headers:{'Accept':'application/vnd.github+json'}});
