@@ -12,7 +12,7 @@ on:
       - "package.json"
       - "assets/**"
       - "tests/**"
-      - "docs/science-engine.md"
+      - "docs/**"
       - ".github/workflows/build-android-apk.yml"
 
 permissions:
