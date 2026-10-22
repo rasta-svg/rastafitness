@@ -816,13 +816,33 @@ const showRecoveryForm=()=>{
 if(client)client.auth.onAuthStateChange((event,session)=>{
  if(event==='PASSWORD_RECOVERY'||(isRecoveryUrl()&&session?.user))showRecoveryForm();
 });
-byId('rasta-logout')?.addEventListener('click',async()=>{
+const logoutButton=byId('rasta-logout');
+logoutButton?.addEventListener('click',async()=>{
+ if(logoutButton.disabled)return;
+ logoutButton.disabled=true;
+ logoutButton.textContent='در حال خروج…';
+ // Clear the local/offline identity first, so logout still works without a network connection.
  try{originalStorage.removeItem('__rasta_offline_user')}catch(e){}
- if(client&&navigator.onLine){try{await client.auth.signOut()}catch(e){console.warn('Online sign-out unavailable',e)}}
- // Ensure a cached Supabase session cannot silently reopen the account after an offline logout.
- try{for(let i=originalStorage.length-1;i>=0;i--){const k=originalStorage.key(i);if(k&&k.startsWith('sb-'))originalStorage.removeItem(k)}}catch(e){}
+ try{sessionStorage.removeItem('__rasta_offline_user')}catch(e){}
+ try{
+  if(client)await client.auth.signOut({scope:'local'});
+ }catch(e){console.warn('Local sign-out request unavailable; clearing cached session',e)}
+ // Remove any persisted Supabase auth tokens even if signOut could not complete.
+ for(const store of [originalStorage,sessionStorage]){
+  try{for(let i=store.length-1;i>=0;i--){const k=store.key(i);if(k&&k.startsWith('sb-'))store.removeItem(k)}}catch(e){}
+ }
  window.__RASTA_OFFLINE_MODE=false;
- location.reload();
+ window.__RASTA_AUTH_USER=null;
+ window.__rastaOfflineLoginAvailable=false;
+ authUser=null;
+ const userbar=byId('rasta-userbar');
+ if(userbar)userbar.style.display='none';
+ if(appShell)appShell.style.display='none';
+ if(authScreen)authScreen.style.display='grid';
+ setMode('login');
+ notice('با موفقیت از حساب رستا خارج شدی.','success');
+ logoutButton.disabled=false;
+ logoutButton.textContent='خروج';
 });
 (async()=>{
  if(!client)return;
