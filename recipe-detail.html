@@ -441,10 +441,10 @@ async function load() {
     const recipe = recipes[f.name_fa];
     const category = (f.category || '').toLowerCase();
     const name = (f.name_fa || '').toLowerCase();
-    const recipeCategories = ['غذاهای ایرانی', 'غذاهای جنوبی', 'غذاهای متنوع', 'سوپ و آش', 'iranian_dish', 'iranian_breakfast', 'breakfast', 'iranian_dessert'];
+    const recipeCategories = ['غذاهای ایرانی', 'غذاهای جنوبی', 'غذاهای متنوع', 'سوپ و آش', 'iranian_dish', 'iranian_breakfast', 'iranian_snack', 'breakfast', 'iranian_dessert'];
     const nonRecipe = ((!recipeCategories.includes(category) && !recipe) ||
       /^(پرتقال تازه|سیب با پوست|موز|خرمای جنوب|رطب|تمر هندی|برنج قهوه‌ای پخته|برنج سفید پخته|گوشت گوساله پخته|گوشت گوسفند پخته|سینه مرغ پخته|ارده و شیره خرما|خرما و ارده|خوراک خرما و ارده|نان محلی و ارده|نان بربری|نان سنگک|پنیر سفید|شیر کم‌چرب|ماست ساده|ماست یونانی ساده|جو دوسر خشک|گندم پخته|ماکارونی پخته|نان باگت|نان پیتا|نان تافتون|نان تست سبوس‌دار|نان تست سفید|نان تموشی|نان جو|نان چاودار|نان خشک|نان رگاگ|نان روغنی|نان شیرمال|نان لواش)$/.test(name) ||
-      /^(fruit|nuts|iranian_snack|vegetable|vegetables|grain|bread|protein|dairy|legume|سبزیجات|نان و غلات|منابع پروتئین|لبنیات|حبوبات و مغزها)$/.test(category));
+      /^(fruit|nuts|vegetable|vegetables|grain|bread|protein|dairy|legume|سبزیجات|نان و غلات|منابع پروتئین|لبنیات|حبوبات و مغزها)$/.test(category));
 
     $('ingredientsCard').style.display = '';
     $('methodCard').style.display = nonRecipe ? 'none' : '';
