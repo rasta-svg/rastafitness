@@ -220,7 +220,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 
 <div class="layout" id="rasta-app-shell" style="display:none">
 <aside class="sidebar">
-<div class="brand"><div class="brandmark">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو</small></div></div>
+<div class="brand"><div class="brandmark">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو · نسخه ۲٫۰٫۰</small></div></div>
 <div class="nav-label">فضای شخصی</div><nav class="nav">
 <button class="active" data-view="today"><span class="ico">☀️</span>امروز من</button>
 <button data-view="training"><span class="ico">🏋️</span>برنامه تمرینی</button>
@@ -233,7 +233,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <button data-view="plans"><span class="ico">💎</span>اشتراک و تعرفه‌ها</button>
 <button data-view="profile"><span class="ico">⚙️</span>تنظیمات شخصی</button>
 <button data-view="guide"><span class="ico">📘</span>راهنمای استفاده</button>
-<button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button></nav>
+<button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button><button data-view="changelog"><span class="ico">🆕</span>آخرین تغییرات</button></nav>
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
@@ -369,6 +369,20 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 </section>
 <section class="view" id="view-profile">
 <div class="sectionhead"><div><h2>تنظیمات شخصی</h2><p>رَستا را با هدف‌ها و شرایط خودت هماهنگ کن.</p></div></div><div class="panel"><div class="formgrid"><label class="field">نام نمایشی<input id="pname" placeholder="نام دلخواه"></label><label class="field">هدف اصلی<select id="pgoal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option></select></label><label class="field">هدف کالری روزانه<input type="number" id="pcal" min="800" max="6000"></label><label class="field">هدف پروتئین (گرم)<input type="number" id="ppro" min="10" max="400"></label><label class="field">محل تمرین<select id="pplace"><option>هر دو</option><option>باشگاه</option><option>خانه</option></select></label><label class="field">سطح فعلی<select id="plevel"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">زمان معمول تمرین<select id="ptime"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label><label class="field">تعداد روز تمرین در هفته<select id="pdays"><option>۲</option><option>۳</option><option>۴</option><option>۵</option><option>۶</option><option>۷</option></select></label></div><button class="btn dark" id="saveprofile" style="margin-top:15px">ذخیره تنظیمات</button><div class="panel" style="margin-top:16px;background:#f7f8ef"><div class="split"><h3 style="margin:0">☁️ همگام‌سازی کامل</h3><span class="pill" id="sync-status">آماده بررسی</span></div><p id="sync-detail">اطلاعات شخصی این دستگاه با نسخه ابری ادغام می‌شود و محتوای عمومی Supabase دریافت می‌شود. داده‌های متعارض بدون حذف نگه داشته می‌شوند.</p><button class="btn primary" id="rasta-sync-now" type="button" style="width:100%;margin-top:8px">همگام‌سازی اطلاعات و محتوا</button><small id="sync-last" style="display:block;margin-top:8px;color:var(--muted)">همگام‌سازی هنوز اجرا نشده است.</small><div class="tip" style="margin-top:10px"><b>🔄 بررسی و به‌روزرسانی رَستا</b><span id="auto-sync-status">برای بررسی انتشار نسخه جدید، دکمه زیر را بزن. فایل‌های بدون تغییر از حافظهٔ کش استفاده می‌کنند؛ نسخه وب در صورت نیاز تازه‌سازی می‌شود و نسخه اندروید، APK جدید را برای دانلود آماده می‌کند.</span><button class="btn dark" id="rasta-check-version-now" type="button" style="width:100%;margin-top:8px">🔄 بررسی نسخه جدید</button><button class="btn" id="rasta-reload-version" type="button" style="display:none;width:100%;margin-top:8px">دریافت نسخه جدید</button><small style="display:block;margin-top:8px;line-height:1.8">توجه: به‌روزرسانی نسخه اندروید پس از دانلود، نیازمند تأیید نصب توسط خودت است.</small></div></div><p>اطلاعات تمرین و تنظیمات این دستگاه حفظ می‌شوند. در تعارض داده‌ها، نسخه‌های متفاوت بدون تصمیم‌گیری خودکار نگه داشته می‌شوند.</p></div></section>
+<section class="view" id="view-changelog">
+<div class="sectionhead"><div><h2>🆕 آخرین تغییرات رستا</h2><p>شماره نسخه و امکاناتی که در هر به‌روزرسانی تغییر کرده‌اند.</p></div><span class="pill">نسخه فعلی: ۲٫۰٫۰</span></div>
+<div class="panel" style="border:1px solid var(--green);padding:clamp(16px,3vw,24px)">
+<div class="split" style="align-items:flex-start;gap:12px;flex-wrap:wrap"><div><div class="eyebrow">آخرین تغییرات</div><h2 style="margin:4px 0">ورژن شماره ۲٫۰٫۰</h2><p class="muted" style="margin:0">انتشار: ۲۲ اکتبر ۲۰۲۶</p></div><span class="pill">جدیدترین نسخه</span></div>
+<ul style="line-height:2.1;padding-right:22px;margin-top:16px">
+<li><b>نسخه‌بندی برنامه:</b> نمایش شماره نسخه و ایجاد آرشیو تغییرات در خود نرم‌افزار.</li>
+<li><b>ثبت‌نام و حساب کاربری:</b> راهنمای روشن‌تر تأیید ایمیل Rasta fitness و دکمه Confirm email address؛ بهبود روند خروج از حساب.</li>
+<li><b>بانک غذا:</b> افزودن فیلتر برای برخی غذاهای محلی نامتداول و مواد غذایی فصلی، با هدف کاربردی‌تر شدن پیشنهادها.</li>
+<li><b>برنامه تمرینی:</b> بهبود تنظیم ست، تکرار و زمان استراحت بر اساس هدف تمرین؛ از جمله عضله‌سازی، قدرت و استقامت.</li>
+<li><b>نسخه اندروید:</b> تنظیم ساخت APK با شماره نسخه هماهنگ با نسخه نرم‌افزار و بسته‌بندی ZIP.</li>
+</ul></div>
+<details class="panel" open style="margin-top:12px"><summary style="cursor:pointer;font-weight:900">تاریخچه نسخه ۱٫۰٫۰</summary><p style="line-height:2">نسخه پایه رستا فیتنس: بخش‌های اصلی تمرین، تغذیه، حساب کاربری، گزارش پیشرفت و اشتراک‌ها.</p></details>
+<p class="muted" style="font-size:12px;line-height:1.9;margin-top:12px">در به‌روزرسانی‌های بعدی، نسخه جدید در بالای این صفحه اضافه می‌شود و نسخه‌های قبلی در تاریخچه باقی می‌مانند.</p>
+</section>
 <section class="view" id="view-contact">
 <div class="sectionhead"><div><h2>✉️ ارتباط با ما</h2><p>پیامت مستقیم در صندوق پیام‌های مدیر ثبت می‌شود؛ پاسخ مدیر را نیز همین‌جا می‌بینی.</p></div></div>
 <div class="panel"><div class="tip"><b>پشتیبانی رستا</b>برای گزارش خطا، پیشنهاد، پرسش درباره برنامه یا اشتراک از این فرم استفاده کن. رمز عبور، کد تأیید و اطلاعات بانکی محرمانه را در پیام ننویس.</div>
@@ -414,7 +428,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 </div>
 <div class="panel" style="margin-top:14px"><h3>برای مربیان و باشگاه‌ها</h3><p>پنل‌های مربی و باشگاه در مرحله آماده‌سازی هستند. پیش از فروش، مدیریت شاگردان، دسترسی اعضا و پرداخت امن باید آزمایش شوند.</p><a class="btn ghost" href="mailto:elida600000@gmail.com?subject=درخواست%20اطلاعات%20رستا" style="display:inline-block;text-decoration:none">درخواست اطلاعات</a></div>
 </section>
-<footer style="text-align:center;color:var(--muted);font-size:9px;line-height:1.9;margin-top:28px">رَستا · تمرین و تغذیه با مسیر شخصی · پرداخت کارت‌به‌کارت با تأیید مدیر</footer>
+<footer style="text-align:center;color:var(--muted);font-size:9px;line-height:1.9;margin-top:28px">رَستا · تمرین و تغذیه با مسیر شخصی · نسخه ۲٫۰٫۰ · پرداخت کارت‌به‌کارت با تأیید مدیر</footer>
 <section class="view" id="view-guide">
 <div class="card" style="padding:clamp(16px,3vw,28px)">
 <div class="eyebrow">آموزش قدم‌به‌قدم رَستا</div>
@@ -635,6 +649,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
    <button data-view="profile"><span>⚙️</span>تنظیمات شخصی</button>
    <button data-view="guide"><span>📘</span>راهنمای استفاده</button>
    <button data-view="contact"><span>✉️</span>ارتباط با ما</button>
+   <button data-view="changelog"><span>🆕</span>آخرین تغییرات</button>
   </div>
  </section>
 </div>
@@ -1024,7 +1039,7 @@ if(contactForm)contactForm.addEventListener('submit',async e=>{
 });
 const contactRefresh=$('rasta-contact-refresh');if(contactRefresh)contactRefresh.addEventListener('click',renderContactMessages);
 
-function goto(v,skipHistory=false){if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();scrollTo({top:0,behavior:'smooth'})}
+function goto(v,skipHistory=false){if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما',changelog:'آخرین تغییرات'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();scrollTo({top:0,behavior:'smooth'})}
 async function renderPlans(){
  const box=$('rasta-plan-cards'),status=$('rasta-plan-status');
  if(!box||!status)return;
