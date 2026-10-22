@@ -426,7 +426,7 @@ async function load() {
       (f.data_quality === 'estimated' ? 'این مقادیر برآورد اولیه و تأییدنشده‌اند.' : 'داده‌ها باید با منبع معتبر بررسی شوند.'));
     const audit = $('audit'); audit.className='audit warn';
     if (f.energy_kcal != null && f.protein_g != null && f.carbohydrate_g != null && f.fat_g != null) {
-      const macroKcal = 4 * Number(f.protein_g) + 4 * Number(f.carbohydrate_g) + 9 * Number(f.fat_g);
+      const macroKcal = 4 * Number(f.protein_g) + 4 * Number(f.carbohydrate_g) + 9 * Number(f.fat_g) - 2 * Number(f.fiber_g || 0);
       const diff = Number(f.energy_kcal) - macroKcal;
       const pct = Math.abs(diff) / Math.max(Number(f.energy_kcal), 1) * 100;
       audit.textContent = 'کنترل سازگاری عددی (نه تأیید علمی): انرژی ثبت‌شده ' + fa(f.energy_kcal) + ' کیلوکالری؛ برآورد از درشت‌مغذی‌ها با فرمول ۴×پروتئین + ۴×کربوهیدرات + ۹×چربی = ' + fa(macroKcal) + ' کیلوکالری؛ اختلاف ' + fa(diff) + ' کیلوکالری (' + fa(pct) + '٪). ' + (pct > 15 ? 'اختلاف قابل توجه است و باید بررسی شود.' : 'اختلاف عددی در محدوده بررسی اولیه است؛ با این حال صحت منبع و دستور غذا همچنان تأیید نشده است.');
