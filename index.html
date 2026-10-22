@@ -234,7 +234,8 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <button data-view="plans"><span class="ico">💎</span>اشتراک و تعرفه‌ها</button>
 <button data-view="profile"><span class="ico">⚙️</span>تنظیمات شخصی</button>
 <button data-view="guide"><span class="ico">📘</span>راهنمای استفاده</button>
-<button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button><a id="rasta-admin-menu-link" href="./admin.html" style="display:none;align-items:center;gap:10px;padding:11px 12px;margin:4px 0;border-radius:10px;color:#fff;background:#1d3b2c;text-decoration:none;font-weight:800"><span class="ico">🛡️</span>پنل مدیریت</a><button data-view="download"><span class="ico">⬇️</span>دانلود آخرین نسخه <small id="rasta-update-menu-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button><button data-view="changelog"><span class="ico">🆕</span>آخرین تغییرات</button></nav>
+<button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button>
+    <button id="rasta-mobile-logout" type="button" style="display:none;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid #e4c8c1;border-radius:13px;background:#fbefec;color:#9b3f32;font:inherit;font-size:12px;text-align:right;font-weight:800"><span style="font-size:21px">🚪</span>خروج از حساب</button><a id="rasta-admin-menu-link" href="./admin.html" style="display:none;align-items:center;gap:10px;padding:11px 12px;margin:4px 0;border-radius:10px;color:#fff;background:#1d3b2c;text-decoration:none;font-weight:800"><span class="ico">🛡️</span>پنل مدیریت</a><button data-view="download"><span class="ico">⬇️</span>دانلود آخرین نسخه <small id="rasta-update-menu-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button><button data-view="changelog"><span class="ico">🆕</span>آخرین تغییرات</button></nav>
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
@@ -788,6 +789,7 @@ const showApp=async(user)=>{
  authScreen.style.display='none';appShell.style.display='grid';
  checkRastaForUpdate();
  byId('rasta-userbar').style.display='flex';
+ const mobileLogout=byId('rasta-mobile-logout');if(mobileLogout)mobileLogout.style.display='flex';
  byId('todaydate').style.display='block';
  byId('rasta-user-email').textContent=user.email||user.phone||user.user_metadata?.phone||'حساب من';
  byId('rasta-user-avatar').textContent=(user.user_metadata?.full_name||user.email||'ر').trim().charAt(0).toLocaleUpperCase('fa-IR');
@@ -910,6 +912,7 @@ logoutButton?.addEventListener('click',async()=>{
  authUser=null;
  const userbar=byId('rasta-userbar');
  if(userbar)userbar.style.display='none';
+ const mobileLogout=byId('rasta-mobile-logout');if(mobileLogout)mobileLogout.style.display='none';
  if(appShell)appShell.style.display='none';
  if(authScreen)authScreen.style.display='grid';
  setMode('login');
@@ -1619,7 +1622,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeRastaAllMenus()});
 document.addEventListener('click',async e=>{let b=e.target.closest('button');if(!b)return;
-if(b.dataset.view){goto(b.dataset.view);return}if(b.dataset.goto){goto(b.dataset.goto);return}
+if(b.id==='rasta-mobile-logout'){byId('rasta-logout')?.click();return}if(b.dataset.view){goto(b.dataset.view);return}if(b.dataset.goto){goto(b.dataset.goto);return}
 if(b.dataset.removeDay!==undefined){const i=Number(b.dataset.removeDay);if(plan.length<=1){toast('باید حداقل یک روز تمرینی در برنامه بماند.');return}const title=plan[i]?.title||'این روز';if(confirm('روز تمرینی «'+title+'» حذف شود؟')){plan.splice(i,1);activeDay=Math.min(activeDay,plan.length-1);save();renderTraining();renderToday();renderPrograms();toast('روز تمرینی حذف شد.')}return}
 if(b.dataset.day!==undefined){activeDay=+b.dataset.day;renderTraining();return}
 if(b.dataset.exdetail){showEx(b.dataset.exdetail);return}
