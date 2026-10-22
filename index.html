@@ -234,7 +234,7 @@ if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
 <button data-view="plans"><span class="ico">💎</span>اشتراک و تعرفه‌ها</button>
 <button data-view="profile"><span class="ico">⚙️</span>تنظیمات شخصی</button>
 <button data-view="guide"><span class="ico">📘</span>راهنمای استفاده</button>
-<button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button><button data-view="download"><span class="ico">⬇️</span>دانلود آخرین نسخه <small id="rasta-update-menu-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button><button data-view="changelog"><span class="ico">🆕</span>آخرین تغییرات</button></nav>
+<button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button><a id="rasta-admin-menu-link" href="./admin.html" style="display:none;align-items:center;gap:10px;padding:11px 12px;margin:4px 0;border-radius:10px;color:#fff;background:#1d3b2c;text-decoration:none;font-weight:800"><span class="ico">🛡️</span>پنل مدیریت</a><button data-view="download"><span class="ico">⬇️</span>دانلود آخرین نسخه <small id="rasta-update-menu-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button><button data-view="changelog"><span class="ico">🆕</span>آخرین تغییرات</button></nav>
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
@@ -791,8 +791,11 @@ const showApp=async(user)=>{
  byId('rasta-user-email').textContent=user.email||user.phone||user.user_metadata?.phone||'حساب من';
  byId('rasta-user-avatar').textContent=(user.user_metadata?.full_name||user.email||'ر').trim().charAt(0).toLocaleUpperCase('fa-IR');
  window.dispatchEvent(new Event('rasta:auth-ready'));
+ const isRastaAdmin=String(user.email||'').trim().toLowerCase()==='elida600000@gmail.com';
  const adminLink=byId('rasta-admin-link');
- if(adminLink)adminLink.style.display=(String(user.email||'').toLowerCase()==='elida600000@gmail.com')?'inline-flex':'none';
+ const adminMenuLink=byId('rasta-admin-menu-link');
+ if(adminLink)adminLink.style.display=isRastaAdmin?'inline-flex':'none';
+ if(adminMenuLink)adminMenuLink.style.display=isRastaAdmin?'flex':'none';
  const sendPresence=async(state='active')=>{
   try{if(navigator.onLine&&client&&user?.id)await client.from('user_presence').upsert({user_id:user.id,last_seen:new Date().toISOString(),app_state:state},{onConflict:'user_id'});}
   catch(err){console.warn('Presence heartbeat unavailable',err)}
