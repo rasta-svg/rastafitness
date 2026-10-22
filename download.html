@@ -2,30 +2,27 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0b3a2b"><meta name="description" content="دانلود رسمی آخرین نسخه رستا فیتنس برای اندروید.">
-<title>دانلود آخرین نسخه رستا فیتنس</title>
+<meta name="theme-color" content="#0b3a2b"><meta name="description" content="دانلود آخرین نسخه رستا فیتنس برای اندروید.">
+<title>دانلود رستا فیتنس</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap');
 :root{--green:#194b35;--bg:#f4f3ec;--paper:#fffefa;--ink:#202a22;--muted:#6c776e;--line:#dfe5d9}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#e4efdf,#f7f5ec 55%,#e7eee2);color:var(--ink);font-family:Vazirmatn,system-ui,sans-serif;min-height:100vh;display:grid;place-items:center;padding:20px}
 main{width:min(100%,720px);background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:clamp(22px,5vw,44px);box-shadow:0 20px 70px #183b2515}
 .logo{width:64px;height:64px;border-radius:20px;background:var(--green);color:white;display:grid;place-items:center;font-size:36px;font-weight:900}
-h1{font-size:clamp(26px,5vw,40px);margin:20px 0 8px}p{line-height:2}.muted{color:var(--muted);font-size:14px}
-.version{display:inline-block;background:#e4efdf;color:#194b35;border-radius:99px;padding:6px 14px;font-weight:800;font-size:14px}
-.actions{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0}a.btn{display:flex;align-items:center;justify-content:center;min-height:54px;padding:12px 18px;border-radius:14px;background:var(--green);color:white;text-decoration:none;font-weight:800}a.btn.secondary{background:#edf1e8;color:var(--green);border:1px solid var(--line)}a:focus-visible{outline:3px solid #dcaa62;outline-offset:3px}hr{border:0;border-top:1px solid var(--line);margin:24px 0}footer{font-size:13px;color:var(--muted);line-height:2}
-@media(min-width:560px){.actions{grid-template-columns:1fr 1fr}.actions .wide{grid-column:1/-1}}
+h1{font-size:clamp(26px,5vw,40px);margin:20px 0 8px}p{line-height:2}.version{display:inline-block;background:#e4efdf;color:#194b35;border-radius:99px;padding:8px 16px;font-weight:800;font-size:15px;min-height:40px}
+.actions{display:grid;grid-template-columns:1fr;gap:12px;margin:24px 0}a.btn{display:flex;align-items:center;justify-content:center;min-height:54px;padding:12px 18px;border-radius:14px;background:var(--green);color:white;text-decoration:none;font-weight:800}a.btn.secondary{background:#edf1e8;color:var(--green);border:1px solid var(--line)}a:focus-visible{outline:3px solid #dcaa62;outline-offset:3px}
+@media(min-width:560px){.actions{grid-template-columns:1fr 1fr}}
 </style></head>
 <body><main>
 <div class="logo" aria-label="رستا">ر</div><h1>دانلود رستا فیتنس</h1>
-<p>مرجع رسمی دریافت نسخه اندروید رستا فیتنس. این لینک ثابت است؛ با انتشار هر نسخه جدید، فایل‌های همین صفحه به آخرین نسخه منتشرشده هدایت می‌شوند.</p>
-<div class="version" id="version">آخرین نسخه منتشرشده</div>
+<p>برای دریافت آخرین نسخه، یکی از گزینه‌های زیر را انتخاب کنید.</p>
+<div class="version" id="version">آخرین نسخه رستا فیتنس</div>
 <div class="actions">
 <a class="btn" href="https://github.com/rasta-svg/rastafitness/releases/latest/download/Rasta-Fitness.apk">دانلود مستقیم APK</a>
-<a class="btn secondary" href="https://github.com/rasta-svg/rastafitness/releases/latest/download/Rasta-Fitness-APK.zip">دانلود APK به‌صورت ZIP</a>
-<a class="btn secondary wide" href="https://github.com/rasta-svg/rastafitness/releases/latest">مشاهده تاریخچه نسخه‌ها و تغییرات</a>
-</div><div id="release-info" class="muted">در حال بررسی آخرین نسخه…</div><hr>
-<footer>فعلاً رستا فیتنس از طریق این وب‌سایت و GitHub منتشر می‌شود و در گوگل‌پلی، بازار یا سایر مارکت‌ها عرضه نشده است. پس از دانلود، نصب فایل APK را در گوشی خود تأیید کنید. برای نصب به‌روزرسانی روی نسخه قبلی، کلید امضای هر دو نسخه باید یکسان باشد.</footer>
+<a class="btn secondary" href="https://github.com/rasta-svg/rastafitness/releases/latest/download/Rasta-Fitness-APK.zip">دانلود فایل ZIP</a>
+</div>
 </main>
 <script>
-(async()=>{try{const r=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/releases/latest',{headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw Error('no release');const x=await r.json();const b=String(x.body||'');const m=b.match(/(?:نسخه برنامه|App version)\s*[:：]\s*v?([0-9]+\.[0-9]+\.[0-9]+)/i);const v=m?m[1]:(x.name.match(/v([0-9]+\.[0-9]+\.[0-9]+)/i)||[])[1];if(v)document.getElementById('version').textContent='نسخه '+v;const d=x.published_at?new Date(x.published_at).toLocaleDateString('fa-IR'):'';document.getElementById('release-info').textContent='آخرین انتشار: '+(x.name||x.tag_name)+(d?' · تاریخ انتشار: '+d:'');}catch(e){document.getElementById('release-info').textContent='برای دیدن شماره و تاریخ انتشار، «مشاهده تاریخچه نسخه‌ها و تغییرات» را باز کنید.';}})();
+(async()=>{try{const r=await fetch('https://api.github.com/repos/rasta-svg/rastafitness/releases/latest',{headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw Error('no release');const x=await r.json();const b=String(x.body||'');const v=(b.match(/(?:نسخه برنامه|App version)\s*[:：]\s*v?([0-9]+\.[0-9]+\.[0-9]+)/i)||[])[1]||(x.name.match(/v([0-9]+\.[0-9]+\.[0-9]+)/i)||[])[1];const build=(x.name.match(/build[- ]?(\d+)/i)||[])[1]||(x.tag_name.match(/build[- ]?(\d+)/i)||[])[1];document.getElementById('version').textContent=(v?'نسخه '+v:'آخرین نسخه رستا فیتنس')+(build?' — بیلد '+build:'');}catch(e){document.getElementById('version').textContent='آخرین نسخه رستا فیتنس';}})();
 </script></body></html>
