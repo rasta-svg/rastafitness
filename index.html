@@ -1618,7 +1618,7 @@ const rastaAllMenus=document.getElementById('rasta-all-menus');
 function closeRastaAllMenus(){if(!rastaAllMenus)return;rastaAllMenus.classList.remove('open');rastaAllMenus.setAttribute('aria-hidden','true');document.querySelectorAll('[data-open-all-menus]').forEach(b=>b.setAttribute('aria-expanded','false'))}
 document.addEventListener('click',e=>{
  const open=e.target.closest('[data-open-all-menus]');
- if(open){if(!rastaAllMenus)return;const willOpen=!rastaAllMenus.classList.contains('open');rastaAllMenus.classList.toggle('open',willOpen);rastaAllMenus.setAttribute('aria-hidden',String(!willOpen));open.setAttribute('aria-expanded',String(willOpen));return}
+ if(open){if(!rastaAllMenus)return;const willOpen=!rastaAllMenus.classList.contains('open');const adminEntry=byId('rasta-admin-mobile-link');if(adminEntry)adminEntry.style.display='flex';const logoutEntry=byId('rasta-allmenus-logout');if(logoutEntry)logoutEntry.style.display=(authUser||window.__RASTA_AUTH_USER)?'flex':'none';rastaAllMenus.classList.toggle('open',willOpen);rastaAllMenus.setAttribute('aria-hidden',String(!willOpen));open.setAttribute('aria-expanded',String(willOpen));return}
  if(e.target.closest('[data-close-all-menus]')){closeRastaAllMenus();return}
  const menuItem=e.target.closest('#rasta-all-menus [data-view]');
  if(menuItem){closeRastaAllMenus()}
