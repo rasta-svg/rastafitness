@@ -756,6 +756,7 @@ const showApp=async(user)=>{
   get length(){let n=0;for(let i=0;i<native.length;i++){const k=native.key(i);if(k&&k.startsWith('rasta-user:'+uid+':'))n++}return n}
  }});}catch(e){console.warn('Could not scope local storage',e)}
  authScreen.style.display='none';appShell.style.display='grid';
+ checkRastaForUpdate();
  byId('rasta-userbar').style.display='flex';
  byId('todaydate').style.display='block';
  byId('rasta-user-email').textContent=user.email||user.phone||user.user_metadata?.phone||'حساب من';
@@ -1071,8 +1072,8 @@ async function checkRastaForUpdate(){
   if(!response.ok)throw new Error('release lookup failed');
   const release=await response.json();
   const body=String(release.body||'');
-  const match=body.match(/(?:نسخه برنامه|App version)\\s*[:：]\\s*v?([0-9]+\\.[0-9]+\\.[0-9]+)/i);
-  const latest=match?match[1]:(String(release.name||'').match(/v([0-9]+\\.[0-9]+\\.[0-9]+)/i)||[])[1];
+  const match=body.match(/(?:نسخه برنامه|App version)\s*[:：]\s*v?([0-9]+\.[0-9]+\.[0-9]+)/i);
+  const latest=match?match[1]:(String(release.name||'').match(/v([0-9]+\.[0-9]+\.[0-9]+)/i)||[])[1];
   const parse=v=>String(v||'').split('.').map(n=>Number.parseInt(n,10)||0);
   const a=parse(RASTA_APP_VERSION),b=parse(latest);
   const newer=!!latest&&[0,1,2].some(i=>b[i]>a[i]&&b.slice(0,i).every((n,j)=>n===a[j])) ;
