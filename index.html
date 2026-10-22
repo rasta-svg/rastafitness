@@ -1406,7 +1406,7 @@ document.addEventListener('click',e=>{
  if(menuItem){closeRastaAllMenus()}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeRastaAllMenus()});
-document.addEventListener('click',e=>{let b=e.target.closest('button');if(!b)return;
+document.addEventListener('click',async e=>{let b=e.target.closest('button');if(!b)return;
 if(b.dataset.view){goto(b.dataset.view);return}if(b.dataset.goto){goto(b.dataset.goto);return}
 if(b.dataset.removeDay!==undefined){const i=Number(b.dataset.removeDay);if(plan.length<=1){toast('باید حداقل یک روز تمرینی در برنامه بماند.');return}const title=plan[i]?.title||'این روز';if(confirm('روز تمرینی «'+title+'» حذف شود؟')){plan.splice(i,1);activeDay=Math.min(activeDay,plan.length-1);save();renderTraining();renderToday();renderPrograms();toast('روز تمرینی حذف شد.')}return}
 if(b.dataset.day!==undefined){activeDay=+b.dataset.day;renderTraining();return}
