@@ -31,6 +31,25 @@ Deno.serve(async (req: Request) => {
   const action = String(body.action || "");
   const isAdmin = (user.email || "").toLowerCase() === ADMIN_EMAIL;
 
+  if (action === "get_announcement") {
+    const { data, error } = await db.from("rasta_announcements").select("message,expires_at,dismiss_after_sessions,updated_at").eq("id", true).maybeSingle();
+    if (error) return json({ error: "دریافت پیام همگانی انجام نشد." }, 500);
+    const active = !!data?.message && (!data.expires_at || new Date(data.expires_at).getTime() > Date.now());
+    return json({ announcement: active ? data : null });
+  }
+
+  if (action === "save_announcement") {
+    if (!isAdmin) return json({ error: "فقط مدیر اجازهٔ تغییر پیام همگانی را دارد." }, 403);
+    const message = String(body.message || "").trim().slice(0, 1200);
+    const hours = Math.max(0, Math.min(8760, Number(body.hours || 0)));
+    const sessions = Math.max(0, Math.min(1000, Math.floor(Number(body.sessions || 0))));
+    if (!Number.isFinite(hours) || !Number.isFinite(sessions)) return json({ error: "مدت یا تعداد ورود و خروج معتبر نیست." }, 400);
+    const expiresAt = hours > 0 ? new Date(Date.now() + hours * 3600000).toISOString() : null;
+    const { error } = await db.from("rasta_announcements").upsert({ id: true, message, expires_at: expiresAt, dismiss_after_sessions: sessions, updated_at: new Date().toISOString() });
+    if (error) return json({ error: "ذخیرهٔ پیام همگانی انجام نشد." }, 500);
+    return json({ ok: true, announcement: message ? { message, expires_at: expiresAt, dismiss_after_sessions: sessions } : null });
+  }
+
   if (action === "config") {
     const { data, error } = await db.from("payment_settings")
       .select("card_number,cardholder_name,instructions").eq("id", true).maybeSingle();
