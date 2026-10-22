@@ -20,7 +20,6 @@
 <div id="results"></div>
 <footer class="footer">رستا فیتنس · بانک غذایی مرحله اول<br>داده‌های تغذیه‌ای پس از ثبت دستور پخت و بررسی منبع معتبر به نسخه‌های بعدی اضافه می‌شوند.</footer>
 </main>
-<script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const RASTA_SUPABASE_URL='https://ptmokqppwjjxhakjpxum.supabase.co';
@@ -62,9 +61,19 @@ const categories=Object.keys(raw);let active="";
 const all=categories.flatMap(cat=>raw[cat].map(name=>({name,cat,kind:["نان و غلات","منابع پروتئین","حبوبات و مغزها","لبنیات","سبزیجات","میوه‌ها"].includes(cat)?"ingredient":["میان‌وعده‌ها","شیرینی‌ها","نوشیدنی‌ها","صبحانه‌ها"].includes(cat)?"snack":"recipe"})));
 const unique=new Map();all.forEach(x=>{const k=x.cat+"|"+x.name;if(!unique.has(k))unique.set(k,x)});const foods=[...unique.values()];
 const fa=n=>n.toLocaleString("fa-IR");
+const nutritionByName=new Map();
+async function loadNutrition(){
+ try{
+  const res=await fetch(RASTA_SUPABASE_URL+"/rest/v1/foods?select=name_fa,energy_kcal,protein_g,carbohydrate_g,fat_g,fiber_g,basis_grams,data_quality&limit=1000",{headers:{apikey:RASTA_SUPABASE_KEY,Authorization:"Bearer "+RASTA_SUPABASE_KEY}});
+  if(!res.ok)return;
+  const rows=await res.json();
+  rows.forEach(row=>{if(row.name_fa && !nutritionByName.has(row.name_fa))nutritionByName.set(row.name_fa,row)});
+  render();
+ }catch(e){/* the food catalog remains usable if nutrition data is temporarily unavailable */}
+}
 document.getElementById('count').textContent=fa(foods.length);document.getElementById('catcount').textContent=fa(categories.length);
 const catSel=document.getElementById('category');categories.forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;catSel.append(o)});
 const chips=document.getElementById('chips');const allChip=document.createElement('button');allChip.className='chip active';allChip.textContent='همه';allChip.onclick=()=>{active='';render()};chips.append(allChip);categories.forEach(c=>{const b=document.createElement('button');b.className='chip';b.textContent=c;b.onclick=()=>{active=active===c?'':c;render()};chips.append(b)});
-function render(){const q=document.getElementById('search').value.trim().toLocaleLowerCase('fa');const cat=active||catSel.value;const kind=document.getElementById('kind').value;const list=foods.filter(x=>(!cat||x.cat===cat)&&(!kind||x.kind===kind)&&(!q||(x.name+' '+x.cat).toLocaleLowerCase('fa').includes(q)));chips.querySelectorAll('.chip').forEach((b,i)=>b.classList.toggle('active',i===0?!cat:categories[i-1]===cat));let html='';const shownCats=cat?[cat]:categories;shownCats.forEach(c=>{const rows=list.filter(x=>x.cat===c);if(!rows.length)return;html+='<section class="section"><div class="sectionhead"><h3>'+c+'</h3><small>'+fa(rows.length)+' مورد</small></div><div class="grid">'+rows.map(x=>'<article class="food"><div class="emoji">'+(icons[x.cat]||'🍽️')+'</div><div class="foodmain"><b>'+x.name+'</b><div class="meta">'+x.cat+'</div><span class="tag">ارزش غذایی نیازمند تأیید</span></div></article>').join('')+'</div></section>'});document.getElementById('results').innerHTML=html||'<div class="empty">موردی پیدا نشد. عبارت دیگری جست‌وجو کن.</div>'}
-document.getElementById('search').addEventListener('input',render);catSel.addEventListener('change',()=>{active='';render()});document.getElementById('kind').addEventListener('change',render);render();
+function render(){const q=document.getElementById('search').value.trim().toLocaleLowerCase('fa');const cat=active||catSel.value;const kind=document.getElementById('kind').value;const list=foods.filter(x=>(!cat||x.cat===cat)&&(!kind||x.kind===kind)&&(!q||(x.name+' '+x.cat).toLocaleLowerCase('fa').includes(q)));chips.querySelectorAll('.chip').forEach((b,i)=>b.classList.toggle('active',i===0?!cat:categories[i-1]===cat));let html='';const shownCats=cat?[cat]:categories;shownCats.forEach(c=>{const rows=list.filter(x=>x.cat===c);if(!rows.length)return;html+='<section class="section"><div class="sectionhead"><h3>'+c+'</h3><small>'+fa(rows.length)+' مورد</small></div><div class="grid">'+rows.map(x=>{const n=nutritionByName.get(x.name);const has=n&&n.energy_kcal!==null&&n.energy_kcal!==undefined;const quality=n?.data_quality||'incomplete';const badge=has?((quality==='estimated'?'برآورد اولیه':quality==='source_checked'?'منبع بررسی‌شده':quality==='expert_reviewed'?'بازبینی تخصصی':'اطلاعات ثبت‌شده')):'اطلاعات تغذیه‌ای در حال تکمیل';const macros=has?'<div class="meta">در هر '+fa(Number(n.basis_grams)||100)+' گرم: '+fa(Number(n.energy_kcal))+' کیلوکالری'+(n.protein_g!=null?' · پروتئین '+fa(Number(n.protein_g))+' گرم':'')+(n.carbohydrate_g!=null?' · کربوهیدرات '+fa(Number(n.carbohydrate_g))+' گرم':'')+(n.fat_g!=null?' · چربی '+fa(Number(n.fat_g))+' گرم':'')+'</div>':'';return '<article class="food"><div class="emoji">'+(icons[x.cat]||'🍽️')+'</div><div class="foodmain"><b>'+x.name+'</b><div class="meta">'+x.cat+'</div>'+macros+'<span class="tag">'+badge+'</span></div></article>'}).join('')+'</div></section>'});document.getElementById('results').innerHTML=html||'<div class="empty">موردی پیدا نشد. عبارت دیگری جست‌وجو کن.</div>'}
+document.getElementById('search').addEventListener('input',render);catSel.addEventListener('change',()=>{active='';render()});document.getElementById('kind').addEventListener('change',render);render();loadNutrition();
 </script></body></html>
