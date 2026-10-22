@@ -429,9 +429,11 @@ async function load() {
       const macroKcal = 4 * Number(f.protein_g) + 4 * Number(f.carbohydrate_g) + 9 * Number(f.fat_g) - 2 * Number(f.fiber_g || 0);
       const diff = Number(f.energy_kcal) - macroKcal;
       const pct = Math.abs(diff) / Math.max(Number(f.energy_kcal), 1) * 100;
-      audit.textContent = 'کنترل سازگاری عددی (نه تأیید علمی): انرژی ثبت‌شده ' + fa(f.energy_kcal) + ' کیلوکالری؛ برآورد از درشت‌مغذی‌ها با فرمول ۴×پروتئین + ۴×کربوهیدرات + ۹×چربی = ' + fa(macroKcal) + ' کیلوکالری؛ اختلاف ' + fa(diff) + ' کیلوکالری (' + fa(pct) + '٪). ' + (pct > 15 ? 'اختلاف قابل توجه است و باید بررسی شود.' : 'اختلاف عددی در محدوده بررسی اولیه است؛ با این حال صحت منبع و دستور غذا همچنان تأیید نشده است.');
+      audit.textContent = 'کنترل سازگاری عددی (نه تأیید علمی): انرژی ثبت‌شده ' + fa(f.energy_kcal) + ' کیلوکالری؛ برآورد از درشت‌مغذی‌ها با فرمول ۴×پروتئین + ۴×کربوهیدرات + ۹×چربی = ' + fa(macroKcal) + ' کیلوکالری؛ اختلاف ' + fa(diff) + ' کیلوکالری (' + fa(pct) + '٪). ' + (pct > 20 ? 'اختلاف قابل توجه است و باید بررسی شود.' : 'اختلاف عددی در محدوده بررسی اولیه است؛ با این حال صحت منبع و دستور غذا همچنان تأیید نشده است.');
     } else { audit.textContent='برای کنترل عددی، انرژی و هر سه درشت‌مغذی باید موجود باشند.'; }
     const sourceInfo = $('sourceInfo'); sourceInfo.replaceChildren();
+    if (f.nutrition_source_note) { const n=document.createElement('p'); n.textContent=f.nutrition_source_note; sourceInfo.append(n); }
+    if (f.source_record_id) { const id=document.createElement('p'); id.textContent='شناسه رکورد منبع: ' + f.source_record_id; sourceInfo.append(id); }
     if (f.data_source) { const p=document.createElement('p'); p.textContent='منبع/یادداشت ثبت‌شده: ' + f.data_source; sourceInfo.append(p); }
     if (f.data_source_url) { const a=document.createElement('a'); a.href=f.data_source_url; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent='بازکردن منبع تغذیه‌ای'; sourceInfo.append(a); }
     else { const p=document.createElement('p'); p.textContent='پیوند مستقیم به رکورد منبع برای این غذا ثبت نشده است؛ بنابراین تطبیق منبع هنوز قابل اثبات نیست.'; sourceInfo.append(p); }
