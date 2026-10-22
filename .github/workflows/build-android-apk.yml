@@ -11,6 +11,8 @@ on:
       - "capacitor.config.json"
       - "package.json"
       - "assets/**"
+      - "tests/**"
+      - "docs/science-engine.md"
       - ".github/workflows/build-android-apk.yml"
 
 permissions:
