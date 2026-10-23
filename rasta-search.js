@@ -1,7 +1,8 @@
 /* Rasta Search — shared Persian/Arabic-aware search and ranking for all app sections. */
 (function(root){
 'use strict';
-const VERSION='1.0.0';
+const VERSION='1.1.0';
+const foodReferenceCache=new Map(),foodReferencePending=new Map(),FOOD_CACHE_TTL=60000,FOOD_CACHE_MAX=40;
 const ARABIC_DIGITS='٠١٢٣٤٥٦٧٨٩';
 const PERSIAN_DIGITS='۰۱۲۳۴۵۶۷۸۹';
 function normalize(value){
@@ -58,18 +59,29 @@ function rank(items,query,textOf){
   .sort((a,b)=>b.score-a.score||a.index-b.index).map(x=>x.item);
 }
 async function searchFoodReference(query,client){
- const q=String(query==null?'':query).trim();
- if(normalize(q).length<2)throw new Error('نام غذا را با حداقل دو نویسه وارد کنید.');
+ const q=String(query==null?'':query).trim(),normalized=normalize(q);
+ if(normalized.length<2)throw new Error('نام غذا را با حداقل دو نویسه وارد کنید.');
  if(!client||!client.functions||typeof client.functions.invoke!=='function')throw new Error('برای جست‌وجوی مرجع، ابتدا وارد حساب رستا شوید.');
- const {data,error}=await client.functions.invoke('nutrition-food-search',{body:{query:q}});
- if(error){
-  let message=error.message||'جست‌وجوی مرجع ناموفق بود.';
-  try{const detail=await error.context?.json();if(detail?.message)message=detail.message}catch(_){}
-  throw new Error(message);
- }
- if(data&&data.error)throw new Error(data.message||'جست‌وجوی مرجع ناموفق بود.');
- return rank(Array.isArray(data&&data.foods)?data.foods:[],q,item=>[item.description,item.food_category]);
+ const cached=foodReferenceCache.get(normalized);
+ if(cached&&cached.expires>Date.now())return cached.items.map(item=>({...item}));
+ if(foodReferencePending.has(normalized))return (await foodReferencePending.get(normalized)).map(item=>({...item}));
+ const request=(async()=>{
+  const {data,error}=await client.functions.invoke('nutrition-food-search',{body:{query:q}});
+  if(error){
+   let message=error.message||'جست‌وجوی مرجع ناموفق بود.';
+   try{const detail=await error.context?.json();if(detail&&detail.message)message=detail.message}catch(_){}
+   throw new Error(message);
+  }
+  if(data&&data.error)throw new Error(data.message||'جست‌وجوی مرجع ناموفق بود.');
+  const items=rank(Array.isArray(data&&data.foods)?data.foods:[],q,item=>[item.description,item.food_category]);
+  if(foodReferenceCache.size>=FOOD_CACHE_MAX)foodReferenceCache.delete(foodReferenceCache.keys().next().value);
+  foodReferenceCache.set(normalized,{expires:Date.now()+FOOD_CACHE_TTL,items});
+  return items;
+ })().finally(()=>foodReferencePending.delete(normalized));
+ foodReferencePending.set(normalized,request);
+ return (await request).map(item=>({...item}));
 }
-root.RastaSearch=Object.freeze({version:VERSION,normalize,score,matches,rank,searchFoodReference});
+function clearFoodReferenceCache(){foodReferenceCache.clear();return true}
+root.RastaSearch=Object.freeze({version:VERSION,normalize,score,matches,rank,searchFoodReference,clearFoodReferenceCache,health(){return Object.freeze({status:'ready',version:VERSION,foodReferenceCacheEntries:foodReferenceCache.size,pendingReferenceSearches:foodReferencePending.size})}});
 if(root.RastaCore)root.RastaCore.registerModule('search-engine',{kind:'engine',version:VERSION,source:'rasta-search.js',dependencies:[]});
 })(typeof window!=='undefined'?window:globalThis);
