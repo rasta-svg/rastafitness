@@ -1403,6 +1403,8 @@ const RASTA_NUTRITION_VERSION='rasta-nutrition-0.2-variety';
  window.RastaCore.registerModule('workout-discovery-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
  window.RastaCore.registerModule('food-catalog-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
  window.RastaCore.registerModule('premium-catalog-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
+ window.RastaCore.registerModule('meal-food-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
+ window.RastaCore.registerModule('nutrition-reference-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine','supabase-client']});
  window.RastaCore.registerModule('nutrition-engine',{kind:'engine',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['supabase-client','science-engine','search-engine']});
 let rastaNutritionWeekSelections=[];
 let rastaPremiumGeneratedProgram=null;
@@ -1452,10 +1454,12 @@ async function rastaNutritionSearchFoods(){
  const c=window.__rastaSupabaseClient;
  if(!c){status.textContent='اتصال امن به حساب رستا برقرار نیست؛ وارد حساب شو و دوباره تلاش کن.';return}
  status.textContent='در حال جستجو در پایگاه داده مرجع USDA…';results.replaceChildren();
+ window.RastaCore?.setModuleStatus('nutrition-reference-search','starting','reference_search_started');
  try{
   const foodsFound=window.RastaSearch
    ? await window.RastaSearch.searchFoodReference(query,c)
    : await (async()=>{const {data,error}=await c.functions.invoke('nutrition-food-search',{body:{query}});if(error)throw error;if(data?.error)throw new Error(data.message||'جستجوی مرجع ناموفق بود.');return Array.isArray(data?.foods)?data.foods:[]})();
+  window.RastaCore?.setModuleStatus('nutrition-reference-search','ready','reference_search_succeeded');
   if(!foodsFound.length){status.textContent='نتیجه‌ای پیدا نشد. نام انگلیسی یا نام عمومی ماده غذایی را امتحان کن.';return}
   status.textContent='نتایج مرجع: '+fa(foodsFound.length)+' مورد. مقادیر معمولاً برای ۱۰۰ گرم هستند؛ برای غذاهای ترکیبی، برندها و روش پخت باید بررسی بیشتری انجام شود.';
   for(const f of foodsFound){
@@ -1470,7 +1474,7 @@ async function rastaNutritionSearchFoods(){
    const saveBtn=document.createElement('button');saveBtn.type='button';saveBtn.className='btn ghost';saveBtn.textContent='ذخیره برای بازبینی';saveBtn.style.marginTop='8px';saveBtn.addEventListener('click',()=>rastaNutritionSaveReferenceFood(f,saveBtn));body.appendChild(saveBtn);
    card.appendChild(body);results.appendChild(card);
   }
- }catch(e){status.textContent=e?.message||'جستجوی مرجع انجام نشد. اتصال یا تنظیمات کلید USDA را بررسی کن.'}
+ }catch(e){window.RastaCore?.setModuleStatus('nutrition-reference-search','degraded','reference_search_failed');window.RastaCore?.reportError('reference_search_failed',e,'nutrition-reference-search');status.textContent=e?.message||'جستجوی مرجع انجام نشد. اتصال یا تنظیمات کلید USDA را بررسی کن.'}
 }
 
 function nutritionStatus(msg){const el=$('nf-status');if(el)el.textContent=msg}
