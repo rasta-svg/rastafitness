@@ -51,6 +51,9 @@ for (const moduleId of ['exercise-library-search','workout-discovery-search','fo
 if (!html.includes('window.RastaSearch.rank(arr,exquery') || !html.includes('window.RastaSearch.rank(arr,foodquery') || !html.includes('window.RastaSearch.rank(arr,exploreQuery') || !html.includes('window.RastaSearch.rank(arr,rastaPremiumQuery') || !html.includes('window.RastaSearch.rank(found,$('+'\'modalfoodsearch\''+').value')) throw new Error('Every local search area must use the shared relevance ranking.');
 const workflow = fs.readFileSync(path.join(root, '.github/workflows/build-android-apk.yml'), 'utf8');
 if (!workflow.includes('cp rasta-search.js www/rasta-search.js') || !workflow.includes('"rasta-search.js"')) throw new Error('Android APK must package the shared search engine and rebuild when it changes.');
+const adminPage = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+if (!adminPage.includes('src="./rasta-search.js"') || !adminPage.includes('window.RastaSearch.rank(users,q')) throw new Error('Admin user search must use the shared ranked search engine.');
+if (!html.includes("registerModule('meal-food-search'") || !html.includes("registerModule('nutrition-reference-search'") || !adminPage.includes("registerModule('admin-user-search'")) throw new Error('Search consumers across meal selection, reference food lookup and admin must register with central health.');
 if (!fs.readFileSync(path.join(root, 'sw.js'), 'utf8').includes("new URL('./rasta-search.js',BASE_URL).href")) throw new Error('Shared search engine must be cached for offline app shell.');
 const serviceWorker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 new vm.Script(serviceWorker);
