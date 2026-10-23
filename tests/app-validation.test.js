@@ -51,4 +51,30 @@ const recipeDetail = fs.readFileSync(path.join(root, 'recipe-detail.html'), 'utf
 if (!recipeDetail.includes("registerModule('recipe-detail-data'") || !recipeDetail.includes("reportError('recipe_detail_load_failed'")) {
   throw new Error('Recipe detail must register with central health and report runtime failures.');
 }
+
+for (const page of ['nutrition-bank.html', 'recipe-detail.html', 'admin.html']) {
+  const source = fs.readFileSync(path.join(root, page), 'utf8');
+  const tags = /<script\\b([^>]*)>([\\s\\S]*?)<\\/script\\s*>/gi;
+  let script;
+  let checked = 0;
+  while ((script = tags.exec(source)) !== null) {
+    if (/\\bsrc\\s*=/.test(script[1] || '') || !(script[2] || '').trim()) continue;
+    try {
+      new vm.Script(script[2]);
+      checked++;
+    } catch (error) {
+      const line = source.slice(0, script.index).split('\\n').length;
+      throw new Error('Inline script syntax error near ' + page + ' line ' + line + ': ' + error.message);
+    }
+  }
+  if (!checked) throw new Error('No inline scripts were validated in ' + page);
+}
+const admin = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+if (!admin.includes('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>')) {
+  throw new Error('Admin refresh timer must run in an inline script, not inside an external script tag.');
+}
+if (!foodBank.includes("dependencies:['food-bank']")) {
+  throw new Error('Food bank data service must depend on the page module id registered by Rasta Core.');
+}
+
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
