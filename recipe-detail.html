@@ -379,7 +379,7 @@ async function load() {
     return;
   }
 
-  const fields = 'id,name_fa,name_en,category,energy_kcal,protein_g,carbohydrate_g,fat_g,fiber_g,calcium_mg,sodium_mg,basis_grams,portion_name_fa,portion_grams,data_quality,data_source,data_source_url,review_status,verified_at,ingredients_fa,allergens,allergens_reviewed,dietary_tags,preparation_fa,cooking_method_fa,prep_time_minutes,cooking_time_minutes,default_servings,storage_fa,recipe_notes_fa,nutrition_review_status,nutrition_source_note,allergen_review_status';
+  const fields = 'id,name_fa,name_en,category,energy_kcal,protein_g,carbohydrate_g,fat_g,fiber_g,calcium_mg,sodium_mg,basis_grams,portion_name_fa,portion_grams,data_quality,data_source,data_source_url,source_record_id,review_status,verified_at,ingredients_fa,allergens,allergens_reviewed,dietary_tags,preparation_fa,cooking_method_fa,prep_time_minutes,cooking_time_minutes,default_servings,storage_fa,recipe_notes_fa,nutrition_review_status,nutrition_source_note,allergen_review_status';
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
