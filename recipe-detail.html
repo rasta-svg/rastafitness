@@ -435,8 +435,8 @@ async function load() {
     if (f.nutrition_source_note) { const n=document.createElement('p'); n.textContent=f.nutrition_source_note; sourceInfo.append(n); }
     if (f.source_record_id) { const id=document.createElement('p'); id.textContent='شناسه رکورد منبع: ' + f.source_record_id; sourceInfo.append(id); }
     if (f.data_source) { const p=document.createElement('p'); p.textContent='منبع/یادداشت ثبت‌شده: ' + f.data_source; sourceInfo.append(p); }
-    if (f.data_source_url) { const a=document.createElement('a'); a.href=f.data_source_url; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent='بازکردن منبع تغذیه‌ای'; sourceInfo.append(a); }
-    else { const p=document.createElement('p'); p.textContent='پیوند مستقیم به رکورد منبع برای این غذا ثبت نشده است؛ بنابراین تطبیق منبع هنوز قابل اثبات نیست.'; sourceInfo.append(p); }
+    if (f.data_source_url) { const a=document.createElement('a'); a.href=f.data_source_url; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent='بازکردن منبع تغذیه‌ای عمومی'; sourceInfo.append(a); }
+    if (!f.source_record_id) { const p=document.createElement('p'); p.className='muted'; p.textContent='این پیوند فقط مرجع عمومی برای برآورد است؛ رکورد دقیق همین غذا به‌صورت مستقل تطبیق داده نشده است و همه اعداد تخمینی‌اند.'; sourceInfo.append(p); }
 
     const recipe = recipes[f.name_fa];
     const category = (f.category || '').toLowerCase();
