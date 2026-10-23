@@ -37,6 +37,12 @@ const ranked = search.rank([{name:'عدسی'}, {name:'قورمه سبزی'}], '�
 if (ranked[0].name !== 'قورمه سبزی') throw new Error('Shared search must rank stronger matches first.');
 if (searchContext.RastaCore.lastRegistration.id !== 'search-engine') throw new Error('Shared search engine must register with Rasta Core.');
 if (!html.includes('rasta-search.js')) throw new Error('Main app must load the shared search engine.');
+if (!html.includes("id=\"rasta-engine-health-panel\"") || !html.includes("RastaCore.health()")) throw new Error('Settings must expose central engine dependency health.');
+for (const [file, marker] of [['admin.html', "url('./assets/rasta-icon.png?v=20261023')"], ['download.html', "url('./assets/rasta-icon.png?v=20261023')"]]) {
+  const source = fs.readFileSync(path.join(root, file), 'utf8');
+  if (!source.includes(marker) || !source.includes('assets/rasta-icon.png?v=20261023')) throw new Error('Requested Rasta logo is not wired into ' + file);
+}
+if (!html.includes('rasta-icon.png?v=20261023') || !fs.readFileSync(path.join(root, 'manifest.json'), 'utf8').includes('rasta-icon.png?v=20261023')) throw new Error('Main app/PWA icon cache keys are not aligned.');
 if (!foodBankHasSharedSearch()) throw new Error('Food bank must load the shared search engine.');
 function foodBankHasSharedSearch() {
   return fs.readFileSync(path.join(root, 'nutrition-bank.html'), 'utf8').includes('rasta-search.js');
