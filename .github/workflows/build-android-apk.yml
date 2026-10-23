@@ -9,6 +9,8 @@ on:
       - "rasta-science-engine.js"
       - "rasta-core.js"
       - "recipe-detail.html"
+      - "download.html"
+      - "manifest.json"
       - "sw.js"
       - "admin.html"
       - "capacitor.config.json"
@@ -59,7 +61,12 @@ jobs:
           mkdir -p www resources
           cp index.html www/index.html
           cp nutrition-bank.html www/nutrition-bank.html
+          cp recipe-detail.html www/recipe-detail.html
+          cp download.html www/download.html
+          cp manifest.json www/manifest.json
+          cp rasta-core.js www/rasta-core.js
           cp rasta-science-engine.js www/rasta-science-engine.js
+          cp sw.js www/sw.js
           cp admin.html www/admin.html
           cp -R assets www/assets
           printf '{"sha":"%s","built_at":"%s"}\n' "$GITHUB_SHA" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > www/version.json
