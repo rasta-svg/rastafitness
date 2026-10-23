@@ -22,7 +22,7 @@ const groups=[
  {id:'desserts',label:'دسر و شیرینی'},
  {id:'other',label:'سایر موارد'}
 ];
-const norm=s=>String(s||'').toLocaleLowerCase('fa').replace(/[\\u200cـ]/g,'').replace(/\\s+/g,' ');
+const norm=s=>String(s||'').toLocaleLowerCase('fa').replace(/[\u200cـ]/g,'').replace(/\s+/g,' ');
 function matchesGroup(f,id){
  const c=String(f.category||''),n=norm((f.name_fa||'')+' '+(f.name_en||'')),tags=(f.dietary_tags||[]).join(' ').toLowerCase();
  const breakfastCats=['breakfast','iranian_breakfast'];
