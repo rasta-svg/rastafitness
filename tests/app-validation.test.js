@@ -45,7 +45,7 @@ if (!html.includes('window.RastaSearch.matches(exploreQuery') || !html.includes(
   throw new Error('Workout, exercise library, and food catalog must use shared search rules.');
 }
 if (!html.includes('window.RastaSearch.searchFoodReference(query,c)')) throw new Error('External USDA food search must use the shared search adapter.');
-if (!serviceWorker.includes("new URL('./rasta-search.js',BASE_URL).href")) throw new Error('Shared search engine must be cached for offline app shell.');
+if (!fs.readFileSync(path.join(root, 'sw.js'), 'utf8').includes("new URL('./rasta-search.js',BASE_URL).href")) throw new Error('Shared search engine must be cached for offline app shell.');
 const serviceWorker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 new vm.Script(serviceWorker);
 for (const required of ['rasta-science-engine.js', 'version.json']) {
