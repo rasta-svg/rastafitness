@@ -25,6 +25,27 @@ const engine = fs.readFileSync(path.join(root, 'rasta-science-engine.js'), 'utf8
 new vm.Script(engine);
 const core = fs.readFileSync(path.join(root, 'rasta-core.js'), 'utf8');
 new vm.Script(core);
+const searchSource = fs.readFileSync(path.join(root, 'rasta-search.js'), 'utf8');
+new vm.Script(searchSource);
+const searchContext = { RastaCore: { registerModule(id, options) { this.lastRegistration = { id, options }; } } };
+vm.createContext(searchContext);
+new vm.Script(searchSource).runInContext(searchContext);
+const search = searchContext.RastaSearch;
+if (!search || search.normalize('ي ك ۱۲٣') !== 'ی ک 123') throw new Error('Shared search must normalize Arabic/Persian letters and digits.');
+if (!search.matches('کورمه سبزی', 'قورمه‌سبزی خانگی')) throw new Error('Shared search must tolerate common Persian typing variants.');
+const ranked = search.rank([{name:'عدسی'}, {name:'قورمه سبزی'}], 'قورمه سبزی', item => item.name);
+if (ranked[0].name !== 'قورمه سبزی') throw new Error('Shared search must rank stronger matches first.');
+if (searchContext.RastaCore.lastRegistration.id !== 'search-engine') throw new Error('Shared search engine must register with Rasta Core.');
+if (!html.includes('rasta-search.js')) throw new Error('Main app must load the shared search engine.');
+if (!foodBankHasSharedSearch()) throw new Error('Food bank must load the shared search engine.');
+function foodBankHasSharedSearch() {
+  return fs.readFileSync(path.join(root, 'nutrition-bank.html'), 'utf8').includes('rasta-search.js');
+}
+if (!html.includes('window.RastaSearch.matches(exploreQuery') || !html.includes('window.RastaSearch.matches(exquery') || !html.includes('window.RastaSearch.matches(foodquery')) {
+  throw new Error('Workout, exercise library, and food catalog must use shared search rules.');
+}
+if (!html.includes('window.RastaSearch.searchFoodReference(query,c)')) throw new Error('External USDA food search must use the shared search adapter.');
+if (!serviceWorker.includes("new URL('./rasta-search.js',BASE_URL).href")) throw new Error('Shared search engine must be cached for offline app shell.');
 const serviceWorker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
 new vm.Script(serviceWorker);
 for (const required of ['rasta-science-engine.js', 'version.json']) {
