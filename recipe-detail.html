@@ -450,7 +450,7 @@ async function load() {
     $('methodCard').style.display = nonRecipe ? 'none' : '';
     const notes = [];
     if (nonRecipe) {
-      text('ingredients', f.ingredients_fa || 'ترکیبات اختصاصی این ماده هنوز ثبت نشده است.');
+      text('ingredients', (f.ingredients_fa || 'ترکیبات اختصاصی این ماده هنوز ثبت نشده است.') + ' تمام اطلاعات این بخش تخمینی‌اند و بسته به نوع محصول یا برند تغییر می‌کنند.');
       text('method', 'این مورد ماده اولیه یا خوراکی آماده است؛ دستور پخت ترکیبی برای آن لازم نیست.');
       notes.push('این مورد ماده اولیه یا خوراکی آماده است؛ اطلاعات ترکیب و شیوه نگهداری در صورت ثبت نمایش داده می‌شود.');
     } else {
@@ -458,7 +458,7 @@ async function load() {
       text('ingredients', genericIngredients
         ? 'مواد اولیه اختصاصی این غذا هنوز ثبت نشده یا فقط متن الگو در پایگاه داده وجود دارد؛ برای جلوگیری از اطلاعات گمراه‌کننده، فهرست مواد نمایش داده نمی‌شود.'
         : (recipe ? recipe.ingredients : (f.ingredients_fa || 'مواد اولیه اختصاصی این مورد هنوز ثبت نشده است.')));
-      const recipeStatus = document.createElement('p'); recipeStatus.className='muted'; recipeStatus.textContent = recipe ? 'دستور زیر برای این نام به‌صورت اختصاصی نوشته شده، اما هنوز با منبع آشپزی مستقل و مقادیر تغذیه‌ای نهایی بازبینی نشده است.' : 'دستور ثبت‌شده هنوز بازبینی نهایی نشده است؛ در صورت عمومی یا ناقص بودن متن، آن را دستور قطعی این غذا تلقی نکنید.'; $('methodCard').insertBefore(recipeStatus, $('method'));
+      const recipeStatus = document.createElement('p'); recipeStatus.className='muted'; recipeStatus.textContent = recipe ? 'مواد اولیه، مقدارها و مراحل زیر برآورد تخمینی متناسب با نام غذا هستند؛ هنوز با منبع آشپزی مستقل و وزن دقیق مواد تطبیق داده نشده‌اند و دستور قطعی محسوب نمی‌شوند.' : 'مواد اولیه، مقدارها و مراحل ثبت‌شده تخمینی‌اند؛ هنوز با منبع آشپزی مستقل و وزن دقیق مواد تطبیق داده نشده‌اند و دستور قطعی این غذا محسوب نمی‌شوند.'; $('methodCard').insertBefore(recipeStatus, $('method'));
 
       const method = $('method');
       method.replaceChildren();
