@@ -208,4 +208,5 @@ function recoveryAdvice({sleepHours=null,soreness='unknown',pain=false,energy='n
  return {status:'normal',message:'طبق برنامه پیش برو و فرم صحیح را بر افزایش بار مقدم بدان.'};
 }
 root.RastaScienceEngine={version:VERSION,buildProgram,prescription,estimateNutrition,analyzeProgress,nextLoad,recoveryAdvice,weeklyGuidance,equipmentAllowed,safeForLimit};
+ if(root.RastaCore)root.RastaCore.registerModule('science-engine',{kind:'engine',version:VERSION,source:'rasta-science-engine.js'});
 })(typeof window!=='undefined'?window:globalThis);

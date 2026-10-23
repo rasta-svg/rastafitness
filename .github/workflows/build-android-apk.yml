@@ -7,6 +7,8 @@ on:
       - "index.html"
       - "nutrition-bank.html"
       - "rasta-science-engine.js"
+      - "rasta-core.js"
+      - "recipe-detail.html"
       - "sw.js"
       - "admin.html"
       - "capacitor.config.json"
@@ -42,6 +44,8 @@ jobs:
           distribution: temurin
           java-version: "21"
 
+      - name: Test Rasta shared core
+        run: node tests/core.test.js
       - name: Test Rasta science engine
         run: node tests/science-engine.test.js
       - name: Validate application JavaScript syntax
@@ -198,7 +202,7 @@ jobs:
           retention-days: 30
 
       - name: Publish latest signed APK release
-        if: ${{ env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
+        if: ${{ github.ref == 'refs/heads/main' && env.RASTA_KEYSTORE_BASE64 != '' && env.RASTA_KEYSTORE_PASSWORD != '' && env.RASTA_KEY_PASSWORD != '' && env.RASTA_KEY_ALIAS != '' }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-${{ github.run_number }}
