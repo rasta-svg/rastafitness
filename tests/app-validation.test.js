@@ -45,6 +45,9 @@ if (!html.includes('window.RastaSearch.matches(exploreQuery') || !html.includes(
   throw new Error('Workout, exercise library, and food catalog must use shared search rules.');
 }
 if (!html.includes('window.RastaSearch.searchFoodReference(query,c)')) throw new Error('External USDA food search must use the shared search adapter.');
+for (const moduleId of ['exercise-library-search','workout-discovery-search','food-catalog-search','premium-catalog-search']) {
+  if (!html.includes("registerModule('" + moduleId + "'")) throw new Error('Search consumer is missing from central module health: ' + moduleId);
+}
 if (!html.includes('window.RastaSearch.rank(arr,exquery') || !html.includes('window.RastaSearch.rank(arr,foodquery') || !html.includes('window.RastaSearch.rank(arr,exploreQuery') || !html.includes('window.RastaSearch.rank(arr,rastaPremiumQuery') || !html.includes('window.RastaSearch.rank(found,$('+'\'modalfoodsearch\''+').value')) throw new Error('Every local search area must use the shared relevance ranking.');
 const workflow = fs.readFileSync(path.join(root, '.github/workflows/build-android-apk.yml'), 'utf8');
 if (!workflow.includes('cp rasta-search.js www/rasta-search.js') || !workflow.includes('"rasta-search.js"')) throw new Error('Android APK must package the shared search engine and rebuild when it changes.');
