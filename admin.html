@@ -50,10 +50,11 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 setInterval(()=>{if(!$('dashboard').classList.contains('hidden'))loadUsers()},5000);
 </script>
+<script src="./rasta-core.js"></script>
 <script>
-const SUPABASE_URL='https://ptmokqppwjjxhakjpxum.supabase.co';
-const SUPABASE_KEY='sb_publishable_3zcZSgGImm9GeK2TmngGcg_hQDYNVjT';
+const {url:SUPABASE_URL,publishableKey:SUPABASE_KEY}=window.RastaCore.config.supabase;
 const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+window.RastaCore.registerModule('supabase-client',{kind:'service',version:'2',source:'admin.html'});
 const $=id=>document.getElementById(id);let allUsers=[];
 function note(el,msg,type='error'){el.textContent=msg;el.className='notice show '+type}
 function hideNote(el){el.className='notice'}
