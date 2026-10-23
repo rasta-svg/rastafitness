@@ -1399,6 +1399,10 @@ function showEx(id){let e=getex(id);if(!e)return;const steps=beginnerSteps(e);mo
 
 
 const RASTA_NUTRITION_VERSION='rasta-nutrition-0.2-variety';
+ window.RastaCore.registerModule('exercise-library-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
+ window.RastaCore.registerModule('workout-discovery-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
+ window.RastaCore.registerModule('food-catalog-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
+ window.RastaCore.registerModule('premium-catalog-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
  window.RastaCore.registerModule('nutrition-engine',{kind:'engine',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['supabase-client','science-engine','search-engine']});
 let rastaNutritionWeekSelections=[];
 let rastaPremiumGeneratedProgram=null;
