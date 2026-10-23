@@ -726,7 +726,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
    <button data-view="today"><span>☀️</span>امروز من</button>
    <button data-view="training"><span>🏋️</span>برنامه تمرینی</button>
    <button data-view="programs"><span>🗓️</span>برنامه‌های چند‌هفته‌ای</button>
-   <button data-view="premium-fitness"><span>💎</span>ورزش و رژیم پریمیوم</button>
+   <button data-view="premium-fitness"><span>💎</span>ورزش و تغذیه‌ی حرفه‌ای‌ها</button>
    <button data-view="explore"><span>🔎</span>کشف تمرین‌ها</button>
    <button data-view="library"><span>🧍</span>فعالیت‌های ورزشی</button>
    <button data-view="nutrition"><span>🥗</span>برنامه غذایی ایرانی</button>
@@ -1161,7 +1161,7 @@ if(contactForm)contactForm.addEventListener('submit',async e=>{
 });
 const contactRefresh=$('rasta-contact-refresh');if(contactRefresh)contactRefresh.addEventListener('click',renderContactMessages);
 
-const RASTA_APP_VERSION='2.0.3';
+const RASTA_APP_VERSION='2.0.4';
 let rastaUpdateCheckInFlight=false;
 async function checkRastaForUpdate(){
  if(rastaUpdateCheckInFlight||!navigator.onLine)return;
@@ -1197,7 +1197,7 @@ async function loadRastaLatestRelease(){
   if(infoEl){const date=release.published_at?new Date(release.published_at).toLocaleDateString('fa-IR'):'';infoEl.textContent='آخرین انتشار: '+(release.name||release.tag_name)+(date?' · تاریخ انتشار: '+date:'')+' · لینک دانلود ثابت';}
  }catch(e){if(infoEl)infoEl.textContent='پیوندهای دانلود ثابت هستند؛ برای دیدن آخرین انتشار، «مشاهده نسخه‌ها و تغییرات» را بزن.';}
 }
-function goto(v,skipHistory=false){checkRastaForUpdate();if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و رژیم پریمیوم',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما',download:'دانلود آخرین نسخه',changelog:'آخرین تغییرات'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();if(v==='download')loadRastaLatestRelease();if(v==='changelog')loadRastaChangelog();if(v==='guide')loadRastaGuideLive();scrollTo({top:0,behavior:'smooth'})}
+function goto(v,skipHistory=false){checkRastaForUpdate();if(!skipHistory)window.history.pushState({rastaView:v},'',window.location.href);document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));document.querySelectorAll('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===v));$('viewtitle').textContent=({today:'امروز من',training:'برنامه تمرینی من',programs:'برنامه‌های چند‌هفته‌ای','premium-fitness':'ورزش و تغذیه‌ی حرفه‌ای‌ها',explore:'کشف تمرین‌ها',library:'کتابخانه حرکات',nutrition:'برنامه غذایی ایرانی', 'food-detail':'جزئیات غذا',history:'گزارش و سابقه',profile:'تنظیمات شخصی',plans:'اشتراک و تعرفه‌ها',guide:'راهنمای استفاده',contact:'ارتباط با ما',download:'دانلود آخرین نسخه',changelog:'آخرین تغییرات'})[v]||'رَستا';if(v==='library')renderLibrary();if(v==='nutrition')renderNutrition();if(v==='history')renderHistory();if(v==='training')renderTraining();if(v==='plans')renderPlans();if(v==='premium-fitness')renderPremiumFitness();if(v==='contact')renderContactMessages();if(v==='download')loadRastaLatestRelease();if(v==='changelog')loadRastaChangelog();if(v==='guide')loadRastaGuideLive();scrollTo({top:0,behavior:'smooth'})}
 async function loadRastaGuideLive(){
  const status=$('rasta-guide-live-status'),box=$('rasta-guide-live-content');
  if(!status||!box)return;
@@ -2199,7 +2199,7 @@ function startRastaOnboarding(){
   {icon:'🌱',title:'سلام '+safeName+' جان! خوش اومدی 💚',copy:'خیلی خوشحالیم که به خانواده رَستا پیوستی! اینجا قرار نیست عجله کنی؛ قدم‌به‌قدم با هم برای تحرک بیشتر، غذای بهتر و حال خوب پیش می‌ریم.',hint:'برای آشنایی با رستا، روی پنجره بزن.'},
   {icon:'☀️',title:'۱. امروز من',copy:'اینجا صفحه شروع توست. خلاصه فعالیت‌ها، کالری و پروتئین برنامه‌ریزی‌شده و پیشنهاد تمرین امروز را می‌بینی. برای شروع سریع، دکمه‌های تمرین یا برنامه غذایی را لمس کن.'},
   {icon:'🏋️',view:'training',title:'۲. برنامه تمرینی',copy:'برای دیدن و تنظیم تمرین‌های روزانه‌ات وارد این بخش شو. می‌توانی روز و مدت تمرین را تغییر بدهی، حرکت اضافه کنی و تمرین انجام‌شده را ثبت کنی. اگر تازه‌کاری، از تعداد کمتر شروع کن.'},
-  {icon:'💎',view:'premium-fitness',title:'برنامه‌های ویژه ورزش و رژیم پریمیوم',copy:'در این قسمت ۴۰ مسیر هدف‌محور تمرین و تغذیه را می‌بینی. هر برنامه تمرین‌های عملی و الگوی غذایی دارد؛ پیش از خرید، قیمت و شرایط اشتراک را بررسی کن.'},
+  {icon:'💎',view:'premium-fitness',title:'برنامه‌های ویژه ورزش و تغذیه‌ی حرفه‌ای‌ها',copy:'در این قسمت ۴۰ مسیر هدف‌محور تمرین و تغذیه را می‌بینی. هر برنامه تمرین‌های عملی و الگوی غذایی دارد؛ پیش از خرید، قیمت و شرایط اشتراک را بررسی کن.'},
   {icon:'🗓️',view:'programs',title:'۳. برنامه‌های چند‌هفته‌ای',copy:'اگر دوست داری با برنامه منظم جلو بروی، یکی از برنامه‌های چند‌هفته‌ای را بررسی و انتخاب کن. برنامه انتخاب‌شده به زمان‌بندی تمرینت کمک می‌کند؛ هر وقت لازم بود می‌توانی آن را ویرایش کنی.'},
   {icon:'🔎',view:'explore',title:'۴. کشف تمرین‌ها',copy:'برای پیدا کردن تمرین‌های مناسب، حرکت‌ها را جست‌وجو کن و بر اساس امکانات یا هدف خودت بگرد. اگر اسم یک حرکت را نمی‌دانی، از جست‌وجو و دسته‌بندی‌ها کمک بگیر.'},
   {icon:'🧍',view:'library',title:'۵. فعالیت‌های ورزشی',copy:'کتابخانه حرکات برای یاد گرفتن تمرین‌هاست. یک کارت را لمس کن تا توضیح حرکت، روش اجرای ساده، تعداد پیشنهادی و نسخه آسان‌تر را ببینی. حرکت را آرام انجام بده و اگر درد غیرعادی داشتی، متوقف شو.'},
@@ -2258,7 +2258,7 @@ function startRastaOnboarding(){
   $('rasta-tour-progress-fill').style.width=((index+1)/steps.length*100)+'%';
   $('rasta-tour-hint').textContent=step.hint||'برای دیدن بخش بعدی، روی همین پنجره بزن 👆';
   $('rasta-tour-next').textContent=index===0?'بزن بریم! ←':index===steps.length-1?'شروع می‌کنم 🌿':'بخش بعدی ←';
-  $('rasta-tour-extra').innerHTML=step.extra==='menu'?'<div class="rasta-tour-menu"><span>☀️ امروز من</span><span>🏋️ برنامه تمرینی</span><span>🗓️ برنامه‌های چند‌هفته‌ای</span><span>💎 ورزش و رژیم پریمیوم</span><span>🔎 کشف تمرین‌ها</span><span>🧍 فعالیت‌های ورزشی</span><span>🥗 برنامه غذایی ایرانی</span><span>📈 گزارش و سابقه</span><span>💎 اشتراک و تعرفه‌ها</span><span>⚙️ تنظیمات شخصی</span><span>📘 راهنمای استفاده</span></div>':'';
+  $('rasta-tour-extra').innerHTML=step.extra==='menu'?'<div class="rasta-tour-menu"><span>☀️ امروز من</span><span>🏋️ برنامه تمرینی</span><span>🗓️ برنامه‌های چند‌هفته‌ای</span><span>💎 ورزش و تغذیه‌ی حرفه‌ای‌ها</span><span>🔎 کشف تمرین‌ها</span><span>🧍 فعالیت‌های ورزشی</span><span>🥗 برنامه غذایی ایرانی</span><span>📈 گزارش و سابقه</span><span>💎 اشتراک و تعرفه‌ها</span><span>⚙️ تنظیمات شخصی</span><span>📘 راهنمای استفاده</span></div>':'';
   positionRastaTourTarget(step);
  };
  $('rasta-tour-skip').addEventListener('click',e=>{e.stopPropagation();finish()});
