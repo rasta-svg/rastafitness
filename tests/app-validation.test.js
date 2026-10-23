@@ -54,16 +54,16 @@ if (!recipeDetail.includes("registerModule('recipe-detail-data'") || !recipeDeta
 
 for (const page of ['nutrition-bank.html', 'recipe-detail.html', 'admin.html']) {
   const source = fs.readFileSync(path.join(root, page), 'utf8');
-  const tags = /<script\\b([^>]*)>([\\s\\S]*?)<\\/script\\s*>/gi;
+  const tags = /<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi;
   let script;
   let checked = 0;
   while ((script = tags.exec(source)) !== null) {
-    if (/\\bsrc\\s*=/.test(script[1] || '') || !(script[2] || '').trim()) continue;
+    if (/\bsrc\s*=/.test(script[1] || '') || !(script[2] || '').trim()) continue;
     try {
       new vm.Script(script[2]);
       checked++;
     } catch (error) {
-      const line = source.slice(0, script.index).split('\\n').length;
+      const line = source.slice(0, script.index).split('\n').length;
       throw new Error('Inline script syntax error near ' + page + ' line ' + line + ': ' + error.message);
     }
   }
