@@ -12,7 +12,7 @@
   "theme_color": "#0b3a2b",
   "icons": [
     {
-      "src": "./assets/rasta-icon.png?v=20261023",
+      "src": "./assets/rasta-icon.png?v=20261024",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
