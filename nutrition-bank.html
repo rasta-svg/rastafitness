@@ -20,6 +20,13 @@ const groups=[
  {id:'soups',label:'سوپ و آش'},
  {id:'snacks',label:'میان‌وعده‌ها'},
  {id:'desserts',label:'دسر و شیرینی'},
+ {id:'drinks',label:'نوشیدنی‌ها'},
+ {id:'seafood',label:'ماهی و غذاهای دریایی'},
+ {id:'meat',label:'گوشت و مرغ'},
+ {id:'vegetarian',label:'غذاهای گیاهی'},
+ {id:'sauces',label:'سس‌ها و چاشنی‌ها'},
+ {id:'fats',label:'روغن‌ها و چربی‌ها'},
+ {id:'world',label:'غذاهای بین‌المللی'},
  {id:'other',label:'سایر موارد'}
 ];
 const norm=s=>String(s||'').toLocaleLowerCase('fa').replace(/[\u200cـ]/g,'').replace(/\s+/g,' ');
@@ -43,7 +50,14 @@ function matchesGroup(f,id){
  if(id==='legumes')return ['legume','nuts','حبوبات و مغزها'].includes(c)||/عدس|لوبیا|نخود|لپه|ماش|بادام|گردو|پسته|فندق|تخمه|دانه چیا|کنجد|ارده|سویا/.test(n);
  if(id==='soups')return c==='سوپ و آش'||/سوپ|آش /.test(n);
  if(id==='snacks')return ['iranian_snack','iranian_snack','میان‌وعده‌ها'].includes(c)||/میان وعده|خرما و گردو|مخلوط نخودچی|توت خشک|کشمش|برگه زردآلو/.test(n);
- if(id==='desserts')return ['iranian_dessert','دسر و شیرینی'].includes(c)||/باسلوق|حلوا|سوهان|شلهزرد|گز|کیک|شیرینی|بستنی|فرنی|شیر برنج/.test(n);
+ if(id==='desserts')return ['iranian_dessert','دسر و شیرینی'].includes(c)||/باسلوق|حلوا|سوهان|شلهزرد|گز|کیک|شیرینی|بستنی|فرنی|شیر برنج|پودینگ|کلوچه|بیسکویت|شکلات/.test(n);
+ if(id==='drinks')return ['نوشیدنی‌ها','نوشیدنی','drinks','beverage'].includes(c)||/آبمیوه|آب میوه|اسموتی|شربت|چای |قهوه|دمنوش|نوشیدنی|لیموناد|شیرکاکائو|شیر موز|دوغ|کفیر/.test(n);
+ if(id==='seafood')return /ماهی|قلیه|میگو|تن ماهی|ساردین|سالمون|قزل آلا|قزلآلا|صدف|اختاپوس|ماهی تن|shrimp|salmon|tuna|seafood/.test(n);
+ if(id==='meat')return /مرغ|گوشت|گوساله|گوسفند|بوقلمون|جوجه|کباب|استیک|دل و جگر|سوسیس|کالباس|چرخ کرده|meat|chicken|beef|turkey/.test(n)&&!matchesGroup(f,'seafood');
+ if(id==='vegetarian')return !!tags.match(/plant_based|vegetarian|vegan/)||/گیاهی|سبزیجات|بادمجان|کدو|قارچ|فلافل|حمص|حُمص|عدس|لوبیا|نخود|سویا|توفو|سالاد/.test(n)&&!matchesGroup(f,'meat')&&!matchesGroup(f,'seafood');
+ if(id==='sauces')return /سس |سسِ|چاشنی|ترشی|شور|دیپ |مایونز|کچاپ|خردل|رب گوجه|رب انار|پستو|سالس|سرکه|آبلیمو|آب لیمو/.test(n)||['سس‌ها و چاشنی‌ها','condiment','sauce'].includes(c);
+ if(id==='fats')return /روغن|کره|روغن زیتون|دنبه|مارگارین|روغن کنجد|روغن آفتابگردان|چربی/.test(n)&&!(/کره بادام|کره بادام زمینی|کره بادامزمینی/.test(n));
+ if(id==='world')return /تاکو|بوریتو|سوشی|پیتزا|پاستا|لازانیا|شاورما|فاهیتا|همبرگر|برگر|ساندویچ|رامن|کاری هندی|نودل|فلافل|حمص|هاموس|تبوله|فتوش/.test(n)||['غذاهای متنوع','international','world_food'].includes(c);
  if(id==='other')return !groups.filter(g=>g.id!=='other').some(g=>matchesGroup(f,g.id));
  return false;
 }
