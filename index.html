@@ -179,7 +179,7 @@ if (!rastaNativeShell && 'serviceWorker' in navigator && /^https?:$/.test(locati
 .rasta-all-menus-heading b{font-size:17px;color:var(--ink)}
 .rasta-all-menus-heading p{margin:3px 0 0;color:var(--muted);font-size:12px}
 .rasta-all-menus-close{border:1px solid var(--line);border-radius:12px;background:var(--paper);width:38px;height:38px;font-size:18px}
-.rasta-all-menus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.rasta-all-menus-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.rasta-menu-group{grid-column:1/-1;padding:8px 3px 2px;color:var(--green,#24543d);font-size:12px;font-weight:900;border-bottom:1px solid var(--line);margin-top:3px}
 .rasta-all-menus-grid button{display:flex;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid var(--line);border-radius:13px;background:var(--card,var(--paper));color:var(--ink);font:inherit;font-size:12px;text-align:right}
 .rasta-all-menus-grid button span{font-size:21px;flex:0 0 auto}
 .rasta-all-menus-grid button.active{border-color:var(--green);background:var(--pale);font-weight:800}
@@ -717,27 +717,31 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div>
 </section>
 </main></div>
-<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><a class="mobile-bank-link" href="./nutrition-bank.html" aria-label="بانک جامع غذاها"><span>📚</span>بانک غذا</a><button data-view="premium-fitness"><span>💎</span>ورزش و تغذیه‌ی حرفه‌ای‌ها</button><button type="button" data-open-all-menus aria-expanded="false" onclick="(function(){var m=document.getElementById('rasta-all-menus');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false')}document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded','true')});var a=document.getElementById('rasta-admin-mobile-link');if(a)a.style.display='flex';var l=document.getElementById('rasta-allmenus-logout');if(l)l.style.display=(window.__RASTA_AUTH_USER?'flex':'none')})()"><span>☰</span>همه منوها</button></nav>
+<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button type="button" data-open-all-menus aria-expanded="false" onclick="(function(){var m=document.getElementById('rasta-all-menus');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false')}document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded','true')});var a=document.getElementById('rasta-admin-mobile-link');if(a)a.style.display='flex';var l=document.getElementById('rasta-allmenus-logout');if(l)l.style.display=(window.__RASTA_AUTH_USER?'flex':'none')})()"><span>☰</span>همه منوها</button></nav>
 <div id="rasta-all-menus" class="rasta-all-menus" aria-hidden="true">
  <div class="rasta-all-menus-backdrop" data-close-all-menus></div>
  <section class="rasta-all-menus-sheet" role="dialog" aria-modal="true" aria-label="همه بخش‌های رستا">
   <div class="rasta-all-menus-heading"><div><b>همه بخش‌های رستا</b><p>بخش موردنظرت را انتخاب کن</p></div><button type="button" class="rasta-all-menus-close" data-close-all-menus aria-label="بستن منو">✕</button></div>
   <div class="rasta-all-menus-grid">
+    <div class="rasta-menu-group">تمرین و برنامه‌ریزی</div>
    <button data-view="today"><span>☀️</span>امروز من</button>
    <button data-view="training"><span>🏋️</span>برنامه تمرینی</button>
    <button data-view="programs"><span>🗓️</span>برنامه‌های چند‌هفته‌ای</button>
    <button data-view="premium-fitness"><span>💎</span>ورزش و تغذیه‌ی حرفه‌ای‌ها</button>
    <button data-view="explore"><span>🔎</span>کشف تمرین‌ها</button>
    <button data-view="library"><span>🧍</span>فعالیت‌های ورزشی</button>
-   <button data-view="nutrition"><span>🥗</span>برنامه غذایی ایرانی</button>
+   <div class="rasta-menu-group">تغذیه و بانک غذا</div>
+    <button data-view="nutrition"><span>🥗</span>برنامه غذایی ایرانی</button>
    <a href="./nutrition-bank.html" style="display:flex;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid #dce5d9;border-radius:13px;color:inherit;text-decoration:none;font:inherit;font-size:12px;text-align:right;font-weight:800"><span style="font-size:21px">📚</span>بانک جامع غذاها</a>
-   <button data-view="history"><span>📈</span>گزارش و سابقه</button>
+   <div class="rasta-menu-group">پیشرفت و حساب کاربری</div>
+    <button data-view="history"><span>📈</span>گزارش و سابقه</button>
    <button data-view="plans"><span>💳</span>اشتراک و تعرفه‌ها</button>
    <button data-view="profile"><span>⚙️</span>تنظیمات شخصی</button>
    <button data-view="guide"><span>📘</span>راهنمای استفاده</button>
     <a id="rasta-admin-mobile-link" href="./admin.html" style="display:none;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid #294e3b;border-radius:13px;background:#e8eee0;color:#294e3b;text-decoration:none;font:inherit;font-size:12px;text-align:right;font-weight:800"><span style="font-size:21px">🛡️</span>پنل مدیریت</a>
    <button data-view="contact"><span>✉️</span>ارتباط با ما</button>
-   <button data-view="download"><span>⬇️</span>دانلود آخرین نسخه <small id="rasta-update-allmenus-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button>
+   <div class="rasta-menu-group">راهنما و نرم‌افزار</div>
+    <button data-view="download"><span>⬇️</span>دانلود آخرین نسخه <small id="rasta-update-allmenus-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button>
    <button data-view="changelog"><span>🆕</span>آخرین تغییرات</button>
    <button id="rasta-allmenus-logout" type="button" style="display:none;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid #e4c8c1;border-radius:13px;background:#fbefec;color:#9b3f32;font:inherit;font-size:12px;text-align:right;font-weight:800"><span style="font-size:21px">🚪</span>خروج از حساب</button>
   </div>
