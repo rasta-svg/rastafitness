@@ -68,7 +68,7 @@ async function searchFoodReference(query,client){
   throw new Error(message);
  }
  if(data&&data.error)throw new Error(data.message||'جست‌وجوی مرجع ناموفق بود.');
- return Array.isArray(data&&data.foods)?data.foods:[];
+ return rank(Array.isArray(data&&data.foods)?data.foods:[],q,item=>[item.description,item.food_category]);
 }
 root.RastaSearch=Object.freeze({version:VERSION,normalize,score,matches,rank,searchFoodReference});
 if(root.RastaCore)root.RastaCore.registerModule('search-engine',{kind:'engine',version:VERSION,source:'rasta-search.js',dependencies:[]});
