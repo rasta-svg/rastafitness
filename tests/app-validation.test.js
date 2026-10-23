@@ -103,5 +103,6 @@ if (!admin.includes('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabas
 if (!foodBank.includes("dependencies:['food-bank']")) {
   throw new Error('Food bank data service must depend on the page module id registered by Rasta Core.');
 }
+if (!foodBank.includes("registerModule('food-bank-search'") || !foodBank.includes("dependencies:['search-engine']")) throw new Error('Food bank search must be registered as a central search consumer.');
 
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
