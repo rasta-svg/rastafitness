@@ -40,6 +40,9 @@ for (const page of ['index.html', 'nutrition-bank.html', 'recipe-detail.html', '
     throw new Error('Supabase URL is still duplicated in ' + page);
   }
 }
+if (!html.includes("registerModule('nutrition-engine'") || !html.includes("dependencies:['supabase-client','science-engine']")) {
+  throw new Error('Nutrition engine must declare its central module dependencies.');
+}
 const foodBank = fs.readFileSync(path.join(root, 'nutrition-bank.html'), 'utf8');
 if (!foodBank.includes("registerModule('food-bank-data'") || !foodBank.includes("setModuleStatus('food-bank-data','ready'") || !foodBank.includes("setModuleStatus('food-bank-data','degraded'")) {
   throw new Error('Food bank must register with central health and report success/failure.');
