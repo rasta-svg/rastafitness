@@ -50,12 +50,13 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 setInterval(()=>{if(!$('dashboard').classList.contains('hidden'))loadUsers()},5000);
 </script>
-<script src="./rasta-core.js"></script>
+<script src="./rasta-core.js"></script><script src="./rasta-search.js"></script>
 <script>
 const {url:SUPABASE_URL,publishableKey:SUPABASE_KEY}=window.RastaCore.config.supabase;
 const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 window.RastaCore.registerModule('supabase-client',{kind:'service',version:'2',source:'admin.html'});
-const $=id=>document.getElementById(id);let allUsers=[];
+const $=id=>document.getElementById(id);
+if(window.RastaCore&&window.RastaSearch)window.RastaCore.registerModule('admin-user-search',{kind:'feature',version:'1.0.0',source:'admin.html',dependencies:['search-engine']});let allUsers=[];
 function note(el,msg,type='error'){el.textContent=msg;el.className='notice show '+type}
 function hideNote(el){el.className='notice'}
 async function readableFunctionError(error){
@@ -65,7 +66,7 @@ async function readableFunctionError(error){
 function showLogin(){ $('login-panel').classList.remove('hidden');$('dashboard').classList.add('hidden')}
 function showDashboard(){ $('login-panel').classList.add('hidden');$('dashboard').classList.remove('hidden')}
 function dateText(v){if(!v)return'—';try{return new Date(v).toLocaleDateString('fa-IR')}catch{return v}}function dateTimeText(v){if(!v)return'هنوز ثبت نشده';try{return new Date(v).toLocaleString('fa-IR',{dateStyle:'short',timeStyle:'short'})}catch{return v}}
-function render(){const q=$('search').value.trim().toLocaleLowerCase();const users=allUsers.filter(u=>[u.name,u.email,u.phone].join(' ').toLocaleLowerCase().includes(q));$('users').innerHTML=users.length?users.map(u=>'<tr><td>'+esc(u.name||'—')+'</td><td dir="ltr">'+esc(u.email||'—')+'</td><td dir="ltr">'+esc(u.phone||'—')+'</td><td><span class="status" style="'+(u.online?'':'background:#f7e7e3;color:#9d4b3d')+'">'+(u.online?'آنلاین':'آفلاین')+'</span></td><td>'+esc(dateTimeText(u.last_seen))+'</td><td>'+esc(dateText(u.created_at))+'</td><td><span class="status">'+(u.email_confirmed_at?'تأیید شده':'تأیید نشده')+'</span></td><td><button class="btn red" data-delete-user="'+esc(u.id)+'" data-user-email="'+esc(u.email||'')+'" style="padding:7px 9px">حذف کامل</button></td></tr>').join(''):'<tr><td colspan="8">کاربری مطابق جست‌وجو پیدا نشد.</td></tr>'}
+function render(){const q=$('search').value.trim();let users=allUsers.filter(u=>window.RastaSearch?window.RastaSearch.matches(q,u.name,u.email,u.phone):[u.name,u.email,u.phone].join(' ').toLocaleLowerCase().includes(q.toLocaleLowerCase()));if(window.RastaSearch&&q)users=window.RastaSearch.rank(users,q,u=>[u.name,u.email,u.phone]);$('users').innerHTML=users.length?users.map(u=>'<tr><td>'+esc(u.name||'—')+'</td><td dir="ltr">'+esc(u.email||'—')+'</td><td dir="ltr">'+esc(u.phone||'—')+'</td><td><span class="status" style="'+(u.online?'':'background:#f7e7e3;color:#9d4b3d')+'">'+(u.online?'آنلاین':'آفلاین')+'</span></td><td>'+esc(dateTimeText(u.last_seen))+'</td><td>'+esc(dateText(u.created_at))+'</td><td><span class="status">'+(u.email_confirmed_at?'تأیید شده':'تأیید نشده')+'</span></td><td><button class="btn red" data-delete-user="'+esc(u.id)+'" data-user-email="'+esc(u.email||'')+'" style="padding:7px 9px">حذف کامل</button></td></tr>').join(''):'<tr><td colspan="8">کاربری مطابق جست‌وجو پیدا نشد.</td></tr>'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 async function loadContactMessages(){
  const box=$('contact-messages-list');if(!box)return;
