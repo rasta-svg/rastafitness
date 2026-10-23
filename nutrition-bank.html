@@ -43,7 +43,11 @@ function matchesGroup(f,id){
  if(id==='south')return c==='غذاهای جنوبی'||n.includes('جنوبی')||n.includes('بوشهری')||n.includes('قلیه')||n.includes('سمبوسه')||n.includes('فلافل')||n.includes('مهیاوه')||n.includes('دوپیازه')||n.includes('هواری')||n.includes('قیمه بوشهری');
  if(id==='produce')return fruitCats.includes(c)||vegCats.includes(c)||c==='میوه‌ها' || c==='سبزیجات و میوه‌ها';
  if(id==='dairy')return dairyCats.includes(c)||c==='dairy';
- if(id==='main')return (dishCats.includes(c)||c==='غذاهای ایرانی'||c==='غذاهای متنوع')&&!matchesGroup(f,'south')&&!['iranian_dessert','iranian_snack'].includes(c);
+ if(id==='main'){
+  const mealName=/پلو|چلو|خورش|خورشت|خوراک|آبگوشت|دیزی|کباب|کتلت|کوکو|شامی|کوفته|دلمه|ماکارونی|پاستا|لازانیا|اسپاگتی|ساندویچ|پیتزا|برگر|برنج سرخ شده|برنج سرخ‌شده|املت|عدسی|فلافل|قیمه|فسنجان|قرمه|قورمه|قلیه|آش |سوپ |بوریتو|تاکو|کاری مرغ|مرغ و سبزیجات|ماهی تنوری|میگو رژیمی/;
+  return !matchesGroup(f,'south')&&!['iranian_dessert','iranian_snack','میان‌وعده‌ها'].includes(c)
+    && (dishCats.includes(c)||c==='غذاهای ایرانی'||c==='غذاهای متنوع'||mealName.test(n));
+ }
  if(id==='diet')return !!tags.match(/plant_based|gluten_free|low_oil|low_fat|high_protein|vegetarian/)||dietWords.test(n)||['vegetable','fruit','protein','legume','سبزیجات','منابع پروتئین','سوپ و آش'].includes(c);
  if(id==='protein')return ['protein','منابع پروتئین'].includes(c)||/مرغ|ماهی|تن ماهی|گوشت|بوقلمون|تخممرغ|میگو|ماست یونانی/.test(n);
  if(id==='grains')return ['bread','grain','نان و غلات'].includes(c)||/نان|برنج|جو|گندم|رشته|ماکارونی|پاستا/.test(n)&&!['iranian_dish','غذاهای جنوبی','غذاهای متنوع'].includes(c);
