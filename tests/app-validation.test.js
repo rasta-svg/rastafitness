@@ -163,4 +163,8 @@ if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => String(icon.s
   throw new Error('PWA manifest must point to the canonical Rasta icon asset.');
 }
 
+if (!html.includes('ورزش و تغذیه‌ی حرفه‌ای‌ها') || html.includes('ورزش و رژیم پریمیوم')) {
+  throw new Error('All-menus navigation and page title must use the approved professional-fitness label consistently.');
+}
+if (!html.includes("const RASTA_APP_VERSION='2.0.4';")) throw new Error('App version constant must match the current release.');
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
