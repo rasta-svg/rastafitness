@@ -3,19 +3,56 @@
 </style></head><body><main class="wrap"><header class="top"><div class="brand">رَستا | بانک غذایی</div><a href="./index.html">بازگشت به رستا ↗</a></header><section class="hero"><h1>بانک غذایی رستا</h1><div>غذا را انتخاب کنید تا صفحه جداگانه اطلاعات و دستور آماده‌سازی آن باز شود.</div></section><div class="warning"><b>دقت اطلاعات:</b> مقادیر ثبت‌شده برای بسیاری از غذاها برآورد اولیه و تأییدنشده‌اند؛ مبنا معمولاً ۱۰۰ گرم است و لزوماً یک وعده نیست. مقادیر فیبر، کلسیم و سدیم که هنوز منبع معتبر ندارند به‌عنوان عدد قطعی نمایش داده نمی‌شوند. دستورها ممکن است پیشنهادی باشند. آلرژن‌ها برای همه غذاها بررسی نشده‌اند.</div><div class="controls"><input id="q" type="search" placeholder="جست‌وجوی غذا…"><button id="clearcat" type="button">نمایش همه غذاها</button></div><h2 style="font-size:18px;margin:18px 0 10px">دسته‌بندی غذاها</h2><nav id="categories" class="categories" aria-label="دسته‌بندی غذاها"></nav><div id="stats" class="stats">در حال دریافت غذاها…</div><section id="results" class="grid"></section></main>
 <script>
 const API='https://ptmokqppwjjxhakjpxum.supabase.co',KEY='sb_publishable_3zcZSgGImm9GeK2TmngGcg_hQDYNVjT';let foods=[],activeCat='';const $=x=>document.getElementById(x),fa=x=>Number(x).toLocaleString('fa-IR',{maximumFractionDigits:1});
-const categoryNames={
- bread:'نان',breakfast:'صبحانه',dairy:'لبنیات',fruit:'میوه‌ها',grain:'غلات',iranian_breakfast:'صبحانه‌های ایرانی',iranian_dessert:'دسرها و شیرینی‌های ایرانی',iranian_dish:'غذاهای ایرانی',iranian_snack:'میان‌وعده‌های ایرانی',legume:'حبوبات',nuts:'مغزها و آجیل',protein:'منابع پروتئین',vegetable:'سبزیجات',
- 'حبوبات و مغزها':'حبوبات و مغزها','سبزیجات':'سبزیجات','سوپ و آش':'سوپ و آش','غذاهای ایرانی':'غذاهای ایرانی','غذاهای جنوبی':'غذاهای جنوبی','غذاهای متنوع':'غذاهای متنوع','لبنیات':'لبنیات','منابع پروتئین':'منابع پروتئین','نان و غلات':'نان و غلات'
-};
-const categoryLabel=c=>categoryNames[c]||String(c||'سایر غذاها').replaceAll('_',' ').replace(/\\b[a-z]/g,x=>x.toUpperCase());
-function renderCategories(){
- const counts={};foods.forEach(f=>{const c=f.category||'سایر غذاها';counts[c]=(counts[c]||0)+1});
- const cats=Object.keys(counts).sort((a,b)=>categoryLabel(a).localeCompare(categoryLabel(b),'fa'));
- const root=$('categories');root.replaceChildren();
- const all=document.createElement('button');all.type='button';all.className='catbtn'+(!activeCat?' active':'');all.setAttribute('aria-pressed',String(!activeCat));all.innerHTML='همه غذاها <span class="count">'+fa(foods.length)+'</span>';all.addEventListener('click',()=>{activeCat='';renderCategories();render()});root.append(all);
- for(const c of cats){const btn=document.createElement('button');btn.type='button';btn.className='catbtn'+(activeCat===c?' active':'');btn.setAttribute('aria-pressed',String(activeCat===c));btn.innerHTML=categoryLabel(c)+' <span class="count">'+fa(counts[c])+'</span>';btn.addEventListener('click',()=>{activeCat=activeCat===c?'':c;renderCategories();render()});root.append(btn)}
+const categoryNames={};
+const categoryLabel=c=>({
+ breakfast:'صبحانه',iranian_breakfast:'صبحانه',dairy:'لبنیات',fruit:'میوه‌ها و سبزیجات',vegetable:'میوه‌ها و سبزیجات',grain:'نان و غلات',bread:'نان و غلات',iranian_dessert:'دسر و شیرینی',iranian_snack:'میان‌وعده‌ها',iranian_dish:'غذاها',protein:'منابع پروتئین',legume:'حبوبات و مغزها',nuts:'حبوبات و مغزها'
+}[c]||String(c||'سایر غذاها').replaceAll('_',' '));
+const groups=[
+ {id:'breakfast',label:'صبحانه‌ها'},
+ {id:'main',label:'غذاها'},
+ {id:'south',label:'غذاهای جنوبی'},
+ {id:'produce',label:'سبزیجات و میوه‌ها'},
+ {id:'dairy',label:'لبنیات'},
+ {id:'diet',label:'غذاهای رژیمی'},
+ {id:'protein',label:'منابع پروتئین'},
+ {id:'grains',label:'نان و غلات'},
+ {id:'legumes',label:'حبوبات و مغزها'},
+ {id:'soups',label:'سوپ و آش'},
+ {id:'snacks',label:'میان‌وعده‌ها'},
+ {id:'desserts',label:'دسر و شیرینی'},
+ {id:'other',label:'سایر موارد'}
+];
+const norm=s=>String(s||'').toLocaleLowerCase('fa').replace(/[\u200c\sـ]/g,'');
+function matchesGroup(f,id){
+ const c=String(f.category||''),n=norm((f.name_fa||'')+' '+(f.name_en||'')),tags=(f.dietary_tags||[]).join(' ').toLowerCase();
+ const breakfastCats=['breakfast','iranian_breakfast'];
+ const breakfastWords=/تخممرغ|املت|حلیم|عدسی|نان|پنیر|کره|مربا|عسل|ارده|شیره|شیر|ماست|جو دوسر|اوتمیل|گرانولا|خرما|گردو|موز|کره بادامزمینی|فرنی|شیر برنج|حلوا ارده/;
+ const dairyCats=['dairy','لبنیات'];
+ const fruitCats=['fruit','میوه','میوه‌ها'];
+ const vegCats=['vegetable','سبزیجات'];
+ const dishCats=['غذاهای ایرانی','غذاهای متنوع','iranian_dish','غذاهای جنوبی','سوپ و آش'];
+ const dietWords=/کمروغن|رژیمی|بخارپز|آبپز|گریل|کباب|سالاد|سبزیجات|میوه|سینه مرغ|مرغ پخته|ماهی|تن ماهی|بوقلمون|عدس|لوبیا|نخود|جو دوسر|ماست ساده|ماست یونانی|شیر کمچرب|برنج قهوه‌ای/;
+ if(id==='breakfast')return breakfastCats.includes(c)||breakfastWords.test(n)&&(['dairy','لبنیات','fruit','میوه','vegetable','سبزیجات','bread','نان و غلات','grain','حبوبات و مغزها','nuts','iranian_snack','iranian_dish','protein','breakfast'].includes(c)||breakfastCats.includes(c));
+ if(id==='south')return c==='غذاهای جنوبی'||n.includes('جنوبی')||n.includes('بوشهری')||n.includes('قلیه')||n.includes('سمبوسه')||n.includes('فلافل')||n.includes('مهیاوه')||n.includes('دوپیازه')||n.includes('هواری')||n.includes('قیمه بوشهری');
+ if(id==='produce')return fruitCats.includes(c)||vegCats.includes(c)||c==='میوه‌ها' || c==='سبزیجات و میوه‌ها';
+ if(id==='dairy')return dairyCats.includes(c)||c==='dairy';
+ if(id==='main')return (dishCats.includes(c)||c==='غذاهای ایرانی'||c==='غذاهای متنوع')&&!matchesGroup(f,'south')&&!['iranian_dessert','iranian_snack'].includes(c);
+ if(id==='diet')return !!tags.match(/plant_based|gluten_free|low_oil|low_fat|high_protein|vegetarian/)||dietWords.test(n)||['vegetable','fruit','protein','legume','سبزیجات','منابع پروتئین','سوپ و آش'].includes(c);
+ if(id==='protein')return ['protein','منابع پروتئین'].includes(c)||/مرغ|ماهی|تن ماهی|گوشت|بوقلمون|تخممرغ|میگو|ماست یونانی/.test(n);
+ if(id==='grains')return ['bread','grain','نان و غلات'].includes(c)||/نان|برنج|جو|گندم|رشته|ماکارونی|پاستا/.test(n)&&!['iranian_dish','غذاهای جنوبی','غذاهای متنوع'].includes(c);
+ if(id==='legumes')return ['legume','nuts','حبوبات و مغزها'].includes(c)||/عدس|لوبیا|نخود|لپه|ماش|بادام|گردو|پسته|فندق|تخمه|دانه چیا|کنجد|ارده|سویا/.test(n);
+ if(id==='soups')return c==='سوپ و آش'||/سوپ|آش /.test(n);
+ if(id==='snacks')return ['iranian_snack','iranian_snack','میان‌وعده‌ها'].includes(c)||/میان وعده|خرما و گردو|مخلوط نخودچی|توت خشک|کشمش|برگه زردآلو/.test(n);
+ if(id==='desserts')return ['iranian_dessert','دسر و شیرینی'].includes(c)||/باسلوق|حلوا|سوهان|شلهزرد|گز|کیک|شیرینی|بستنی|فرنی|شیر برنج/.test(n);
+ if(id==='other')return !groups.filter(g=>g.id!=='other').some(g=>matchesGroup(f,g.id));
+ return false;
 }
-function render(){const q=$('q').value.trim().toLocaleLowerCase('fa');const list=foods.filter(f=>(!activeCat||(f.category||'سایر غذاها')===activeCat)&&(!q||[f.name_fa,f.name_en,categoryLabel(f.category)].filter(Boolean).join(' ').toLocaleLowerCase('fa').includes(q)));$('stats').textContent=fa(list.length)+' مورد از '+fa(foods.length)+' غذا'+(activeCat?' · دسته انتخاب‌شده: '+categoryLabel(activeCat):' · همه دسته‌ها');const root=$('results');root.replaceChildren();if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent='غذایی پیدا نشد؛ دسته دیگری انتخاب کنید یا عبارت جست‌وجو را تغییر دهید.';root.append(e);return}for(const f of list){const a=document.createElement('a');a.className='food';a.href='./recipe-detail.html?id='+encodeURIComponent(f.id);const h=document.createElement('h2');h.textContent=f.name_fa||'غذای بدون نام';a.append(h);const m=document.createElement('div');m.className='muted';m.textContent=categoryLabel(f.category);a.append(m);if(f.energy_kcal!=null){const d=document.createElement('div');d.className='macros';d.textContent='برآورد تخمینی در هر '+fa(f.basis_grams||100)+' گرم: '+fa(f.energy_kcal)+' کیلوکالری'+(f.protein_g!=null?' · پروتئین '+fa(f.protein_g)+' گرم':'')+(f.carbohydrate_g!=null?' · کربوهیدرات '+fa(f.carbohydrate_g)+' گرم':'')+(f.fat_g!=null?' · چربی '+fa(f.fat_g)+' گرم':'');a.append(d)}const tag=document.createElement('span');tag.className='tag';const hasMacros=f.energy_kcal!=null&&f.protein_g!=null&&f.carbohydrate_g!=null&&f.fat_g!=null;const macroKcal=hasMacros?4*Number(f.protein_g)+4*Number(f.carbohydrate_g)+9*Number(f.fat_g)-2*Number(f.fiber_g||0):null;const diffPct=hasMacros?Math.abs(Number(f.energy_kcal)-macroKcal)/Math.max(Number(f.energy_kcal),1)*100:0;tag.textContent=diffPct>20?'اختلاف عددی — نیازمند بررسی':(f.data_quality==='estimated'?'برآورد اولیه — تأییدنشده':'در انتظار بررسی');if(diffPct>20){tag.style.background='#fff1d9';tag.style.color='#75551b';tag.title='اختلاف بین انرژی ثبت‌شده و برآورد حاصل از درشت‌مغذی‌ها؛ این کنترل به‌تنهایی تأیید علمی نیست.'}a.append(tag);const open=document.createElement('span');open.className='open';open.textContent='مشاهده اطلاعات و دستور پخت ←';a.append(open);root.append(a)}}
-async function load(){try{const r=await fetch(API+'/rest/v1/foods?select=id,name_fa,name_en,category,energy_kcal,protein_g,carbohydrate_g,fat_g,fiber_g,basis_grams,data_quality,review_status&is_public=eq.true&order=name_fa.asc&limit=1000',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}});if(!r.ok)throw Error('HTTP '+r.status);foods=await r.json();renderCategories();render()}catch(e){$('stats').textContent='بارگذاری ناموفق بود؛ اتصال اینترنت یا دسترسی بانک غذایی را بررسی کنید.'}}
+function renderCategories(){
+ const root=$('categories');root.replaceChildren();
+ const all=document.createElement('button');all.type='button';all.className='catbtn'+(!activeCat?' active':'');all.setAttribute('aria-pressed',String(!activeCat));all.innerHTML='همه موارد <span class="count">'+fa(foods.length)+'</span>';all.addEventListener('click',()=>{activeCat='';renderCategories();render()});root.append(all);
+ for(const g of groups){const count=foods.filter(f=>matchesGroup(f,g.id)).length;if(!count)continue;const btn=document.createElement('button');btn.type='button';btn.className='catbtn'+(activeCat===g.id?' active':'');btn.setAttribute('aria-pressed',String(activeCat===g.id));btn.innerHTML=g.label+' <span class="count">'+fa(count)+'</span>';btn.addEventListener('click',()=>{activeCat=activeCat===g.id?'':g.id;renderCategories();render()});root.append(btn)}
+}
+function render(){const q=$('q').value.trim().toLocaleLowerCase('fa');const list=foods.filter(f=>(!activeCat||matchesGroup(f,activeCat))&&(!q||[f.name_fa,f.name_en,(groups.find(g=>g.id===activeCat)?.label||categoryLabel(f.category))].filter(Boolean).join(' ').toLocaleLowerCase('fa').includes(q)));$('stats').textContent=fa(list.length)+' مورد از '+fa(foods.length)+' غذا'+(activeCat?' · دسته انتخاب‌شده: '+categoryLabel(activeCat):' · همه دسته‌ها');const root=$('results');root.replaceChildren();if(!list.length){const e=document.createElement('div');e.className='empty';e.textContent='غذایی پیدا نشد؛ دسته دیگری انتخاب کنید یا عبارت جست‌وجو را تغییر دهید.';root.append(e);return}for(const f of list){const a=document.createElement('a');a.className='food';a.href='./recipe-detail.html?id='+encodeURIComponent(f.id);const h=document.createElement('h2');h.textContent=f.name_fa||'غذای بدون نام';a.append(h);const m=document.createElement('div');m.className='muted';m.textContent=categoryLabel(f.category);a.append(m);if(f.energy_kcal!=null){const d=document.createElement('div');d.className='macros';d.textContent='برآورد تخمینی در هر '+fa(f.basis_grams||100)+' گرم: '+fa(f.energy_kcal)+' کیلوکالری'+(f.protein_g!=null?' · پروتئین '+fa(f.protein_g)+' گرم':'')+(f.carbohydrate_g!=null?' · کربوهیدرات '+fa(f.carbohydrate_g)+' گرم':'')+(f.fat_g!=null?' · چربی '+fa(f.fat_g)+' گرم':'');a.append(d)}const tag=document.createElement('span');tag.className='tag';const hasMacros=f.energy_kcal!=null&&f.protein_g!=null&&f.carbohydrate_g!=null&&f.fat_g!=null;const macroKcal=hasMacros?4*Number(f.protein_g)+4*Number(f.carbohydrate_g)+9*Number(f.fat_g)-2*Number(f.fiber_g||0):null;const diffPct=hasMacros?Math.abs(Number(f.energy_kcal)-macroKcal)/Math.max(Number(f.energy_kcal),1)*100:0;tag.textContent=diffPct>20?'اختلاف عددی — نیازمند بررسی':(f.data_quality==='estimated'?'برآورد اولیه — تأییدنشده':'در انتظار بررسی');if(diffPct>20){tag.style.background='#fff1d9';tag.style.color='#75551b';tag.title='اختلاف بین انرژی ثبت‌شده و برآورد حاصل از درشت‌مغذی‌ها؛ این کنترل به‌تنهایی تأیید علمی نیست.'}a.append(tag);const open=document.createElement('span');open.className='open';open.textContent='مشاهده اطلاعات و دستور پخت ←';a.append(open);root.append(a)}}
+async function load(){try{const r=await fetch(API+'/rest/v1/foods?select=id,name_fa,name_en,category,energy_kcal,protein_g,carbohydrate_g,fat_g,fiber_g,basis_grams,data_quality,review_status,dietary_tags&is_public=eq.true&order=name_fa.asc&limit=1000',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}});if(!r.ok)throw Error('HTTP '+r.status);foods=await r.json();renderCategories();render()}catch(e){$('stats').textContent='بارگذاری ناموفق بود؛ اتصال اینترنت یا دسترسی بانک غذایی را بررسی کنید.'}}
 $('q').addEventListener('input',render);$('clearcat').addEventListener('click',()=>{activeCat='';renderCategories();render()});load();
 </script></body></html>
