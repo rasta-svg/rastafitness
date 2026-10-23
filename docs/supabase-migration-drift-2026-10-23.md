@@ -38,6 +38,7 @@ The following versions appeared in the live migration history but were not prese
 - `20261021224756_personalized_nutrition_foundation`
 - `20261021225429_nutrition_data_quality_and_feedback`
 - `20261021225659_nutrition_food_review_status_and_feedback_index`
+- `20261021234304_exercise_content_review_fields`
 - `20261022130943_fix_user_presence_own_row_policies`
 - `20261022195742_allow_public_read_of_published_food_nutrition`
 - `20261022213629_import_verified_nutrition_values_sample`
