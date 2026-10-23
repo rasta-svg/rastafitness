@@ -49,6 +49,8 @@ jobs:
 
       - name: Test Rasta shared core
         run: node tests/core.test.js
+      - name: Test Rasta shared search engine
+        run: node tests/search-engine.test.js
       - name: Test Rasta science engine
         run: node tests/science-engine.test.js
       - name: Validate application JavaScript syntax
