@@ -468,11 +468,15 @@ async function load() {
         const genericRecipe = /روش متناسب با نوع غذا|برای دستور ترکیبی|مواد را وزن کنید، آماده‌سازی اولیه|برای سالاد، چاشنی را جداگانه اضافه کنید|مواد اولیه رایج و مقادیر دقیق/.test(
           (f.preparation_fa || '') + ' ' + (f.cooking_method_fa || '') + ' ' + (f.ingredients_fa || '')
         );
-        const paragraph = document.createElement('p');
-        paragraph.textContent = genericRecipe
-          ? 'دستور اختصاصی این غذا هنوز بررسی و تأیید نشده است؛ برای جلوگیری از ارائه دستور نادرست، مراحل عمومی نمایش داده نمی‌شوند.'
-          : (f.preparation_fa || 'دستور مرحله‌به‌مرحله اختصاصی این غذا هنوز ثبت نشده است.');
-        method.append(paragraph);
+        if (genericRecipe) {
+          const paragraph = document.createElement('p');
+          paragraph.textContent = 'دستور اختصاصی این غذا هنوز ثبت نشده است؛ برای جلوگیری از ارائه دستور نادرست، مراحل عمومی نمایش داده نمی‌شوند.';
+          method.append(paragraph);
+        } else {
+          const preparation = f.preparation_fa || 'دستور مرحله‌به‌مرحله اختصاصی این غذا هنوز ثبت نشده است.';
+          const items = preparation.split(/(?<=[.!؟])\\s+|;\\s+/).map(x => x.trim()).filter(x => x.length > 8 && !/این دستور و نسبت مواد تخمینی/.test(x));
+          method.append(steps(items.length ? items : [preparation]));
+        }
         if (f.cooking_method_fa && !genericRecipe) {
           const methodNote = document.createElement('p');
           methodNote.textContent = 'روش پخت ثبت‌شده: ' + f.cooking_method_fa;
