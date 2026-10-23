@@ -114,4 +114,53 @@ if (!foodBank.includes("dependencies:['food-bank']")) {
 }
 if (!foodBank.includes("registerModule('food-bank-search'") || !foodBank.includes("dependencies:['search-engine']")) throw new Error('Food bank search must be registered as a central search consumer.');
 
+// Runtime integration smoke tests: execute the real shared engines together in an isolated VM.
+// No network, DOM, localStorage, or user data is available to this context.
+const runtime = {
+  location: { pathname: '/index.html' },
+  addEventListener() {}
+};
+runtime.window = runtime;
+vm.createContext(runtime);
+new vm.Script(core, { filename: 'rasta-core.js' }).runInContext(runtime);
+new vm.Script(searchSource, { filename: 'rasta-search.js' }).runInContext(runtime);
+new vm.Script(engine, { filename: 'rasta-science-engine.js' }).runInContext(runtime);
+if (!runtime.RastaCore || !runtime.RastaSearch || !runtime.RastaScienceEngine) {
+  throw new Error('Shared core, search, and science engines must initialize together at runtime.');
+}
+const initialHealth = runtime.RastaCore.health();
+for (const requiredModule of ['app-shell', 'search-engine', 'science-engine']) {
+  if (!initialHealth.modules.some(module => module.id === requiredModule && module.status === 'ready')) {
+    throw new Error('Runtime engine health is missing a ready module: ' + requiredModule);
+  }
+}
+runtime.RastaCore.registerModule('integration-smoke-consumer', {
+  kind: 'test', version: '1', dependencies: ['search-engine', 'science-engine']
+});
+if (runtime.RastaCore.health().status !== 'ready') {
+  throw new Error('Healthy search/science dependencies should produce a ready central health state.');
+}
+const runtimeSearch = runtime.RastaSearch.rank([{ name: 'عدسی' }, { name: 'قورمه سبزی' }], 'قورمه سبزی', item => item.name);
+if (runtimeSearch[0]?.name !== 'قورمه سبزی') throw new Error('Runtime shared search ranking failed.');
+const stopOnPain = runtime.RastaScienceEngine.nextLoad({ weight: 20, repsCompleted: 12, repsTarget: 12, setsCompleted: 3, setsTarget: 3, pain: true });
+if (stopOnPain.action !== 'stop') throw new Error('Science engine must stop load progression when pain is reported.');
+const poorSleep = runtime.RastaScienceEngine.recoveryAdvice({ sleepHours: 4, soreness: 'low', energy: 'normal' });
+if (poorSleep.status !== 'reduce') throw new Error('Science engine recovery guidance must reduce intensity after very short sleep.');
+const prescription = runtime.RastaScienceEngine.prescription(
+  { name: 'اسکوات وزن بدن', muscle: 'پا', type: 'قدرتی', level: 'مبتدی', equipment: 'بدون وسیله', sets: 3, reps: '10–12' },
+  { level: 'مبتدی', goal: 'سلامت عمومی', intensity: 'متوسط', restTime: '60–90', warmup: 8, cooldown: 5 }
+);
+if (!Number.isFinite(prescription.sets) || !prescription.reps || !Number.isFinite(prescription.restSeconds)) {
+  throw new Error('Science engine must return a usable training prescription.');
+}
+// Every shipped HTML surface must point to the one canonical logo asset; reject stale cache keys.
+for (const file of ['index.html', 'admin.html', 'download.html', 'nutrition-bank.html', 'recipe-detail.html']) {
+  const source = fs.readFileSync(path.join(root, file), 'utf8');
+  if (/rasta-icon\.png\?v=65fa264/.test(source)) throw new Error('Stale logo cache key remains in ' + file);
+}
+const manifest = JSON.parse(fs.readFileSync(path.join(root, 'manifest.json'), 'utf8'));
+if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => String(icon.src).includes('rasta-icon.png'))) {
+  throw new Error('PWA manifest must point to the canonical Rasta icon asset.');
+}
+
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
