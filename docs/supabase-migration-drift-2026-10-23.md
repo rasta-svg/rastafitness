@@ -9,8 +9,8 @@ Purpose: reconciliation record only; this file does not replay or modify migrati
 - Supabase migration history returned 35 applied versions.
 - The repository's `supabase/migrations` directory contains 12 SQL files on the audited main branch.
 - Two repository migration files share the timestamp prefix `20261022000000`:
-  - `20261022000000_personalized_nutrition_foundation.sql)
-  - `20261022000000_rasta_contact_messages.sql)
+  - `20261022000000_personalized_nutrition_foundation.sql
+  - `20261022000000_rasta_contact_messages.sql
 - Do not run a new migration, reset the production database, or synthesize historical SQL from migration names alone until the source of truth is reconciled.
 
 ## Applied database versions not present as same-named repository files
