@@ -41,7 +41,7 @@ if (!foodBankHasSharedSearch()) throw new Error('Food bank must load the shared 
 function foodBankHasSharedSearch() {
   return fs.readFileSync(path.join(root, 'nutrition-bank.html'), 'utf8').includes('rasta-search.js');
 }
-if (!html.includes('window.RastaSearch.matches(exploreQuery') || !html.includes('window.RastaSearch.matches(exquery') || !html.includes('window.RastaSearch.matches(foodquery')) {
+if (!html.includes('window.RastaSearch.matches(exploreQuery') || !html.includes('window.RastaSearch.matches(exquery') || !html.includes('window.RastaSearch.matches(foodquery') || !html.includes('window.RastaSearch.matches(rastaPremiumQuery')) {
   throw new Error('Workout, exercise library, and food catalog must use shared search rules.');
 }
 if (!html.includes('window.RastaSearch.searchFoodReference(query,c)')) throw new Error('External USDA food search must use the shared search adapter.');
@@ -61,7 +61,7 @@ for (const page of ['index.html', 'nutrition-bank.html', 'recipe-detail.html', '
     throw new Error('Supabase URL is still duplicated in ' + page);
   }
 }
-if (!html.includes("registerModule('nutrition-engine'") || !html.includes("dependencies:['supabase-client','science-engine']")) {
+if (!html.includes("registerModule('nutrition-engine'") || !html.includes("dependencies:['supabase-client','science-engine','search-engine']")) {
   throw new Error('Nutrition engine must declare its central module dependencies.');
 }
 const foodBank = fs.readFileSync(path.join(root, 'nutrition-bank.html'), 'utf8');
