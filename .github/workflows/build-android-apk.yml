@@ -7,6 +7,8 @@ on:
       - "index.html"
       - "nutrition-bank.html"
       - "rasta-science-engine.js"
+      - "rasta-core.js"
+      - "recipe-detail.html"
       - "sw.js"
       - "admin.html"
       - "capacitor.config.json"
@@ -42,6 +44,8 @@ jobs:
           distribution: temurin
           java-version: "21"
 
+      - name: Test Rasta shared core
+        run: node tests/core.test.js
       - name: Test Rasta science engine
         run: node tests/science-engine.test.js
       - name: Validate application JavaScript syntax
