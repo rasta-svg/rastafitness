@@ -48,5 +48,4 @@ const recipeDetail = fs.readFileSync(path.join(root, 'recipe-detail.html'), 'utf
 if (!recipeDetail.includes("registerModule('recipe-detail-data'") || !recipeDetail.includes("reportError('recipe_detail_load_failed'")) {
   throw new Error('Recipe detail must register with central health and report runtime failures.');
 }
-}
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
