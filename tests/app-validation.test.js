@@ -35,8 +35,18 @@ for (const required of ['rasta-science-engine.js', 'version.json']) {
 for (const page of ['index.html', 'nutrition-bank.html', 'recipe-detail.html', 'admin.html']) {
   const source = fs.readFileSync(path.join(root, page), 'utf8');
   if (!source.includes('rasta-core.js')) throw new Error('Shared core is not referenced by ' + page);
+  if (!source.includes('RastaCore.config.supabase')) throw new Error('Page does not use the central Supabase configuration: ' + page);
   if (/const (?:API|SUPABASE_URL)='https:\/\/ptmokqppwjjxhakjpxum\.supabase\.co'/.test(source)) {
     throw new Error('Supabase URL is still duplicated in ' + page);
   }
+}
+const foodBank = fs.readFileSync(path.join(root, 'nutrition-bank.html'), 'utf8');
+if (!foodBank.includes("registerModule('food-bank-data'") || !foodBank.includes("setModuleStatus('food-bank-data','ready'") || !foodBank.includes("setModuleStatus('food-bank-data','degraded'")) {
+  throw new Error('Food bank must register with central health and report success/failure.');
+}
+const recipeDetail = fs.readFileSync(path.join(root, 'recipe-detail.html'), 'utf8');
+if (!recipeDetail.includes("registerModule('recipe-detail-data'") || !recipeDetail.includes("reportError('recipe_detail_load_failed'")) {
+  throw new Error('Recipe detail must register with central health and report runtime failures.');
+}
 }
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
