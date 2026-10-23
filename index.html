@@ -1398,6 +1398,7 @@ function showEx(id){let e=getex(id);if(!e)return;const steps=beginnerSteps(e);mo
 
 
 const RASTA_NUTRITION_VERSION='rasta-nutrition-0.2-variety';
+ window.RastaCore.registerModule('nutrition-engine',{kind:'engine',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['supabase-client','science-engine']});
 let rastaNutritionWeekSelections=[];
 let rastaPremiumGeneratedProgram=null;
 let rastaNutritionLastPlanId=null;
