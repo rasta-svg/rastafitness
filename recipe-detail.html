@@ -474,7 +474,7 @@ async function load() {
           method.append(paragraph);
         } else {
           const preparation = f.preparation_fa || 'دستور مرحله‌به‌مرحله اختصاصی این غذا هنوز ثبت نشده است.';
-          const items = preparation.split(/(?<=[.!؟])\\s+|;\\s+/).map(x => x.trim()).filter(x => x.length > 8 && !/این دستور و نسبت مواد تخمینی/.test(x));
+          const items = preparation.split(/(?<=[.!؟])\s+|;\s+/).map(x => x.trim()).filter(x => x.length > 8 && !/این دستور و نسبت مواد تخمینی/.test(x));
           method.append(steps(items.length ? items : [preparation]));
         }
         if (f.cooking_method_fa && !genericRecipe) {
