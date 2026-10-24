@@ -1343,12 +1343,15 @@ async function renderPlans(){
   }
   const toman=n=>Math.round(Number(n||0)/10).toLocaleString('fa-IR');
   box.innerHTML=(plans||[]).map(p=>{
-   const isPremium=p.id==='premium',isFree=p.id==='free';
-   const label=isFree?'رایگان':isPremium?'ویژه ورزشکار':p.id==='trainer'?'مربی':'باشگاه';
+   const isPremium=p.id==='premium',isFree=p.id==='free',isCustomNutrition=p.id==='custom_nutrition';
+   const label=isFree?'رایگان':isPremium?'ویژه ورزشکار':isCustomNutrition?'برنامه غذایی اختصاصی':p.id==='trainer'?'مربی':'باشگاه';
    const price=Number(p.price_irr)===0?'رایگان':toman(p.price_irr)+' تومان';
-   const period=isPremium?' / ۳۰ روز':p.billing_interval==='year'?' / سالانه':p.billing_interval==='month'?' / ماهانه':'';
+   const period=isPremium?' / ۳۰ روز':isCustomNutrition?' / هر برنامه ۷ روزه':p.billing_interval==='year'?' / سالانه':p.billing_interval==='month'?' / ماهانه':'';
    const features=(Array.isArray(p.features)?p.features:[]).map(f=>'<li>'+escapeHtml(String(f))+'</li>').join('');
-   return '<article class="rasta-plan-card '+(isPremium?'rasta-plan-card-premium':isFree?'rasta-plan-card-free':'')+'"><div class="split"><h3>'+escapeHtml(p.name_fa)+'</h3><span class="rasta-plan-label">'+label+'</span></div><p class="rasta-plan-description">'+escapeHtml(p.description_fa||'')+'</p><div class="rasta-plan-price">'+price+'<small>'+period+'</small></div><ul class="rasta-plan-features">'+features+'</ul>'+(isPremium?'<p class="rasta-plan-renewal">پرداخت یک‌باره برای ۳۰ روز؛ تمدید خودکار ندارد. فعال‌سازی پس از بررسی و تأیید مدیر انجام می‌شود.</p>':'')+'<button class="rasta-plan-cta" type="button" data-plan-request="'+escapeHtml(p.id)+'" '+(isPremium?'':'disabled')+'>'+(isFree?'طرح رایگان':isPremium?'درخواست فعال‌سازی پریمیوم':'به‌زودی')+'</button></article>';
+   const paymentNote=isPremium?'<p class="rasta-plan-renewal">پرداخت یک‌باره برای ۳۰ روز؛ تمدید خودکار ندارد. فعال‌سازی پس از بررسی و تأیید مدیر انجام می‌شود.</p>':isCustomNutrition?'<p class="rasta-plan-renewal">هر خرید فقط یک نوبت ساخت برنامه ۷ روزه را فعال می‌کند و شامل پریمیوم نیست. پس از تأیید مدیر، نوبت ساخت فعال می‌شود.</p>':'';
+   const canBuy=isPremium||isCustomNutrition;
+   const buttonLabel=isFree?'طرح رایگان':isPremium?'درخواست فعال‌سازی پریمیوم':isCustomNutrition?'خرید ساخت برنامه غذایی':'به‌زودی';
+   return '<article class="rasta-plan-card '+(isPremium?'rasta-plan-card-premium':isFree?'rasta-plan-card-free':isCustomNutrition?'rasta-plan-card-custom-nutrition':'')+'"><div class="split"><h3>'+escapeHtml(p.name_fa)+'</h3><span class="rasta-plan-label">'+label+'</span></div><p class="rasta-plan-description">'+escapeHtml(p.description_fa||'')+'</p><div class="rasta-plan-price">'+price+'<small>'+period+'</small></div><ul class="rasta-plan-features">'+features+'</ul>'+paymentNote+'<button class="rasta-plan-cta" type="button" data-plan-request="'+escapeHtml(p.id)+'" '+(canBuy?'':'disabled')+'>'+buttonLabel+'</button></article>';
   }).join('')||'<div class="empty">فعلاً تعرفه‌ای ثبت نشده است.</div>';
  }catch(err){
   status.innerHTML='<h3>وضعیت اشتراک شما</h3><p>دریافت اطلاعات اشتراک فعلاً انجام نشد.</p>';
