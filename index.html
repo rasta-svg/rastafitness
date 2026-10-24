@@ -217,7 +217,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .top{backdrop-filter:blur(14px)}
 .view.active{animation:rastaViewEnter .22s ease-out}
 @keyframes rastaViewEnter{from{opacity:.78;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-.rasta-hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.rasta-hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 16px}
 .rasta-hub-card{display:flex;align-items:center;gap:10px;min-width:0;min-height:84px;padding:13px;border:1px solid #dfe6d9;border-radius:16px;background:linear-gradient(145deg,#fffefa,#f7f8f0);color:var(--ink);text-align:right;text-decoration:none;font:inherit;box-shadow:0 6px 18px rgba(31,62,39,.045);cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
 .rasta-hub-card>span:nth-child(2){min-width:0;flex:1}
 .rasta-hub-card b{display:block;font-size:12px;line-height:1.8;font-weight:900}
@@ -359,8 +359,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <div class="rasta-hub-grid" aria-label="بخش‌های مرتبط تمرین">
 <button type="button" class="rasta-hub-card is-current" data-goto="training"><span class="rasta-hub-icon">🏋️</span><span><b>برنامه تمرینی من</b><small>تنظیم روزها و اجرای جلسه</small></span><span class="rasta-hub-arrow">←</span></button>
 <button type="button" class="rasta-hub-card" data-goto="programs"><span class="rasta-hub-icon">🗓️</span><span><b>برنامه‌های چند‌هفته‌ای</b><small>مسیر هدف‌محور و پیگیری هفتگی</small></span><span class="rasta-hub-arrow">←</span></button>
-<button type="button" class="rasta-hub-card" data-goto="explore"><span class="rasta-hub-icon">🔎</span><span><b>کشف تمرین‌ها</b><small>جست‌وجو بر اساس هدف و زمان</small></span><span class="rasta-hub-arrow">←</span></button>
-<button type="button" class="rasta-hub-card" data-goto="library"><span class="rasta-hub-icon">🧍</span><span><b>کتابخانه حرکات</b><small>گروه‌های عضلانی و انواع فعالیت</small></span><span class="rasta-hub-arrow">←</span></button>
+<button type="button" class="rasta-hub-card" data-goto="explore"><span class="rasta-hub-icon">🔎</span><span><b>کشف تمرین و کتابخانه حرکات</b><small>جست‌وجو، دسته‌بندی و انتخاب حرکت</small></span><span class="rasta-hub-arrow">←</span></button>
 </div>
 <div class="panel" style="margin-bottom:14px"><div class="split"><div><h3 style="margin:0">روش برنامه‌ریزی تمرین</h3><p style="margin:4px 0 0">این تنظیم مستقل از روش برنامه غذایی است.</p></div></div><div class="filters" id="trainingmodes"><button class="filter active" data-trainingmode="auto">خودکار</button><button class="filter" data-trainingmode="hybrid">ترکیبی با تأیید من</button><button class="filter" data-trainingmode="manual">دستی</button></div><p id="trainingmodehint" style="margin:0">در حالت خودکار، رَستا بر اساس هدف و محل تمرین برنامه پیشنهاد می‌کند.</p></div>
 <div class="filters" id="dayfilters"></div><div class="grid2"><div class="panel"><div class="split"><div><h3 id="daytitle">تمرین قدرتی</h3><p id="daymeta" style="margin:0">سطح و زمان قابل تنظیم</p></div><button class="mini" id="editday">ویرایش روز</button></div><div class="exercise-list" id="plannedex" style="margin-top:13px"></div><div class="actions" style="margin-top:12px"><button class="btn soft" id="addexercise">+ افزودن حرکت</button><button class="btn ghost" id="replaceall">جایگزینی یک حرکت</button></div></div>
