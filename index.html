@@ -722,7 +722,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div>
 </section>
 </main></div>
-<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button type="button" data-open-all-menus aria-expanded="false" onclick="(function(){var m=document.getElementById('rasta-all-menus');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false')}document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded','true')});var a=document.getElementById('rasta-admin-mobile-link');if(a)a.style.display='flex';var l=document.getElementById('rasta-allmenus-logout');if(l)l.style.display=(window.__RASTA_AUTH_USER?'flex':'none')})()"><span>☰</span>همه منوها</button></nav>
+<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button type="button" data-open-all-menus aria-expanded="false" onclick="(function(){var m=document.getElementById('rasta-all-menus');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false')}document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded','true')});var l=document.getElementById('rasta-allmenus-logout');if(l)l.style.display=(window.__RASTA_AUTH_USER?'flex':'none')})()"><span>☰</span>همه منوها</button></nav>
 <div id="rasta-all-menus" class="rasta-all-menus" aria-hidden="true">
  <div class="rasta-all-menus-backdrop" data-close-all-menus></div>
  <section class="rasta-all-menus-sheet" role="dialog" aria-modal="true" aria-label="همه بخش‌های رستا">
@@ -849,7 +849,7 @@ const showApp=async(user)=>{
  const adminMobileLink=byId('rasta-admin-mobile-link');
  if(adminLink)adminLink.style.display=isRastaAdmin?'inline-flex':'none';
  if(adminMenuLink)adminMenuLink.style.display=isRastaAdmin?'flex':'none';
- if(adminMobileLink)adminMobileLink.style.display='flex'; // The admin page enforces access; keep its entry visible in All Menus.
+ if(adminMobileLink)adminMobileLink.style.display=isRastaAdmin?'flex':'none';
  const sendPresence=async(state='active')=>{
   try{if(navigator.onLine&&client&&user?.id)await client.from('user_presence').upsert({user_id:user.id,last_seen:new Date().toISOString(),app_state:state},{onConflict:'user_id'});}
   catch(err){console.warn('Presence heartbeat unavailable',err)}
@@ -1774,7 +1774,7 @@ document.addEventListener('click',function(e){
 },true);
 document.addEventListener('click',e=>{
  const open=e.target.closest('[data-open-all-menus]');
- if(open){if(!rastaAllMenus)return;const willOpen=!rastaAllMenus.classList.contains('open');const adminEntry=byId('rasta-admin-mobile-link');if(adminEntry)adminEntry.style.display='flex';const logoutEntry=byId('rasta-allmenus-logout');if(logoutEntry)logoutEntry.style.display=(authUser||window.__RASTA_AUTH_USER)?'flex':'none';rastaAllMenus.classList.toggle('open',willOpen);rastaAllMenus.setAttribute('aria-hidden',String(!willOpen));open.setAttribute('aria-expanded',String(willOpen));return}
+ if(open){if(!rastaAllMenus)return;const willOpen=!rastaAllMenus.classList.contains('open');const adminEntry=byId('rasta-admin-mobile-link');if(adminEntry)adminEntry.style.display=(String((authUser||window.__RASTA_AUTH_USER)?.email||'').trim().toLowerCase()==='elida600000@gmail.com')?'flex':'none';const logoutEntry=byId('rasta-allmenus-logout');if(logoutEntry)logoutEntry.style.display=(authUser||window.__RASTA_AUTH_USER)?'flex':'none';rastaAllMenus.classList.toggle('open',willOpen);rastaAllMenus.setAttribute('aria-hidden',String(!willOpen));open.setAttribute('aria-expanded',String(willOpen));return}
  if(e.target.closest('[data-close-all-menus]')){closeRastaAllMenus();return}
  const menuItem=e.target.closest('#rasta-all-menus [data-view]');
  if(menuItem){closeRastaAllMenus()}
