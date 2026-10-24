@@ -100,6 +100,7 @@ Deno.serve(async (req: Request) => {
       status: "pending",
       provider_response: {
         plan_id: plan.id,
+        quoted_price_irr: Number(plan.price_irr),
         transfer_reference: reference,
         transfer_time: transferTime,
         submitted_by: user.id,
