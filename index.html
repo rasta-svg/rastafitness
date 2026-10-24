@@ -316,6 +316,75 @@ body{background:#061f16!important}
 input,select,textarea{background:#fffdf7!important;border:1px solid #ddd9c7!important;color:#173b29!important;border-radius:12px!important}
 @media(max-width:700px){.mobilebar{position:fixed!important;left:10px!important;right:10px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important;display:flex!important;justify-content:space-around!important;z-index:120!important}.rasta-all-menus-sheet{position:absolute!important;top:0!important;right:0!important;left:auto!important;bottom:0!important;width:min(430px,92vw)!important;height:100%!important;max-height:100%!important;border-radius:24px 0 0 24px!important;padding:calc(20px + env(safe-area-inset-top)) 16px calc(22px + env(safe-area-inset-bottom))!important}}
 
+
+/* RASTA DARK LUXURY THEME — replace the washed-out white surfaces */
+:root{
+ --rasta-bg:#061b14;--rasta-surface:#0b2b20;--rasta-surface-2:#103b2b;
+ --rasta-surface-3:#164734;--rasta-gold:#e3bd62;--rasta-gold-bright:#f5d98b;
+ --rasta-text:#f4f0e3;--rasta-muted:#b9c9bb;--rasta-stroke:#2b5b43;
+}
+html,body{background:radial-gradient(ellipse at 50% -10%,#174b35 0%,#071e15 52%,#03130d 100%)!important;color:var(--rasta-text)!important}
+#rasta-app-shell{background:transparent!important;color:var(--rasta-text)!important}
+#rasta-app-shell .main,#rasta-app-shell main,.main,main{background:transparent!important;color:var(--rasta-text)}
+/* Keep authentication screen intentional and in the same brand palette */
+.auth-screen{background:radial-gradient(ellipse at 80% 10%,#1c573c 0%,#08281b 46%,#03150e 100%)!important;color:var(--rasta-text)!important}
+.auth-panel,.auth-card,.auth-form,.auth-story{background:transparent!important;color:var(--rasta-text)!important}
+.auth-brand b,.auth-story h1,.auth-story-copy h1,.auth-benefit b{color:#fff6df!important}
+.auth-story p,.auth-benefit small,.auth-story-copy p{color:#c3d2c5!important}
+.auth-logo{background:linear-gradient(145deg,#f4d98a,#bd9134)!important;color:#0a2b1d!important;box-shadow:0 8px 24px #0004}
+#rasta-app-shell .top,.top{background:linear-gradient(110deg,#04170f,#0b3c29 62%,#09281c)!important;color:#f9f4e6!important;border-bottom:1px solid #b99745!important;border-radius:0 0 24px 24px;box-shadow:0 12px 32px #0004!important}
+.top h1,.top h2,.top h3,.top b,.top strong{color:#fff3d3!important}
+.top p,.top small{color:#c4d2c3!important}
+.hero{background:radial-gradient(circle at 88% 12%,#c39b4930,transparent 35%),linear-gradient(135deg,#0e3c29 0%,#062319 65%,#0a3020 100%)!important;color:#f7f1df!important;border:1px solid #b99543!important;border-radius:25px!important;box-shadow:0 18px 42px #0004,inset 0 1px #ffffff12!important}
+.hero h1,.hero h2,.hero h3,.hero b,.hero strong{color:#fff1c9!important}
+.hero p,.hero small{color:#c7d8c8!important}
+.panel,.stat,.card,.rasta-hub-card,.modal,.modal-content,.food-card,.exercise-card,.program-card,.history-card,.profile-card,.setting-card,
+#rasta-app-shell .panel,#rasta-app-shell .stat,#rasta-app-shell .card{
+ background:linear-gradient(145deg,#103728 0%,#09271c 100%)!important;
+ color:var(--rasta-text)!important;border:1px solid #2a5941!important;border-radius:19px!important;
+ box-shadow:0 10px 28px #0002,inset 0 1px #ffffff08!important;
+}
+.panel h1,.panel h2,.panel h3,.panel h4,.card h1,.card h2,.card h3,.card h4,
+.stat b,.card b,.panel b,.rasta-hub-card b,.sectionhead{color:#f4d98d!important}
+.panel p,.card p,.panel small,.card small,.muted,.hint,.description{color:#bdcdbf!important}
+.rasta-hub-icon{background:linear-gradient(145deg,#e5c36b,#b88a2e)!important;color:#082719!important;box-shadow:0 5px 16px #0003!important}
+button,.btn,[role=button]{border-radius:13px}
+button.primary,.primary,button[data-primary],.btn-primary{
+ background:linear-gradient(135deg,#e8c96f,#bd9238)!important;color:#092619!important;
+ border:1px solid #f6e2a0!important;box-shadow:0 7px 18px #0003!important;font-weight:900!important
+}
+button:not(.primary):not(.mobilebar button):not(.rasta-all-menus-close),.btn:not(.primary){
+ background:linear-gradient(145deg,#164631,#0e3223)!important;color:#f4efdf!important;
+ border:1px solid #315e45!important
+}
+button:disabled{opacity:.45!important;filter:grayscale(.3)}
+input,select,textarea,.form-control{
+ background:#09281c!important;color:#f5f0e2!important;border:1px solid #38634a!important;border-radius:12px!important
+}
+input::placeholder,textarea::placeholder{color:#9db5a2!important}
+input:focus,select:focus,textarea:focus{border-color:#e1bc5d!important;box-shadow:0 0 0 3px #e1bc5d22!important}
+option{background:#09281c!important;color:#f5f0e2!important}
+hr,.divider{border-color:#2b503b!important}
+a{color:#f0d17a}
+.badge,.tag,.chip{background:#173f2c!important;color:#f3d889!important;border:1px solid #315d43!important}
+.mobilebar{background:rgba(3,24,16,.97)!important;border:1px solid #b99543!important;box-shadow:0 12px 38px #0007!important;backdrop-filter:blur(22px)!important}
+.mobilebar button{background:transparent!important;color:#c8d6c9!important;border-color:transparent!important}
+.mobilebar button.active{background:linear-gradient(145deg,#e5c36b,#c39536)!important;color:#092619!important;border-color:#f3df9a!important}
+.rasta-all-menus-backdrop{background:#000b!important;backdrop-filter:blur(9px)!important}
+.rasta-all-menus-sheet{background:linear-gradient(155deg,#0b3021,#041a11)!important;color:#f6f0df!important;border:1px solid #c5a04c!important;box-shadow:0 25px 80px #000a!important}
+.rasta-all-menus-heading{background:#082519f5!important;border-color:#967a39!important}
+.rasta-all-menus-heading b{color:#f1d580!important}.rasta-all-menus-heading p{color:#c1d0c1!important}
+.rasta-all-menus-grid button{background:linear-gradient(145deg,#123e2a,#09271b)!important;color:#f5efdf!important;border:1px solid #315d43!important}
+.rasta-all-menus-grid button span{background:linear-gradient(145deg,#e5c36b,#bd9135)!important;color:#082619!important}
+.rasta-all-menus-close{background:#143c29!important;color:#f2d47c!important;border-color:#b99543!important}
+#modalback,.modalback{background:#000b!important;backdrop-filter:blur(8px)!important}
+#modalback .modal,#modalback .modal-content{background:linear-gradient(145deg,#103728,#072318)!important;color:#f4f0e3!important;border:1px solid #a9873c!important}
+.toast{background:#09291c!important;color:#fff4da!important;border:1px solid #b99543!important}
+table{color:#f4f0e3!important}th{background:#16422e!important;color:#f0d17a!important}td{border-color:#2c543d!important}
+details,summary{color:#eee8d7!important}
+::selection{background:#d7b65c;color:#082619}
+@media(hover:hover) and (pointer:fine){.card:hover,.panel:hover,.rasta-hub-card:hover{transform:translateY(-2px);border-color:#a98a42!important;box-shadow:0 16px 32px #0004!important}}
+
 </style>
 
 </head>
