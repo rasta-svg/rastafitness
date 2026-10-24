@@ -2758,8 +2758,8 @@ input,select,textarea{border-radius:12px}
   if(open){e.preventDefault();e.stopImmediatePropagation();openMenu(open);return}
   var close=t.closest('[data-close-all-menus],.rasta-all-menus-close');
   if(close){e.preventDefault();e.stopImmediatePropagation();closeMenu();return}
-  var item=t.closest('#rasta-all-menus button[data-view]');
-  if(item){e.preventDefault();e.stopImmediatePropagation();var view=item.getAttribute('data-view');closeMenu();try{if(typeof window.goto==='function')window.goto(view);else item.dispatchEvent(new CustomEvent('rasta:navigate',{bubbles:true,detail:{view:view}}))}catch(err){console.error(err)}return}
+  // Navigation is deliberately handled by the single document-level router inside the main app.
+  // Do not intercept menu items here: goto() is a lexical function, not window.goto.
  },true);
  window.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
 })();
