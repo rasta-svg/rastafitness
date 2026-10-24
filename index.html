@@ -233,6 +233,60 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .mobilebar{box-shadow:0 -8px 26px rgba(24,48,30,.1);border-top:1px solid rgba(42,74,48,.1);background:rgba(255,254,249,.97);backdrop-filter:blur(16px)}
 .mobilebar button{border-radius:12px;margin:5px 2px;min-height:47px}
 .mobilebar button.active{background:#e8efdf;color:#214c34;font-weight:900}
+
+/* RASTA PREMIUM VISUAL PASS — actual app UI, not a mockup */
+:root{
+ --rasta-forest:#062d20;--rasta-deep:#031b14;--rasta-green:#0b5637;
+ --rasta-gold:#e8bd55;--rasta-gold-soft:#f6df9c;--rasta-cream:#fffaf0;
+ --rasta-ink:#142d22;--rasta-muted:#728174;--rasta-line:#e8e0cc;
+}
+html{scroll-behavior:smooth}
+body{background:#061f17!important;color:var(--rasta-ink)}
+#rasta-app-shell{background:linear-gradient(145deg,#f9f7ef 0%,#f1f3e9 58%,#e7eee2 100%)!important}
+#rasta-app-shell .top{position:relative;padding:16px 18px;border-radius:0 0 25px 25px;background:linear-gradient(115deg,#041d15 0%,#0b5034 70%,#0b3425 100%);color:#fff;box-shadow:0 10px 30px #062b1d30;border-bottom:1px solid #d5ae4c}
+#rasta-app-shell .top h1,#rasta-app-shell .top h2{color:#fff!important;letter-spacing:-.4px}
+#rasta-app-shell .top p,#rasta-app-shell .top small{color:#e5e8d7!important}
+#rasta-app-shell .hero{position:relative;isolation:isolate;overflow:hidden;color:#fff!important;background:radial-gradient(ellipse at 90% 0%,#c59b3b35,transparent 42%),linear-gradient(125deg,#031b14 0%,#075333 58%,#0c3828 100%)!important;border:1px solid #d4ac48!important;border-radius:27px!important;box-shadow:0 16px 36px #092d1f2b!important}
+#rasta-app-shell .hero:after{content:"";position:absolute;z-index:-1;width:180px;height:180px;right:-48px;bottom:-86px;border:1px solid #e8bd5570;border-radius:50%;box-shadow:0 0 0 16px #e8bd5510,0 0 0 34px #e8bd5508}
+#rasta-app-shell .hero h2,#rasta-app-shell .hero h3{color:#fff!important;font-weight:900!important;line-height:1.55}
+#rasta-app-shell .hero p{color:#e8eadf!important;line-height:1.9}
+#rasta-app-shell .hero button,#rasta-app-shell .hero .btn{background:linear-gradient(135deg,#ffe49a,#d5a438)!important;color:#173522!important;border:1px solid #fff0b6!important;border-radius:999px!important;font-weight:900!important;box-shadow:0 5px 16px #0002!important}
+#rasta-app-shell .panel,#rasta-app-shell .stat,#rasta-app-shell .card,#rasta-app-shell .rasta-hub-card{border:1px solid #e8e0cd!important;background:linear-gradient(145deg,#fffef9,#f8f6ec)!important;box-shadow:0 7px 22px #193a270c,0 1px 2px #193a2708!important;border-radius:20px!important;transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease}
+#rasta-app-shell .sectionhead{color:#143c29!important;font-weight:900!important}
+#rasta-app-shell .sectionhead:after{content:"";display:block;width:44px;height:3px;margin-top:7px;border-radius:9px;background:linear-gradient(90deg,#d9ad45,#f2df9f)}
+#rasta-app-shell .rasta-hub-card{min-height:92px!important;position:relative;overflow:hidden}
+#rasta-app-shell .rasta-hub-icon{background:linear-gradient(145deg,#0a5938,#073521)!important;color:#f5d777!important;box-shadow:0 5px 12px #07352120}
+#rasta-app-shell .rasta-hub-card b{color:#143b29!important;font-weight:900}
+#rasta-app-shell button:not(.mobilebar button):not(.rasta-all-menus-close){transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+#rasta-app-shell button.primary,#rasta-app-shell .primary,#rasta-app-shell button[data-primary]{background:linear-gradient(135deg,#0c6842,#063a27)!important;color:#fff!important;border:1px solid #b9a052!important;border-radius:14px!important;box-shadow:0 6px 16px #0b4b3020!important;font-weight:850!important}
+#rasta-app-shell input,#rasta-app-shell select,#rasta-app-shell textarea{background:#fffdf7!important;border:1px solid #ddd9c7!important;color:#173b29!important;outline-color:#cda84a}
+#rasta-app-shell input:focus,#rasta-app-shell select:focus,#rasta-app-shell textarea:focus{border-color:#b9953d!important;box-shadow:0 0 0 3px #d7b34a26!important}
+#rasta-app-shell .mobilebar{background:rgba(4,35,24,.96)!important;border:1px solid #b99845!important;box-shadow:0 12px 35px #00190f55!important;backdrop-filter:blur(22px)!important}
+#rasta-app-shell .mobilebar button{color:#d6dfd2!important}
+#rasta-app-shell .mobilebar button.active{background:linear-gradient(145deg,#dcb84f,#f4df9b)!important;color:#153521!important;border-color:#fff0b0!important;box-shadow:0 3px 12px #0003!important}
+#rasta-app-shell .mobilebar button span{filter:saturate(.9)}
+#rasta-app-shell .rasta-all-menus-backdrop{background:#00170fba!important;backdrop-filter:blur(8px)!important}
+#rasta-app-shell .rasta-all-menus-sheet{background:linear-gradient(155deg,#06291d,#031b13)!important;color:#f8f5e9!important;border:1px solid #c8a342!important;box-shadow:0 25px 80px #0008!important}
+#rasta-app-shell .rasta-all-menus-heading{background:#06291df2!important;border-color:#b99a4a!important}
+#rasta-app-shell .rasta-all-menus-heading b,#rasta-app-shell .rasta-all-menus-heading h2{color:#f3d77e!important}
+#rasta-app-shell .rasta-all-menus-heading p{color:#d5e0d4!important}
+#rasta-app-shell .rasta-all-menus-grid button{background:linear-gradient(145deg,#0d3e2b,#08291d)!important;color:#f7f5e9!important;border:1px solid #315c42!important;box-shadow:0 5px 14px #0002!important}
+#rasta-app-shell .rasta-all-menus-grid button span{background:linear-gradient(145deg,#d9b24c,#f6e2a0)!important;color:#173621!important}
+#rasta-app-shell .rasta-all-menus-grid button.active{background:linear-gradient(145deg,#164f34,#0c3826)!important;border-color:#e5c35e!important;box-shadow:inset 0 0 0 1px #d6b653!important}
+#rasta-app-shell .rasta-all-menus-close{background:#123e2b!important;color:#f4d77c!important;border:1px solid #b79a4a!important;border-radius:12px!important}
+#rasta-app-shell .toast{background:#062b1e!important;border:1px solid #c9a34a!important;color:#fff!important}
+@media(hover:hover) and (pointer:fine){
+ #rasta-app-shell .panel:hover,#rasta-app-shell .stat:hover,#rasta-app-shell .card:hover,#rasta-app-shell .rasta-hub-card:hover{transform:translateY(-3px);box-shadow:0 14px 28px #123d2618!important;border-color:#d6bd75!important}
+ #rasta-app-shell button:hover{filter:brightness(1.04)}
+}
+@media(max-width:700px){
+ #rasta-app-shell .main{padding-top:12px!important}
+ #rasta-app-shell .top{border-radius:0 0 22px 22px;padding:15px 15px 17px}
+ #rasta-app-shell .hero{padding:24px 20px!important}
+ #rasta-app-shell .rasta-hub-card{min-height:88px!important}
+}
+@media(prefers-reduced-motion:reduce){#rasta-app-shell *{scroll-behavior:auto!important;transition:none!important}}
+
 </style>
 
 </head>
