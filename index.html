@@ -235,128 +235,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .mobilebar button.active{background:#e8efdf;color:#214c34;font-weight:900}
 </style>
 
-/* RASTA DESIGN SYSTEM 2026 — cohesive visual refresh */
-:root{
- --bg:#f4f5ef;--paper:#fffefa;--ink:#1d2b22;--muted:#748075;--line:#e1e7dc;
- --green:#173f2d;--green2:#32684a;--pale:#e5efdc;--lime:#d8eba8;
- --orange:#d9a45f;--rasta-gold:#d9bd75;--shadow:0 10px 28px rgba(24,57,37,.07);
- --rasta-radius:18px;
-}
-body{background:radial-gradient(ellipse at 95% 0%,#e8eee1 0,transparent 30%),var(--bg);color:var(--ink);letter-spacing:0}
-button,input,select,textarea{font-family:Vazirmatn,Tahoma,sans-serif}
-button{ -webkit-tap-highlight-color:transparent }
-.sidebar{padding:22px 13px;background:linear-gradient(155deg,#123725 0%,#1d4a32 52%,#102f21 100%);border-left:1px solid #ffffff12}
-.brand{padding:5px 8px 24px;gap:12px}
-.brandmark{width:48px;height:48px;border-radius:16px;border:1px solid #d8c47b;background-color:#214c34;box-shadow:0 8px 22px #071d1255}
-.brand b{font-size:23px;letter-spacing:-.7px}.brand small{font-size:10px;opacity:.9}
-.sidebar .nav-label{padding:13px 12px 6px;font-size:10px;font-weight:800;letter-spacing:.2px;color:#c3d8c5}
-.sidebar .nav button{min-height:45px;padding:10px 12px;margin:3px 0;gap:10px;border:1px solid transparent;border-radius:13px;font-size:12px;line-height:1.8}
-.sidebar .nav button .ico{width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:#ffffff0e;font-size:17px}
-.sidebar .nav button.active{background:linear-gradient(100deg,#d7e9a51f,#ffffff0b);border-color:#e0edc72a;box-shadow:inset -3px 0 #d9eaa9}
-.sidebar .nav button.active .ico{background:#d8e9a51f}
-.side-note{border:1px solid #ffffff24;background:linear-gradient(135deg,#ffffff0c,#ffffff05);border-radius:16px;line-height:2.05}
-.main{padding-top:27px}
-.top{padding:0 1px 17px;margin-bottom:18px;border-bottom:1px solid #dfe5da}
-.top .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.1px}
-.top .eyebrow:before{content:"";width:17px;height:3px;border-radius:9px;background:var(--rasta-gold)}
-.top h1{font-weight:900;letter-spacing:-.7px;line-height:1.5}
-.datepill{border-radius:999px;padding:10px 14px;box-shadow:0 3px 12px #19392308}
-.hero{border-radius:25px;padding:clamp(23px,3.3vw,38px);background:radial-gradient(circle at 12% 10%,#ffffff12 0 2px,transparent 3px),radial-gradient(ellipse at 88% 0%,#477858 0,transparent 35%),linear-gradient(125deg,#123725,#24543a 62%,#173e2c);box-shadow:0 18px 42px #153b2926;position:relative}
-.hero:after{content:"";position:absolute;inset:auto -35px -85px auto;width:220px;height:220px;border:1px solid #ffffff10;border-radius:50%;box-shadow:0 0 0 22px #ffffff06,0 0 0 44px #ffffff04;pointer-events:none}
-.hero h2{font-weight:900;letter-spacing:-.6px;line-height:1.55}
-.hero p{line-height:2.1}
-.hero .btn.primary{background:linear-gradient(135deg,#e4f3bd,#cce49a);box-shadow:0 6px 16px #071c102b}
-.btn,.mini,.filter{border-radius:11px;font-weight:800}
-.btn{padding:11px 15px}.btn.primary{background:linear-gradient(135deg,#e2f0bd,#cfe7a0)}
-.btn.dark{background:linear-gradient(135deg,#244f37,#173c2a)}
-.btn.ghost{background:#fffefa;border-color:#dfe6da}
-.panel,.stat,.workout-card,.meal,.foodcard,.exercise-row{border-radius:17px;border-color:#e1e7dc;box-shadow:0 7px 22px rgba(29,59,38,.045)}
-.panel{padding:18px}.panel h3{font-size:14px;font-weight:900}
-.stat{padding:16px;background:linear-gradient(145deg,#fffefa,#fbfcf7)}
-.stat strong{font-size:27px;font-weight:900;letter-spacing:-.5px}
-.stat label{font-weight:700}
-.sectionhead{margin-top:27px}.sectionhead h2{font-size:18px;font-weight:900;letter-spacing:-.35px}
-.sectionhead p{line-height:1.9}
-.rasta-hub-grid{gap:12px;margin-bottom:19px}
-.rasta-hub-card{min-height:94px;padding:15px;border-radius:18px;background:linear-gradient(145deg,#fffefa,#f8faf3);border-color:#e0e7da;box-shadow:0 8px 22px #19392308}
-.rasta-hub-icon{width:44px;height:44px;flex-basis:44px;border-radius:14px;background:linear-gradient(145deg,#edf4e4,#e1ecd5);box-shadow:inset 0 0 0 1px #dce7d3}
-.rasta-hub-card b{font-size:12px;font-weight:900}.rasta-hub-card small{font-size:10px;line-height:1.8}
-.rasta-hub-arrow{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#edf3e7}
-.rasta-hub-card.is-current{border-color:#a9c39a;box-shadow:0 0 0 2px #dce9d4}
-.rasta-all-menus-backdrop{background:rgba(10,27,17,.52);backdrop-filter:blur(5px)}
-.rasta-all-menus-sheet{border:1px solid #dfe7da;background:linear-gradient(160deg,#fffefa,#f6f8f0);box-shadow:0 24px 70px #071d1250}
-.rasta-all-menus-heading{padding-bottom:13px;border-bottom:1px solid var(--line)}
-.rasta-all-menus-heading b{font-size:19px;font-weight:900;letter-spacing:-.4px}
-.rasta-all-menus-heading p{line-height:1.8}
-.rasta-all-menus-close{font-size:17px;font-weight:900;transition:transform .18s,background .18s}
-.rasta-all-menus-grid button{min-height:65px;border-radius:15px;padding:11px 12px;background:#fffefa;border-color:#e2e8dd;box-shadow:0 4px 13px #173b2b08;font-weight:700;line-height:1.8}
-.rasta-all-menus-grid button span{display:grid;place-items:center;flex:0 0 37px;width:37px;height:37px;border-radius:12px;background:#edf3e6;font-size:20px}
-.rasta-all-menus-grid button.active{background:#eaf2e1;border-color:#b8cda9;box-shadow:inset 0 0 0 1px #d8e6cc}
-.rasta-menu-group{padding:11px 4px 7px;font-size:11px;letter-spacing:.1px}
-.toast{border:1px solid #ffffff20;box-shadow:0 10px 30px #10271935;border-radius:14px}
-input,select,textarea{border-radius:12px}
-@media(hover:hover) and (pointer:fine){
- .rasta-all-menus-grid button:hover{transform:translateY(-2px);border-color:#b8cda9;box-shadow:0 9px 20px #173b2b12}
- .rasta-all-menus-close:hover{background:#edf3e6;transform:rotate(4deg)}
- .stat:hover{transform:translateY(-2px)}
-}
-@media(max-width:700px){
- body{background:linear-gradient(180deg,#eef2e8 0,#f5f5ef 230px,#f5f5ef 100%)}
- .main{padding:15px 13px calc(112px + env(safe-area-inset-bottom))!important}
- .top{padding-bottom:13px;margin-bottom:14px}
- .top h1{font-size:23px}
- .datepill{font-size:10px;padding:8px 10px}
- .hero{padding:23px 20px;border-radius:22px;margin-bottom:13px}
- .hero h2{font-size:25px;max-width:17em}
- .hero p{font-size:11px}
- .stats{gap:9px;margin:12px 0 20px}
- .stat{padding:13px;border-radius:15px}
- .stat strong{font-size:23px}
- .panel{padding:14px;border-radius:16px}
- .sectionhead{margin:22px 0 11px}
- .rasta-hub-grid{gap:9px}
- .rasta-hub-card{min-height:83px;padding:10px;border-radius:15px;gap:8px}
- .rasta-hub-icon{width:36px;height:36px;flex-basis:36px;border-radius:11px;font-size:18px}
- .rasta-hub-card b{font-size:11px}.rasta-hub-card small{font-size:9px}
- .mobilebar{
-  display:flex!important;justify-content:space-around!important;align-items:stretch!important;gap:3px!important;
-  position:fixed!important;left:10px!important;right:10px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;
-  width:auto!important;max-width:none!important;overflow:visible!important;z-index:100!important;
-  padding:8px 5px!important;border:1px solid #dfe7d9!important;border-radius:21px!important;
-  background:rgba(255,254,250,.96)!important;backdrop-filter:blur(18px)!important;
-  box-shadow:0 12px 34px #163b2922!important;
- }
- #rasta-app-shell .mobilebar button{display:flex!important;flex:1 1 0!important;min-width:0!important;max-width:none!important;
-  flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;
-  padding:4px 2px!important;border:1px solid transparent!important;border-radius:13px!important;
-  background:transparent!important;color:#778176!important;font-size:9px!important;font-weight:800!important;line-height:1.5!important;
- }
- .mobilebar button span{font-size:19px!important;line-height:1.2}
- .mobilebar button.active{background:#eaf2e1!important;color:#1d4a32!important;border-color:#dce8d3!important}
- .mobilebar button[data-open-all-menus]{color:#254d35!important}
- .rasta-all-menus.open{display:block!important}
- .rasta-all-menus-sheet{
-  position:absolute!important;top:0!important;right:0!important;left:auto!important;bottom:0!important;
-  width:min(430px,92vw)!important;max-height:100%!important;height:100%!important;overflow-y:auto!important;
-  padding:calc(20px + env(safe-area-inset-top)) 16px calc(22px + env(safe-area-inset-bottom))!important;
-  border-radius:24px 0 0 24px!important;border-right:0!important;
-  animation:rastaMenuIn .22s ease-out;
- }
- .rasta-all-menus-heading{position:sticky;top:calc(-20px - env(safe-area-inset-top));z-index:2;padding:10px 0 14px;background:#fbfcf6f5;backdrop-filter:blur(12px)}
- .rasta-all-menus-grid{gap:8px}
- .rasta-all-menus-grid button{min-height:61px;padding:9px;font-size:11px}
- .rasta-all-menus-grid button span{width:33px;height:33px;flex-basis:33px;font-size:18px}
- .rasta-menu-group{padding-top:13px}
-}
-@keyframes rastaMenuIn{from{transform:translateX(22px);opacity:.75}to{transform:translateX(0);opacity:1}}
-@media(max-width:360px){
- .mobilebar{left:6px!important;right:6px!important;padding:6px 3px!important}
- #rasta-app-shell .mobilebar button{font-size:8px!important}
- .rasta-all-menus-sheet{width:95vw!important}
- .rasta-all-menus-grid button{font-size:10px}
-}
-@media(prefers-reduced-motion:reduce){.view.active{animation:none}.rasta-all-menus-sheet{animation:none}}
-
 </head>
 <body>
 
@@ -2592,4 +2470,127 @@ fetch('./version.json?check='+Date.now(),{cache:'no-store'}).then(r=>r.ok?r.json
 })();
 </script>
 
+<style>
+/* RASTA DESIGN SYSTEM 2026 — cohesive visual refresh */
+:root{
+ --bg:#f4f5ef;--paper:#fffefa;--ink:#1d2b22;--muted:#748075;--line:#e1e7dc;
+ --green:#173f2d;--green2:#32684a;--pale:#e5efdc;--lime:#d8eba8;
+ --orange:#d9a45f;--rasta-gold:#d9bd75;--shadow:0 10px 28px rgba(24,57,37,.07);
+ --rasta-radius:18px;
+}
+body{background:radial-gradient(ellipse at 95% 0%,#e8eee1 0,transparent 30%),var(--bg);color:var(--ink);letter-spacing:0}
+button,input,select,textarea{font-family:Vazirmatn,Tahoma,sans-serif}
+button{ -webkit-tap-highlight-color:transparent }
+.sidebar{padding:22px 13px;background:linear-gradient(155deg,#123725 0%,#1d4a32 52%,#102f21 100%);border-left:1px solid #ffffff12}
+.brand{padding:5px 8px 24px;gap:12px}
+.brandmark{width:48px;height:48px;border-radius:16px;border:1px solid #d8c47b;background-color:#214c34;box-shadow:0 8px 22px #071d1255}
+.brand b{font-size:23px;letter-spacing:-.7px}.brand small{font-size:10px;opacity:.9}
+.sidebar .nav-label{padding:13px 12px 6px;font-size:10px;font-weight:800;letter-spacing:.2px;color:#c3d8c5}
+.sidebar .nav button{min-height:45px;padding:10px 12px;margin:3px 0;gap:10px;border:1px solid transparent;border-radius:13px;font-size:12px;line-height:1.8}
+.sidebar .nav button .ico{width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:#ffffff0e;font-size:17px}
+.sidebar .nav button.active{background:linear-gradient(100deg,#d7e9a51f,#ffffff0b);border-color:#e0edc72a;box-shadow:inset -3px 0 #d9eaa9}
+.sidebar .nav button.active .ico{background:#d8e9a51f}
+.side-note{border:1px solid #ffffff24;background:linear-gradient(135deg,#ffffff0c,#ffffff05);border-radius:16px;line-height:2.05}
+.main{padding-top:27px}
+.top{padding:0 1px 17px;margin-bottom:18px;border-bottom:1px solid #dfe5da}
+.top .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.1px}
+.top .eyebrow:before{content:"";width:17px;height:3px;border-radius:9px;background:var(--rasta-gold)}
+.top h1{font-weight:900;letter-spacing:-.7px;line-height:1.5}
+.datepill{border-radius:999px;padding:10px 14px;box-shadow:0 3px 12px #19392308}
+.hero{border-radius:25px;padding:clamp(23px,3.3vw,38px);background:radial-gradient(circle at 12% 10%,#ffffff12 0 2px,transparent 3px),radial-gradient(ellipse at 88% 0%,#477858 0,transparent 35%),linear-gradient(125deg,#123725,#24543a 62%,#173e2c);box-shadow:0 18px 42px #153b2926;position:relative}
+.hero:after{content:"";position:absolute;inset:auto -35px -85px auto;width:220px;height:220px;border:1px solid #ffffff10;border-radius:50%;box-shadow:0 0 0 22px #ffffff06,0 0 0 44px #ffffff04;pointer-events:none}
+.hero h2{font-weight:900;letter-spacing:-.6px;line-height:1.55}
+.hero p{line-height:2.1}
+.hero .btn.primary{background:linear-gradient(135deg,#e4f3bd,#cce49a);box-shadow:0 6px 16px #071c102b}
+.btn,.mini,.filter{border-radius:11px;font-weight:800}
+.btn{padding:11px 15px}.btn.primary{background:linear-gradient(135deg,#e2f0bd,#cfe7a0)}
+.btn.dark{background:linear-gradient(135deg,#244f37,#173c2a)}
+.btn.ghost{background:#fffefa;border-color:#dfe6da}
+.panel,.stat,.workout-card,.meal,.foodcard,.exercise-row{border-radius:17px;border-color:#e1e7dc;box-shadow:0 7px 22px rgba(29,59,38,.045)}
+.panel{padding:18px}.panel h3{font-size:14px;font-weight:900}
+.stat{padding:16px;background:linear-gradient(145deg,#fffefa,#fbfcf7)}
+.stat strong{font-size:27px;font-weight:900;letter-spacing:-.5px}
+.stat label{font-weight:700}
+.sectionhead{margin-top:27px}.sectionhead h2{font-size:18px;font-weight:900;letter-spacing:-.35px}
+.sectionhead p{line-height:1.9}
+.rasta-hub-grid{gap:12px;margin-bottom:19px}
+.rasta-hub-card{min-height:94px;padding:15px;border-radius:18px;background:linear-gradient(145deg,#fffefa,#f8faf3);border-color:#e0e7da;box-shadow:0 8px 22px #19392308}
+.rasta-hub-icon{width:44px;height:44px;flex-basis:44px;border-radius:14px;background:linear-gradient(145deg,#edf4e4,#e1ecd5);box-shadow:inset 0 0 0 1px #dce7d3}
+.rasta-hub-card b{font-size:12px;font-weight:900}.rasta-hub-card small{font-size:10px;line-height:1.8}
+.rasta-hub-arrow{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#edf3e7}
+.rasta-hub-card.is-current{border-color:#a9c39a;box-shadow:0 0 0 2px #dce9d4}
+.rasta-all-menus-backdrop{background:rgba(10,27,17,.52);backdrop-filter:blur(5px)}
+.rasta-all-menus-sheet{border:1px solid #dfe7da;background:linear-gradient(160deg,#fffefa,#f6f8f0);box-shadow:0 24px 70px #071d1250}
+.rasta-all-menus-heading{padding-bottom:13px;border-bottom:1px solid var(--line)}
+.rasta-all-menus-heading b{font-size:19px;font-weight:900;letter-spacing:-.4px}
+.rasta-all-menus-heading p{line-height:1.8}
+.rasta-all-menus-close{font-size:17px;font-weight:900;transition:transform .18s,background .18s}
+.rasta-all-menus-grid button{min-height:65px;border-radius:15px;padding:11px 12px;background:#fffefa;border-color:#e2e8dd;box-shadow:0 4px 13px #173b2b08;font-weight:700;line-height:1.8}
+.rasta-all-menus-grid button span{display:grid;place-items:center;flex:0 0 37px;width:37px;height:37px;border-radius:12px;background:#edf3e6;font-size:20px}
+.rasta-all-menus-grid button.active{background:#eaf2e1;border-color:#b8cda9;box-shadow:inset 0 0 0 1px #d8e6cc}
+.rasta-menu-group{padding:11px 4px 7px;font-size:11px;letter-spacing:.1px}
+.toast{border:1px solid #ffffff20;box-shadow:0 10px 30px #10271935;border-radius:14px}
+input,select,textarea{border-radius:12px}
+@media(hover:hover) and (pointer:fine){
+ .rasta-all-menus-grid button:hover{transform:translateY(-2px);border-color:#b8cda9;box-shadow:0 9px 20px #173b2b12}
+ .rasta-all-menus-close:hover{background:#edf3e6;transform:rotate(4deg)}
+ .stat:hover{transform:translateY(-2px)}
+}
+@media(max-width:700px){
+ body{background:linear-gradient(180deg,#eef2e8 0,#f5f5ef 230px,#f5f5ef 100%)}
+ .main{padding:15px 13px calc(112px + env(safe-area-inset-bottom))!important}
+ .top{padding-bottom:13px;margin-bottom:14px}
+ .top h1{font-size:23px}
+ .datepill{font-size:10px;padding:8px 10px}
+ .hero{padding:23px 20px;border-radius:22px;margin-bottom:13px}
+ .hero h2{font-size:25px;max-width:17em}
+ .hero p{font-size:11px}
+ .stats{gap:9px;margin:12px 0 20px}
+ .stat{padding:13px;border-radius:15px}
+ .stat strong{font-size:23px}
+ .panel{padding:14px;border-radius:16px}
+ .sectionhead{margin:22px 0 11px}
+ .rasta-hub-grid{gap:9px}
+ .rasta-hub-card{min-height:83px;padding:10px;border-radius:15px;gap:8px}
+ .rasta-hub-icon{width:36px;height:36px;flex-basis:36px;border-radius:11px;font-size:18px}
+ .rasta-hub-card b{font-size:11px}.rasta-hub-card small{font-size:9px}
+ .mobilebar{
+  display:flex!important;justify-content:space-around!important;align-items:stretch!important;gap:3px!important;
+  position:fixed!important;left:10px!important;right:10px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;
+  width:auto!important;max-width:none!important;overflow:visible!important;z-index:100!important;
+  padding:8px 5px!important;border:1px solid #dfe7d9!important;border-radius:21px!important;
+  background:rgba(255,254,250,.96)!important;backdrop-filter:blur(18px)!important;
+  box-shadow:0 12px 34px #163b2922!important;
+ }
+ #rasta-app-shell .mobilebar button{display:flex!important;flex:1 1 0!important;min-width:0!important;max-width:none!important;
+  flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;
+  padding:4px 2px!important;border:1px solid transparent!important;border-radius:13px!important;
+  background:transparent!important;color:#778176!important;font-size:9px!important;font-weight:800!important;line-height:1.5!important;
+ }
+ .mobilebar button span{font-size:19px!important;line-height:1.2}
+ .mobilebar button.active{background:#eaf2e1!important;color:#1d4a32!important;border-color:#dce8d3!important}
+ .mobilebar button[data-open-all-menus]{color:#254d35!important}
+ .rasta-all-menus.open{display:block!important}
+ .rasta-all-menus-sheet{
+  position:absolute!important;top:0!important;right:0!important;left:auto!important;bottom:0!important;
+  width:min(430px,92vw)!important;max-height:100%!important;height:100%!important;overflow-y:auto!important;
+  padding:calc(20px + env(safe-area-inset-top)) 16px calc(22px + env(safe-area-inset-bottom))!important;
+  border-radius:24px 0 0 24px!important;border-right:0!important;
+  animation:rastaMenuIn .22s ease-out;
+ }
+ .rasta-all-menus-heading{position:sticky;top:calc(-20px - env(safe-area-inset-top));z-index:2;padding:10px 0 14px;background:#fbfcf6f5;backdrop-filter:blur(12px)}
+ .rasta-all-menus-grid{gap:8px}
+ .rasta-all-menus-grid button{min-height:61px;padding:9px;font-size:11px}
+ .rasta-all-menus-grid button span{width:33px;height:33px;flex-basis:33px;font-size:18px}
+ .rasta-menu-group{padding-top:13px}
+}
+@keyframes rastaMenuIn{from{transform:translateX(22px);opacity:.75}to{transform:translateX(0);opacity:1}}
+@media(max-width:360px){
+ .mobilebar{left:6px!important;right:6px!important;padding:6px 3px!important}
+ #rasta-app-shell .mobilebar button{font-size:8px!important}
+ .rasta-all-menus-sheet{width:95vw!important}
+ .rasta-all-menus-grid button{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.view.active{animation:none}.rasta-all-menus-sheet{animation:none}}
+</style>
 </body></html>
