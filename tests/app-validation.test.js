@@ -186,3 +186,17 @@ const manualPaymentsFunction = fs.readFileSync(path.join(root, 'supabase/functio
 if (!manualPaymentsFunction.includes('custom_nutrition_price_toman') || !manualPaymentsFunction.includes('set_custom_nutrition_price')) {
   throw new Error('Manual payment service must support the independent custom nutrition price.');
 }
+
+/* Regression checks for the central navigation router and all-menus dispatch. */
+if (!html.includes('id="view-training"') || !html.includes('id="view-nutrition"')) {
+  throw new Error('Training and nutrition must remain separate app views.');
+}
+if (!html.includes("if(v==='programs')v='training'") || !html.includes("training:'تمرین و برنامه‌های من'") || !html.includes("nutrition:'برنامه غذایی ایرانی'")) {
+  throw new Error('Training/program aliases and nutrition route labels must resolve to their own views.');
+}
+if (html.includes("if(typeof window.goto==='function')window.goto(view)") || html.includes("new CustomEvent('rasta:navigate'")) {
+  throw new Error('All-menus must not intercept navigation through window.goto or an unhandled custom event.');
+}
+if (!html.includes("const item=e.target.closest('button[data-view]')") || !html.includes("try{goto(view)}catch(err)")) {
+  throw new Error('All data-view buttons must use the central lexical goto router.');
+}
