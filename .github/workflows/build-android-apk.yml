@@ -9,6 +9,7 @@ on:
       - "rasta-science-engine.js"
       - "rasta-core.js"
       - "rasta-search.js"
+      - "rasta-ux.js"
       - "recipe-detail.html"
       - "download.html"
       - "manifest.json"
@@ -69,6 +70,7 @@ jobs:
           cp manifest.json www/manifest.json
           cp rasta-core.js www/rasta-core.js
           cp rasta-search.js www/rasta-search.js
+          cp rasta-ux.js www/rasta-ux.js
           cp rasta-science-engine.js www/rasta-science-engine.js
           cp sw.js www/sw.js
           cp admin.html www/admin.html
