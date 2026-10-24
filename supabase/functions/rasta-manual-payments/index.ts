@@ -79,7 +79,7 @@ Deno.serve(async (req: Request) => {
       return json({ error: "اطلاعات کارت مقصد هنوز توسط مدیر تنظیم نشده است." }, 409);
     }
     const { data: plan, error: planError } = await db.from("subscription_plans")
-      .select("id,price_irr,is_active,billing_interval").eq("id", "premium").maybeSingle();
+      .select("id,price_irr,is_active,billing_interval").eq("id", planId).maybeSingle();
     const validPlan = planId === "premium"
       ? plan?.billing_interval === "month"
       : plan?.billing_interval === "none";
