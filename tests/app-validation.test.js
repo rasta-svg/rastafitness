@@ -168,3 +168,15 @@ if (!html.includes('ورزش و تغذیه‌ی حرفه‌ای‌ها') || html
 }
 if (!html.includes("const RASTA_APP_VERSION='2.0.4';")) throw new Error('App version constant must match the current release.');
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
+
+const adminPageForPricing = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+if (!html.includes('data-plan-request="custom_nutrition"') || !html.includes('consume_custom_nutrition_purchase')) {
+  throw new Error('Custom nutrition generation must require a separate paid purchase and consume one paid use.');
+}
+if (!adminPageForPricing.includes('custom-nutrition-price-form') || !adminPageForPricing.includes('set_custom_nutrition_price')) {
+  throw new Error('Admin must expose a separate editable price for custom nutrition plans.');
+}
+const manualPaymentsFunction = fs.readFileSync(path.join(root, 'supabase/functions/rasta-manual-payments/index.ts'), 'utf8');
+if (!manualPaymentsFunction.includes('custom_nutrition_price_toman') || !manualPaymentsFunction.includes('set_custom_nutrition_price')) {
+  throw new Error('Manual payment service must support the independent custom nutrition price.');
+}
