@@ -13,6 +13,7 @@ CREATE POLICY custom_nutrition_purchases_read_own ON public.custom_nutrition_pur
   FOR SELECT TO authenticated USING ((SELECT auth.uid()) = user_id);
 GRANT SELECT ON public.custom_nutrition_purchases TO authenticated;
 REVOKE INSERT, UPDATE, DELETE ON public.custom_nutrition_purchases FROM anon, authenticated;
+GRANT ALL ON public.custom_nutrition_purchases TO service_role;
 
 INSERT INTO public.subscription_plans
   (id, name_fa, description_fa, price_irr, billing_interval, features, sort_order, is_active)
