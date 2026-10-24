@@ -195,7 +195,7 @@ Deno.serve(async (req: Request) => {
       p_admin_user_id: user.id,
     });
     if (error) return json({ error: error.message || "بررسی پرداخت انجام نشد." }, 409);
-    return json({ result: data, message: approve ? "پرداخت تأیید شد و اشتراک ۳۰ روزه فعال شد." : "درخواست پرداخت رد شد." });
+    return json({ result: data, message: approve ? "پرداخت تأیید شد و دسترسی خدمت خریداری‌شده فعال شد." : "درخواست پرداخت رد شد." });
   }
 
   return json({ error: "عملیات ناشناخته است." }, 400);
