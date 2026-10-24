@@ -287,6 +287,35 @@ body{background:#061f17!important;color:var(--rasta-ink)}
 }
 @media(prefers-reduced-motion:reduce){#rasta-app-shell *{scroll-behavior:auto!important;transition:none!important}}
 
+
+/* RASTA FIX 2026-10-24: global premium styling + robust all-menus click routing.
+   Global selectors are intentional because several screens render outside the app-shell node. */
+:root{--rasta-forest:#062b1e;--rasta-deep:#03180f;--rasta-gold:#e6bd55;--rasta-cream:#fffaf0}
+body{background:#061f16!important}
+#rasta-app-shell,.app-shell,.main{background-color:transparent}
+#rasta-app-shell .top,.top{background:linear-gradient(115deg,#031b13,#0b5034 68%,#092b1e)!important;color:#fff!important;border-bottom:1px solid #d8b34f!important;border-radius:0 0 24px 24px;box-shadow:0 10px 28px #001b1240}
+.top h1,.top h2,.top h3{color:#fff!important}
+.hero{background:radial-gradient(ellipse at 90% 0%,#d7ae4a35,transparent 42%),linear-gradient(125deg,#031b13,#075333 62%,#0b3021)!important;color:#fff!important;border:1px solid #d6b24f!important;border-radius:26px!important;box-shadow:0 16px 36px #092d1f30!important;overflow:hidden}
+.hero h2,.hero h3,.hero strong{color:#fff!important}.hero p{color:#e8eadf!important;line-height:1.9}
+.panel,.stat,.card,.rasta-hub-card{background:linear-gradient(145deg,#fffef9,#f6f5eb)!important;border:1px solid #e4dcc6!important;border-radius:19px!important;box-shadow:0 7px 22px #193a2710!important}
+.sectionhead{color:#143c29!important;font-weight:900!important}
+.rasta-hub-icon{background:linear-gradient(145deg,#0a5938,#073521)!important;color:#f5d777!important}
+.mobilebar{background:rgba(4,35,24,.97)!important;border:1px solid #c8a54b!important;box-shadow:0 12px 35px #00190f55!important;backdrop-filter:blur(22px)!important;z-index:120!important}
+.mobilebar button{color:#e2e7da!important}
+.mobilebar button.active{background:linear-gradient(145deg,#dcb84f,#f4df9b)!important;color:#153521!important;border-color:#fff0b0!important}
+.rasta-all-menus{z-index:9999!important;pointer-events:none}
+.rasta-all-menus.open{display:block!important;pointer-events:auto!important}
+.rasta-all-menus-backdrop{z-index:0!important}
+.rasta-all-menus-sheet{z-index:1!important;background:linear-gradient(155deg,#06291d,#031b13)!important;color:#f8f5e9!important;border:1px solid #c8a342!important;box-shadow:0 25px 80px #0008!important}
+.rasta-all-menus-heading{background:#06291df2!important;border-color:#b99a4a!important}
+.rasta-all-menus-heading b{color:#f3d77e!important}.rasta-all-menus-heading p{color:#d5e0d4!important}
+.rasta-all-menus-grid button{background:linear-gradient(145deg,#0d3e2b,#08291d)!important;color:#f7f5e9!important;border:1px solid #315c42!important;min-height:58px!important;border-radius:15px!important}
+.rasta-all-menus-grid button span{background:linear-gradient(145deg,#d9b24c,#f6e2a0)!important;color:#173621!important}
+.rasta-all-menus-grid button.active{border-color:#e5c35e!important;background:#164f34!important}
+.rasta-all-menus-close{background:#123e2b!important;color:#f4d77c!important;border:1px solid #b79a4a!important;border-radius:12px!important;position:relative;z-index:3}
+input,select,textarea{background:#fffdf7!important;border:1px solid #ddd9c7!important;color:#173b29!important;border-radius:12px!important}
+@media(max-width:700px){.mobilebar{position:fixed!important;left:10px!important;right:10px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;width:auto!important;max-width:none!important;display:flex!important;justify-content:space-around!important;z-index:120!important}.rasta-all-menus-sheet{position:absolute!important;top:0!important;right:0!important;left:auto!important;bottom:0!important;width:min(430px,92vw)!important;height:100%!important;max-height:100%!important;border-radius:24px 0 0 24px!important;padding:calc(20px + env(safe-area-inset-top)) 16px calc(22px + env(safe-area-inset-bottom))!important}}
+
 </style>
 
 </head>
@@ -2647,4 +2676,24 @@ input,select,textarea{border-radius:12px}
 }
 @media(prefers-reduced-motion:reduce){.view.active{animation:none}.rasta-all-menus-sheet{animation:none}}
 </style>
+
+<script id="rasta-all-menus-reliability-fix">
+(function(){
+ if(window.__rastaMenuFixInstalled)return;window.__rastaMenuFixInstalled=true;
+ function panel(){return document.getElementById('rasta-all-menus')}
+ function closeMenu(){var p=panel();if(p){p.classList.remove('open');p.setAttribute('aria-hidden','true')}document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded','false')})}
+ function openMenu(btn){var p=panel();if(!p){console.error('Rasta all-menus panel missing');return}var show=!p.classList.contains('open');if(show){var admin=document.getElementById('rasta-admin-mobile-link');if(admin)admin.style.display=(String((window.authUser||window.__RASTA_AUTH_USER||{}).email||'').trim().toLowerCase()==='elida600000@gmail.com')?'flex':'none';var logout=document.getElementById('rasta-allmenus-logout');if(logout)logout.style.display=(window.authUser||window.__RASTA_AUTH_USER)?'flex':'none'}p.classList.toggle('open',show);p.setAttribute('aria-hidden',String(!show));document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded',String(show))});}
+ window.addEventListener('click',function(e){
+  var t=e.target;if(!t||!t.closest)return;
+  var open=t.closest('[data-open-all-menus]');
+  if(open){e.preventDefault();e.stopImmediatePropagation();openMenu(open);return}
+  var close=t.closest('[data-close-all-menus],.rasta-all-menus-close');
+  if(close){e.preventDefault();e.stopImmediatePropagation();closeMenu();return}
+  var item=t.closest('#rasta-all-menus button[data-view]');
+  if(item){e.preventDefault();e.stopImmediatePropagation();var view=item.getAttribute('data-view');closeMenu();try{if(typeof window.goto==='function')window.goto(view);else item.dispatchEvent(new CustomEvent('rasta:navigate',{bubbles:true,detail:{view:view}}))}catch(err){console.error(err)}return}
+ },true);
+ window.addEventListener('keydown',function(e){if(e.key==='Escape')closeMenu()});
+})();
+</script>
+
 </body></html>
