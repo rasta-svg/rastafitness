@@ -84,6 +84,8 @@ if (!html.includes("registerModule('nutrition-engine'") || !html.includes("depen
   throw new Error('Nutrition engine must declare its central module dependencies.');
 }
 const foodBank = fs.readFileSync(path.join(root, 'nutrition-bank.html'), 'utf8');
+if (!foodBank.includes("{id:'eggs',label:'تخم‌مرغ و غذاهای تخم‌مرغی'}") || !foodBank.includes("{id:'offal',label:'دل، جگر و احشاء'}")) throw new Error('Food bank must provide distinct egg and offal categories.');
+if (!foodBank.includes("if(id==='eggs')return eggFood") || !foodBank.includes("if(id==='offal')return offalFood") || !foodBank.includes('&&!eggFood&&!offalFood')) throw new Error('Egg foods and offal must not be classified as meat.');
 if (!foodBank.includes("registerModule('food-bank-data'") || !foodBank.includes("setModuleStatus('food-bank-data','ready'") || !foodBank.includes("setModuleStatus('food-bank-data','degraded'")) {
   throw new Error('Food bank must register with central health and report success/failure.');
 }
