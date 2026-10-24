@@ -358,7 +358,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <div class="sectionhead"><div><h2>باشگاه تمرین رَستا</h2><p>برنامه روزانه، برنامه‌های چند‌هفته‌ای، کشف تمرین و کتابخانه حرکات در یک مسیر هماهنگ.</p></div><div class="actions"><button class="btn ghost" id="addday">+ روز تمرین</button><button class="btn dark" id="startsession">شروع جلسه</button></div></div>
 <div class="rasta-hub-grid" aria-label="بخش‌های مرتبط تمرین">
 <button type="button" class="rasta-hub-card is-current" data-goto="training"><span class="rasta-hub-icon">🏋️</span><span><b>برنامه تمرینی من</b><small>تنظیم روزها و اجرای جلسه</small></span><span class="rasta-hub-arrow">←</span></button>
-<button type="button" class="rasta-hub-card" data-goto="programs"><span class="rasta-hub-icon">🗓️</span><span><b>برنامه‌های چند‌هفته‌ای</b><small>مسیر هدف‌محور و پیگیری هفتگی</small></span><span class="rasta-hub-arrow">←</span></button>
+<button type="button" class="rasta-hub-card" onclick="document.querySelector('.rasta-programs-heading')?.scrollIntoView({behavior:'smooth',block:'start'})"><span class="rasta-hub-icon">🗓️</span><span><b>برنامه‌های چند‌هفته‌ای</b><small>مسیر هدف‌محور و پیگیری هفتگی</small></span><span class="rasta-hub-arrow">←</span></button>
 <button type="button" class="rasta-hub-card" data-goto="explore"><span class="rasta-hub-icon">🔎</span><span><b>کشف تمرین و کتابخانه حرکات</b><small>جست‌وجو، دسته‌بندی و انتخاب حرکت</small></span><span class="rasta-hub-arrow">←</span></button>
 </div>
 <div class="panel" style="margin-bottom:14px"><div class="split"><div><h3 style="margin:0">روش برنامه‌ریزی تمرین</h3><p style="margin:4px 0 0">این تنظیم مستقل از روش برنامه غذایی است.</p></div></div><div class="filters" id="trainingmodes"><button class="filter active" data-trainingmode="auto">خودکار</button><button class="filter" data-trainingmode="hybrid">ترکیبی با تأیید من</button><button class="filter" data-trainingmode="manual">دستی</button></div><p id="trainingmodehint" style="margin:0">در حالت خودکار، رَستا بر اساس هدف و محل تمرین برنامه پیشنهاد می‌کند.</p></div>
@@ -1480,7 +1480,11 @@ const RASTA_NUTRITION_VERSION='rasta-nutrition-0.2-variety';
  window.RastaCore.registerModule('premium-catalog-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
  window.RastaCore.registerModule('meal-food-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
  window.RastaCore.registerModule('nutrition-reference-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine','supabase-client']});
- window.RastaCore.registerModule('nutrition-engine',{kind:'engine',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['supabase-client','science-engine','search-engine']});
+ window.RastaCore.registerModule('nutrition-engine',{kind:'engine',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['supabase-client','search-engine']});
+ window.RastaCore.registerModule('workout-engine',{kind:'engine',version:'1.0.0',source:'index.html',dependencies:['exercise-library-search','workout-discovery-search']});
+ window.RastaCore.registerModule('training-workspace',{kind:'workspace',version:'1.0.0',source:'index.html',dependencies:['workout-engine','search-engine']});
+ window.RastaCore.registerModule('nutrition-workspace',{kind:'workspace',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['nutrition-engine','food-catalog-search','meal-food-search','nutrition-reference-search']});
+ window.RastaCore.registerModule('rasta-workspace',{kind:'workspace',version:'1.0.0',source:'index.html',dependencies:['training-workspace','nutrition-workspace']});
 let rastaNutritionWeekSelections=[];
 let rastaPremiumGeneratedProgram=null;
 let rastaNutritionLastPlanId=null;
