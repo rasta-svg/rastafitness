@@ -361,7 +361,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </section>
 <section class="view" id="view-nutrition">
 <div class="panel" id="rasta-nutrition-builder" style="margin-bottom:16px;border-color:#cbd9c5">
- <div class="split"><div><h3 style="margin-bottom:4px">🧠 رژیم‌ساز هوشمند و اختصاصی رستا</h3><p style="margin:0">هدف، کاهش وزن، افزایش عضله، تنوع غذاهای ایرانی، بودجه، ذائقه و محدودیت‌ها در پیشنهاد هفت‌روزه لحاظ می‌شوند.</p></div><span class="pill">برنامه‌ریزی شخصی‌سازی‌شده</span></div>
+ <div class="split"><div><h3 style="margin-bottom:4px">🧠 رژیم‌ساز هوشمند و اختصاصی رستا</h3><p style="margin:0">هدف، کاهش وزن، افزایش عضله، تنوع غذاهای ایرانی، بودجه، ذائقه و محدودیت‌ها در پیشنهاد هفت‌روزه لحاظ می‌شوند.</p></div><span class="pill" style="background:#f3e8bf;color:#6c531b">🔒 پرداخت جداگانه برای هر برنامه</span></div>
+ <div class="tip" style="margin-top:12px"><b>تعرفه مستقل از پریمیوم</b>ساخت هر برنامه اختصاصی ۷ روزه یک خرید جداگانه دارد؛ خرید پریمیوم این هزینه را پوشش نمی‌دهد. قیمت فعلی و روش پرداخت را از اینجا ببین: <button type="button" class="btn dark" data-plan-request="custom_nutrition" style="margin:5px 0">مشاهده قیمت و خرید ساخت برنامه غذایی</button></div>
  <div class="tip" style="margin-top:12px"><b>ایمنی مقدم بر پیشنهاد غذاست</b>اطلاعات این بانک غذایی هنوز برای آلرژن‌ها به‌طور کامل تأیید نشده است. در صورت ثبت حساسیت، بارداری/شیردهی یا بیماری مهم، تولید خودکار رژیم متوقف می‌شود تا از پیشنهاد ناایمن جلوگیری شود. این ابزار جایگزین پزشک یا متخصص تغذیه نیست.</div>
  <div class="formgrid" style="margin-top:14px">
   <label class="field">سن (فقط بزرگسالان)<input id="nf-age" type="number" min="18" max="100" inputmode="numeric" placeholder="مثلاً ۳۰"></label>
@@ -385,7 +386,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
  </div>
  <label style="display:flex;align-items:flex-start;gap:9px;margin-top:13px;font-size:11px;line-height:1.9;color:var(--ink)"><input id="nf-pregnancy" type="checkbox" style="margin-top:5px"> باردار هستم یا در دوره شیردهی قرار دارم.</label>
  <label style="display:flex;align-items:flex-start;gap:9px;margin-top:9px;font-size:11px;line-height:1.9;color:var(--ink)"><input id="nf-consent" type="checkbox" style="margin-top:5px"> رضایت می‌دهم اطلاعات تغذیه‌ای و سلامت واردشده برای ساخت و ذخیره برنامه اختصاصی من در حساب رستا استفاده شود. می‌توانم اطلاعات را بعداً تغییر دهم.</label>
- <div class="actions" style="margin-top:14px"><button class="btn ghost" id="nf-save" type="button">ذخیره پرونده تغذیه‌ای</button><button class="btn dark" id="nf-generate" type="button">ساخت برنامه اختصاصی</button></div>
+ <div class="actions" style="margin-top:14px"><button class="btn ghost" id="nf-save" type="button">ذخیره پرونده تغذیه‌ای</button><button class="btn dark" id="nf-generate" type="button">🔒 ساخت برنامه اختصاصی · نیازمند خرید</button></div>
  <div id="nf-status" class="tip" role="status" aria-live="polite" style="margin-top:12px">هنوز پرونده تغذیه‌ای تکمیل نشده است.</div>
  <div id="nf-result" style="margin-top:12px"></div>
 
@@ -1357,25 +1358,28 @@ async function renderPlans(){
 }
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 async function openManualPayment(planId){
- if(planId!=='premium'){toast('در حال حاضر فقط اشتراک ویژه ورزشکار از این روش قابل خرید است.');return}
+ if(!['premium','custom_nutrition'].includes(planId)){toast('این نوع خرید در حال حاضر در دسترس نیست.');return}
+ const custom=planId==='custom_nutrition';
+ const productTitle=custom?'ساخت اختصاصی برنامه غذایی':'اشتراک پریمیوم';
  const client=window.__rastaSupabaseClient;
  if(!client){toast('اتصال حساب کاربری برقرار نیست.');return}
  const {data:{user}}=await client.auth.getUser();
- if(!user){toast('برای خرید اشتراک ابتدا وارد حساب رستا شوید.');return}
- modal('درخواست اشتراک پریمیوم', '<div class="empty">در حال دریافت اطلاعات کارت…</div>');
+ if(!user){toast('برای خرید ابتدا وارد حساب رستا شوید.');return}
+ modal(custom?'خرید ساخت اختصاصی برنامه غذایی':'درخواست اشتراک پریمیوم', '<div class="empty">در حال دریافت اطلاعات کارت و تعرفه…</div>');
  try{
   const {data,error}=await client.functions.invoke('rasta-manual-payments',{body:{action:'config'}});
   if(error)throw error;
   const cfg=data?.config;
   if(!cfg?.enabled){$('modalbody').innerHTML='<div class="tip"><b>اطلاعات کارت هنوز ثبت نشده است</b>مدیر رستا باید شماره کارت و نام صاحب کارت را در پنل مدیریت وارد کند.</div>';return}
-  const {data:pending}=await client.from('payment_transactions').select('id,status,amount_irr,created_at,provider_response').eq('user_id',user.id).eq('status','pending').limit(1).maybeSingle();
-  if(pending){$('modalbody').innerHTML='<div class="tip"><b>درخواست شما در انتظار بررسی است</b>یک درخواست پرداخت قبلاً ثبت شده است. پس از بررسی مدیر، وضعیت اشتراک در همین بخش به‌روزرسانی می‌شود.</div>';return}
-  const {data:pricePlan}=await client.from('subscription_plans').select('price_irr').eq('id',planId).single();
-  const amountToman=Math.round(Number(pricePlan?.price_irr||0)/10).toLocaleString('fa-IR');
+  const {data:pending}=await client.from('payment_transactions').select('id,status,amount_irr,created_at,provider_response').eq('user_id',user.id).eq('status','pending').eq('provider_response->>plan_id',planId).limit(1).maybeSingle();
+  if(pending){$('modalbody').innerHTML='<div class="tip"><b>درخواست شما در انتظار بررسی است</b>یک درخواست پرداخت برای همین خدمت قبلاً ثبت شده است. پس از بررسی مدیر، وضعیت آن در پنل پرداخت به‌روزرسانی می‌شود.</div>';return}
+  const amount=Number(custom?cfg.custom_nutrition_price_toman:cfg.price_toman)||0;
+  if(amount<1000){$('modalbody').innerHTML='<div class="tip"><b>تعرفه هنوز تنظیم نشده است</b>مدیر باید قیمت این خدمت را در پنل مدیریت وارد کند.</div>';return}
   const card=String(cfg.card_number||'');
-  $('modalbody').innerHTML='<div class="panel" style="margin:0 0 12px"><p style="margin-top:0">مبلغ اشتراک ۳۰ روزه</p><h2 style="font-size:26px">'+escapeHtml(amountToman)+' تومان</h2><p class="rasta-payment-note">پرداخت یک‌باره است و تمدید خودکار ندارد؛ دسترسی ۳۰ روز پس از تأیید مدیر فعال می‌شود.</p><p>به نام: <b>'+escapeHtml(cfg.cardholder_name)+'</b></p><div class="split" style="margin-top:10px;gap:8px;flex-wrap:wrap"><strong dir="ltr" style="font-size:18px;letter-spacing:1px">'+escapeHtml(card.replace(/(\d{4})(?=\d)/g,'$1-'))+'</strong><button type="button" class="btn secondary" id="copy-rasta-card">کپی شماره کارت</button></div></div><div class="tip" style="margin-bottom:12px">'+escapeHtml(cfg.instructions||'پس از واریز، شماره پیگیری را ثبت کنید.')+'</div><form id="manual-payment-form"><label class="field">شماره پیگیری / شناسه واریز<input id="transfer-reference" required minlength="3" maxlength="100" autocomplete="off" placeholder="شماره پیگیری درج‌شده در رسید"></label><label class="field">زمان واریز (اختیاری)<input id="transfer-time" maxlength="80" placeholder="مثلاً امروز ساعت ۱۴:۳۰"></label><div class="tip">پس از ثبت، وضعیت درخواست «در انتظار بررسی» خواهد بود. لطفاً تا تأیید مدیر از ارسال دوباره درخواست خودداری کنید.</div><button class="btn dark" id="submit-manual-payment" type="submit" style="width:100%;margin-top:12px">ثبت درخواست بررسی پرداخت</button></form>';
+  const description=custom?'این پرداخت فقط یک نوبت ساخت برنامه غذایی اختصاصی ۷ روزه را فعال می‌کند و اشتراک پریمیوم را فعال نمی‌کند.':'پرداخت یک‌باره است و پس از تأیید مدیر، اشتراک ۳۰ روزه فعال می‌شود؛ تمدید خودکار ندارد.';
+  $('modalbody').innerHTML='<div class="panel" style="margin:0 0 12px"><p style="margin-top:0">'+escapeHtml(productTitle)+'</p><h2 style="font-size:26px">'+escapeHtml(amount.toLocaleString('fa-IR'))+' تومان</h2><p class="rasta-payment-note">'+escapeHtml(description)+'</p><p>به نام: <b>'+escapeHtml(cfg.cardholder_name)+'</b></p><div class="split" style="margin-top:10px;gap:8px;flex-wrap:wrap"><strong dir="ltr" style="font-size:18px;letter-spacing:1px">'+escapeHtml(card.replace(/(\\d{4})(?=\\d)/g,'$1-'))+'</strong><button type="button" class="btn secondary" id="copy-rasta-card">کپی شماره کارت</button></div></div><div class="tip" style="margin-bottom:12px">'+escapeHtml(cfg.instructions||'پس از واریز، شماره پیگیری را ثبت کنید.')+'</div><form id="manual-payment-form"><label class="field">شماره پیگیری / شناسه واریز<input id="transfer-reference" required minlength="3" maxlength="100" autocomplete="off" placeholder="شماره پیگیری درج‌شده در رسید"></label><label class="field">زمان واریز (اختیاری)<input id="transfer-time" maxlength="80" placeholder="مثلاً امروز ساعت ۱۴:۳۰"></label><div class="tip">پس از ثبت، درخواست در انتظار بررسی مدیر می‌ماند. فعال‌سازی فقط پس از بررسی و تأیید واقعی واریز انجام می‌شود.</div><button class="btn dark" id="submit-manual-payment" type="submit" style="width:100%;margin-top:12px">ثبت درخواست بررسی پرداخت</button></form>';
   $('copy-rasta-card').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(card);toast('شماره کارت کپی شد.')}catch{toast('کپی خودکار ممکن نیست؛ شماره کارت را دستی کپی کنید.')}});
-  $('manual-payment-form').addEventListener('submit',async e=>{e.preventDefault();const btn=$('submit-manual-payment');btn.disabled=true;btn.textContent='در حال ثبت…';try{const {data:result,error:submitError}=await client.functions.invoke('rasta-manual-payments',{body:{action:'submit',plan_id:'premium',transfer_reference:$('transfer-reference').value.trim(),transfer_time:$('transfer-time').value.trim()}});if(submitError)throw submitError;if(result?.error)throw new Error(result.error);$('modalbody').innerHTML='<div class="tip"><b>درخواست پرداخت ثبت شد</b>درخواست شما ثبت شد؛ تا تأیید مدیر اشتراک فعال نمی‌شود. این اشتراک تمدید خودکار ندارد. شناسه درخواست: <span dir="ltr">'+escapeHtml(result?.transaction?.id||'ثبت‌شده')+'</span></div>';toast('درخواست پرداخت ثبت شد.')}catch(err){toast(err.message||'ثبت درخواست انجام نشد.');btn.disabled=false;btn.textContent='ثبت درخواست بررسی پرداخت'}});
+  $('manual-payment-form').addEventListener('submit',async e=>{e.preventDefault();const btn=$('submit-manual-payment');btn.disabled=true;btn.textContent='در حال ثبت…';try{const {data:result,error:submitError}=await client.functions.invoke('rasta-manual-payments',{body:{action:'submit',plan_id:planId,transfer_reference:$('transfer-reference').value.trim(),transfer_time:$('transfer-time').value.trim()}});if(submitError)throw submitError;if(result?.error)throw new Error(result.error);$('modalbody').innerHTML='<div class="tip"><b>درخواست پرداخت ثبت شد</b>درخواست '+escapeHtml(productTitle)+' ثبت شد؛ تا تأیید مدیر فعال نمی‌شود. شناسه درخواست: <span dir="ltr">'+escapeHtml(result?.transaction?.id||'ثبت‌شده')+'</span></div>';toast('درخواست پرداخت ثبت شد.')}catch(err){toast(err.message||'ثبت درخواست انجام نشد.');btn.disabled=false;btn.textContent='ثبت درخواست بررسی پرداخت'}});
  }catch(err){$('modalbody').innerHTML='<div class="empty">دریافت اطلاعات پرداخت ناموفق بود. لطفاً دوباره تلاش کنید.</div>';console.error('manual payment config error',err)}
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-plan-request]');if(!b)return;const id=b.getAttribute('data-plan-request');if(id==='free')return;openManualPayment(id)});
@@ -1622,6 +1626,15 @@ function nutritionBuildPlan(a,targets,dayOffset=0){
 }
 async function rastaNutritionGenerate(){
  const a=nutritionReadForm();const validation=nutritionValidate(a);if(validation){nutritionStatus(validation);return}
+ const client=window.__rastaSupabaseClient;
+ if(!client){nutritionStatus('برای خرید و ساخت برنامه اختصاصی، ابتدا وارد حساب رستا شو.');return}
+ let user=null;
+ try{const auth=await client.auth.getUser();if(auth.error)throw auth.error;user=auth.data?.user||null}catch(e){nutritionStatus('بررسی حساب کاربری انجام نشد؛ اتصال را بررسی و دوباره تلاش کن.');return}
+ if(!user){nutritionStatus('ساخت برنامه اختصاصی پولی است؛ برای خرید و فعال‌شدن نوبت ساخت، ابتدا وارد حساب رستا شو.');return}
+ let availablePurchase=null;
+ try{const {data,error}=await client.from('custom_nutrition_purchases').select('id,created_at').eq('status','paid').order('created_at',{ascending:true}).limit(1);if(error)throw error;availablePurchase=data?.[0]||null}
+ catch(e){nutritionStatus('بررسی خرید برنامه غذایی انجام نشد؛ لطفاً دوباره تلاش کن.');return}
+ if(!availablePurchase){nutritionStatus('برای ساخت برنامه اختصاصی، ابتدا یک نوبت ساخت خریداری کن.');const status=$('nf-status');if(status)status.innerHTML='این خدمت جدا از پریمیوم است و برای هر برنامه ۷ روزه یک خرید لازم دارد. <button class="btn dark" type="button" data-plan-request="custom_nutrition" style="margin-top:8px">مشاهده قیمت و خرید</button>';return}
  const saved=await rastaNutritionSaveAssessment(a,true);if(saved===false)return;
  const risk=nutritionRisk(a);
  if(risk){nutritionStatus(risk);$('nf-result').innerHTML='<div class="tip"><b>نیازمند بررسی بیشتر</b>'+risk+'</div>';return}
@@ -1630,6 +1643,8 @@ async function rastaNutritionGenerate(){
  const week=[];rastaNutritionWeekSelections=[];
  for(let day=0;day<7;day++){const builtDay=nutritionBuildPlan(a,targets,day);if(builtDay.error){nutritionStatus(builtDay.error);return}week.push(builtDay)}
  const built={...week[0],week_plan:week,plan_horizon_days:7,created_at:new Date().toISOString()};
+ try{const {data:consumed,error}=await client.rpc('consume_custom_nutrition_purchase',{p_purchase_id:availablePurchase.id});if(error)throw error;if(consumed!==true)throw new Error('این نوبت ساخت قبلاً استفاده شده یا در دسترس نیست.');}
+ catch(e){nutritionStatus('برنامه ساخته شد اما نوبت پرداختی قابل ثبت نبود؛ برای جلوگیری از مصرف دوباره، خروجی نمایش داده نشد. '+(e?.message||''));return}
  rastaNutritionLastPlanId=null;
  foodday.meals=built.meals;foodday.mode='hybrid';save();renderNutrition();renderToday();
  const result=$('nf-result');
