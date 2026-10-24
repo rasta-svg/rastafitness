@@ -1740,6 +1740,17 @@ function profileLoad(){[['pname','name'],['pgoal','goal'],['pcal','cal'],['ppro'
 document.addEventListener('click',e=>{const card=e.target.closest('[data-foodcard]');if(!card||e.target.closest('button'))return;if(!document.getElementById('view-nutrition')?.classList.contains('active'))return;showFoodInfo(card.dataset.foodcard)});
 const rastaAllMenus=document.getElementById('rasta-all-menus');
 function closeRastaAllMenus(){if(!rastaAllMenus)return;rastaAllMenus.classList.remove('open');rastaAllMenus.setAttribute('aria-hidden','true');document.querySelectorAll('[data-open-all-menus]').forEach(b=>b.setAttribute('aria-expanded','false'))}
+/* Reliable navigation dispatch: route primary and all-menu buttons before other click handlers. */
+document.addEventListener('click',function(e){
+ const item=e.target.closest('button[data-view]');
+ if(!item)return;
+ const view=item.dataset.view;
+ if(!view)return;
+ e.preventDefault();
+ if(rastaAllMenus&&item.closest('#rasta-all-menus'))closeRastaAllMenus();
+ try{goto(view)}catch(err){console.error('Rasta navigation failed:',view,err);toast('باز کردن این بخش با خطا روبه‌رو شد؛ صفحه را تازه‌سازی کن.')}
+ e.stopImmediatePropagation();
+},true);
 document.addEventListener('click',e=>{
  const open=e.target.closest('[data-open-all-menus]');
  if(open){if(!rastaAllMenus)return;const willOpen=!rastaAllMenus.classList.contains('open');const adminEntry=byId('rasta-admin-mobile-link');if(adminEntry)adminEntry.style.display='flex';const logoutEntry=byId('rasta-allmenus-logout');if(logoutEntry)logoutEntry.style.display=(authUser||window.__RASTA_AUTH_USER)?'flex':'none';rastaAllMenus.classList.toggle('open',willOpen);rastaAllMenus.setAttribute('aria-hidden',String(!willOpen));open.setAttribute('aria-expanded',String(willOpen));return}
