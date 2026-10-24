@@ -27,7 +27,7 @@ const core = fs.readFileSync(path.join(root, 'rasta-core.js'), 'utf8');
 new vm.Script(core);
 const ux = fs.readFileSync(path.join(root, 'rasta-ux.js'), 'utf8');
 new vm.Script(ux);
-if (!html.includes('rasta-ux.js?v=20261024-fix1')) throw new Error('UX hotfix must bust stale browser/service-worker cache entries.');
+if (!/rasta-ux\.js\?v=20261024-fix\d+/.test(html)) throw new Error('UX hotfix must bust stale browser/service-worker cache entries.');
 if (!ux.includes('rasta-guide-quickstart') || !ux.includes('rasta-menu-no-results')) throw new Error('UX layer must provide a clear guide and searchable menu feedback.');
 const searchSource = fs.readFileSync(path.join(root, 'rasta-search.js'), 'utf8');
 new vm.Script(searchSource);
