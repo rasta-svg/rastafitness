@@ -23,6 +23,8 @@ const groups=[
  {id:'desserts',label:'دسر و شیرینی'},
  {id:'drinks',label:'نوشیدنی‌ها'},
  {id:'seafood',label:'ماهی و غذاهای دریایی'},
+ {id:'eggs',label:'تخم‌مرغ و غذاهای تخم‌مرغی'},
+ {id:'offal',label:'دل، جگر و احشاء'},
  {id:'meat',label:'گوشت و مرغ'},
  {id:'vegetarian',label:'غذاهای گیاهی'},
  {id:'sauces',label:'سس‌ها و چاشنی‌ها'},
@@ -41,6 +43,8 @@ function matchesGroup(f,id){
  const snack=/میان.?وعده|خرما و گردو|مخلوط نخودچی|توت خشک|کشمش و مغز|کشمش و بادام|برگه زردآلو|آجیل|مغزهای مخلوط|پاپ.?کورن|ذرت بوداده|کراکر|گرانولا بار|بار پروتئینی|میوه خشک|لواشک|نان و خرما/;
  const southDish=/آش ارده شوشتری|پاکوره|پلو شوشتری|پلو ماهی جنوبی|پلو ماهی و شوید|پلو میگو و شوید|قلیه|مهیاوه|دوپیازه|هواری|قیمه بوشهری|سمبوسه جنوبی|فلافل جنوبی/;
  const sauce=/^(?:سس|چاشنی|ترشی|شور|دیپ|مایونز|کچاپ|خردل|رب گوجه|رب انار|پستو|سالس(?:ا)?|سرکه|آبلیمو|آب لیمو|تمر هندی|مهیاوه)(?:\s|$)/;
+ const eggFood=/تخم.?مرغ|نیمرو|املت|سفیده تخم.?مرغ|زرده تخم.?مرغ|egg|omelet|omelette/.test(n);
+ const offalFood=/جگر|دل(?:\s|‌|-)?و?(?:\s|‌|-)?قلوه|قلوه|طحال|احشاء|liver|kidney|offal/.test(n);
  const mainCat=cat('غذاهای ایرانی','غذاهای متنوع','iranian_dish','غذاهای جنوبی','سوپ و آش');
  const standaloneDairy=cat('dairy','لبنیات')&&!meal.test(n)&&!cat('iranian_dish','غذاهای ایرانی','غذاهای متنوع','سوپ و آش');
  const standaloneProduce=cat('fruit','vegetable','میوه','میوه‌ها','سبزیجات')&&!meal.test(n);
@@ -60,7 +64,9 @@ function matchesGroup(f,id){
  if(id==='desserts')return dessert.test(n)||cat('iranian_dessert');
  if(id==='drinks')return drink.test(n)||cat('drinks','beverage','نوشیدنی‌ها','نوشیدنی');
  if(id==='seafood')return /ماهی|قلیه|میگو|تن ماهی|ساردین|سالمون|قزل.?آلا|صدف|اختاپوس|shrimp|salmon|tuna|seafood/.test(n);
- if(id==='meat')return /مرغ|گوشت|گوساله|گوسفند|بوقلمون|جوجه|کباب|استیک|دل و جگر|سوسیس|کالباس|چرخ کرده|meat|chicken|beef|turkey/.test(n)&&!idIsSeafood(n);
+ if(id==='eggs')return eggFood;
+ if(id==='offal')return offalFood;
+ if(id==='meat')return /مرغ|گوشت|گوساله|گوسفند|بوقلمون|جوجه|کباب|استیک|سوسیس|کالباس|چرخ کرده|meat|chicken|beef|turkey/.test(n)&&!idIsSeafood(n)&&!eggFood&&!offalFood;
  if(id==='vegetarian')return /plant_based|vegetarian|vegan/.test(tags)||(/گیاهی|بادمجان|کدو|قارچ|فلافل|حمص|حُمص|عدس|لوبیا|نخود|سویا|توفو|سالاد|سبزیجات/.test(n)&&!idIsSeafood(n)&&!/مرغ|گوشت|بوقلمون|جوجه|کباب|تن ماهی|میگو/.test(n));
  if(id==='sauces')return sauce.test(n)&&!meal.test(n);
  if(id==='fats')return /^(?:روغن|کره|دنبه|مارگارین|چربی)/.test(n)&&!/کره بادام|کره بادام زمینی|کره بادامزمینی/.test(n);
