@@ -39,6 +39,7 @@ DECLARE
   v_plan_id text;
   v_subscription_id uuid;
   v_purchase_id uuid;
+  v_quoted_price bigint;
   v_now timestamptz := now();
 BEGIN
   UPDATE public.payment_transactions
@@ -60,10 +61,17 @@ BEGIN
   IF p_approve THEN
     v_plan_id := v_payment.provider_response ->> 'plan_id';
     IF v_plan_id IS NULL OR NOT EXISTS (
-      SELECT 1 FROM public.subscription_plans
-      WHERE id = v_plan_id AND is_active = true AND price_irr = v_payment.amount_irr
+      SELECT 1 FROM public.subscription_plans WHERE id = v_plan_id AND is_active = true
     ) THEN
-      RAISE EXCEPTION 'پلن یا مبلغ پرداخت با تعرفه فعال مطابقت ندارد.';
+      RAISE EXCEPTION 'پلن پرداخت فعال نیست یا پیدا نشد.';
+    END IF;
+
+    v_quoted_price := NULLIF(v_payment.provider_response ->> 'quoted_price_irr', '')::bigint;
+    IF v_quoted_price IS NULL THEN
+      SELECT price_irr INTO v_quoted_price FROM public.subscription_plans WHERE id = v_plan_id;
+    END IF;
+    IF v_quoted_price IS DISTINCT FROM v_payment.amount_irr THEN
+      RAISE EXCEPTION 'مبلغ ثبت‌شدهٔ درخواست با مبلغ پرداخت مطابقت ندارد.';
     END IF;
 
     IF v_plan_id = 'custom_nutrition' THEN
