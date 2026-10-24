@@ -1480,7 +1480,7 @@ const RASTA_NUTRITION_VERSION='rasta-nutrition-0.2-variety';
  window.RastaCore.registerModule('premium-catalog-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
  window.RastaCore.registerModule('meal-food-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine']});
  window.RastaCore.registerModule('nutrition-reference-search',{kind:'feature',version:'1.0.0',source:'index.html',dependencies:['search-engine','supabase-client']});
- window.RastaCore.registerModule('nutrition-engine',{kind:'engine',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['supabase-client','search-engine']});
+ window.RastaCore.registerModule('nutrition-engine',{kind:'engine',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['supabase-client','science-engine','search-engine']});
  window.RastaCore.registerModule('workout-engine',{kind:'engine',version:'1.0.0',source:'index.html',dependencies:['exercise-library-search','workout-discovery-search']});
  window.RastaCore.registerModule('training-workspace',{kind:'workspace',version:'1.0.0',source:'index.html',dependencies:['workout-engine','search-engine']});
  window.RastaCore.registerModule('nutrition-workspace',{kind:'workspace',version:RASTA_NUTRITION_VERSION,source:'index.html',dependencies:['nutrition-engine','food-catalog-search','meal-food-search','nutrition-reference-search']});
