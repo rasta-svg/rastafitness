@@ -205,6 +205,34 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 @media(prefers-reduced-motion:reduce){
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 }
+
+/* Rasta cohesive navigation and feature hubs */
+:root{--rasta-forest:#173f2d;--rasta-leaf:#3e7350;--rasta-gold:#d7b96c;--rasta-cream:#fbfaf4;--rasta-shadow:0 12px 28px rgba(27,55,36,.09)}
+.sidebar{background:linear-gradient(165deg,#163b2b 0%,#244f38 55%,#173b2b 100%);box-shadow:inset -1px 0 rgba(255,255,255,.06)}
+.sidebar .nav-label{color:#c5d7bd;letter-spacing:.1px}
+.sidebar .nav button{border:1px solid transparent;border-radius:12px;margin:3px 0;padding:10px 11px;min-height:43px;line-height:1.65}
+.sidebar .nav button.active{background:linear-gradient(105deg,rgba(218,239,183,.19),rgba(255,255,255,.07));border-color:rgba(220,239,196,.2);box-shadow:inset -3px 0 #d8e9a5}
+.sidebar .brandmark{box-shadow:0 5px 18px #0c281a55}
+.main{min-width:0}
+.top{backdrop-filter:blur(14px)}
+.view.active{animation:rastaViewEnter .22s ease-out}
+@keyframes rastaViewEnter{from{opacity:.78;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.rasta-hub-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 16px}
+.rasta-hub-card{display:flex;align-items:center;gap:10px;min-width:0;min-height:84px;padding:13px;border:1px solid #dfe6d9;border-radius:16px;background:linear-gradient(145deg,#fffefa,#f7f8f0);color:var(--ink);text-align:right;text-decoration:none;font:inherit;box-shadow:0 6px 18px rgba(31,62,39,.045);cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.rasta-hub-card>span:nth-child(2){min-width:0;flex:1}
+.rasta-hub-card b{display:block;font-size:12px;line-height:1.8;font-weight:900}
+.rasta-hub-card small{display:block;margin-top:2px;font-size:10px;line-height:1.7;color:var(--muted)}
+.rasta-hub-icon{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:13px;background:#eaf0e1;font-size:21px}
+.rasta-hub-arrow{color:#60805a;font-size:18px;font-weight:900}
+.rasta-hub-card.is-current{border-color:#b8cca9;background:linear-gradient(145deg,#f0f6e6,#fffefa)}
+.rasta-hub-card:focus-visible{outline:3px solid #d7eaa7;outline-offset:2px}
+@media(hover:hover) and (pointer:fine){.rasta-hub-card:hover{transform:translateY(-2px);border-color:#b6cba7;box-shadow:0 12px 25px rgba(31,62,39,.09)}}
+@media(max-width:1050px){.rasta-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.rasta-hub-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.rasta-hub-card{min-height:78px;padding:10px;border-radius:13px;gap:8px}.rasta-hub-icon{width:34px;height:34px;flex-basis:34px;border-radius:10px;font-size:18px}.rasta-hub-card b{font-size:11px}.rasta-hub-card small{font-size:9px}.rasta-hub-arrow{font-size:15px}.sidebar .nav button{min-height:44px}}
+@media(max-width:360px){.rasta-hub-grid{grid-template-columns:1fr}.rasta-hub-card{min-height:68px}}
+.mobilebar{box-shadow:0 -8px 26px rgba(24,48,30,.1);border-top:1px solid rgba(42,74,48,.1);background:rgba(255,254,249,.97);backdrop-filter:blur(16px)}
+.mobilebar button{border-radius:12px;margin:5px 2px;min-height:47px}
+.mobilebar button.active{background:#e8efdf;color:#214c34;font-weight:900}
 </style>
 </head>
 <body>
@@ -251,24 +279,23 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <div class="layout" id="rasta-app-shell" style="display:none">
 <aside class="sidebar">
 <div class="brand"><div class="brandmark">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو · نسخه ۲٫۰٫۳</small></div></div>
-<div class="nav-label">بخش‌های اصلی</div><nav class="nav">
+<div class="nav-label">شروع</div><nav class="nav">
 <button class="active" data-view="today"><span class="ico">☀️</span>امروز من</button>
-<div class="nav-label">تمرین و برنامه‌ریزی</div>
-<button data-view="training"><span class="ico">🏋️</span>برنامه تمرینی</button>
-<button data-view="programs"><span class="ico">🗓️</span>برنامه‌های چند‌هفته‌ای</button>
-<button data-view="premium-fitness"><span class="ico">💎</span>ورزش و تغذیه‌ی حرفه‌ای‌ها</button>
-<button data-view="explore"><span class="ico">🏋️</span>تمرین‌ها و کتابخانه حرکات</button>
-<div class="nav-label">تغذیه</div>
-<button data-view="nutrition"><span class="ico">🥗</span>برنامه غذایی ایرانی</button>
-<a href="./nutrition-bank.html" style="display:flex;align-items:center;gap:9px;padding:11px 12px;margin:4px 0;border-radius:10px;color:inherit;text-decoration:none;font-weight:700"><span class="ico">📚</span>بانک جامع غذاها</a>
-<div class="nav-label">پیشرفت و حساب کاربری</div>
-<button data-view="history"><span class="ico">📈</span>گزارش و سابقه</button>
+<div class="nav-label">باشگاه تمرین</div>
+<button data-view="training"><span class="ico">🏋️</span>تمرین و برنامه‌ریزی</button>
+<button data-view="nutrition"><span class="ico">🥗</span>تغذیه و بانک غذا</button>
+<div class="nav-label">پیشرفت و حساب</div>
+<button data-view="history"><span class="ico">📈</span>پیشرفت و سابقه</button>
 <button data-view="plans"><span class="ico">💎</span>اشتراک و تعرفه‌ها</button>
 <button data-view="profile"><span class="ico">⚙️</span>تنظیمات شخصی</button>
-<div class="nav-label">راهنما و نرم‌افزار</div>
+<div class="nav-label">بخش‌های تکمیلی</div>
+<button data-view="premium-fitness"><span class="ico">✨</span>ورزش و تغذیه‌ی حرفه‌ای‌ها</button>
 <button data-view="guide"><span class="ico">📘</span>راهنمای استفاده</button>
 <button data-view="contact"><span class="ico">✉️</span>ارتباط با ما</button>
-    <button id="rasta-mobile-logout" type="button" style="display:none;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid #e4c8c1;border-radius:13px;background:#fbefec;color:#9b3f32;font:inherit;font-size:12px;text-align:right;font-weight:800"><span style="font-size:21px">🚪</span>خروج از حساب</button><a id="rasta-admin-menu-link" href="./admin.html" style="display:none;align-items:center;gap:10px;padding:11px 12px;margin:4px 0;border-radius:10px;color:#fff;background:#1d3b2c;text-decoration:none;font-weight:800"><span class="ico">🛡️</span>پنل مدیریت</a><button data-view="download"><span class="ico">⬇️</span>دانلود آخرین نسخه <small id="rasta-update-menu-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button><button data-view="changelog"><span class="ico">🆕</span>آخرین تغییرات</button></nav>
+<button id="rasta-mobile-logout" type="button" style="display:none;align-items:center;gap:9px;min-height:54px;padding:10px;border:1px solid #e4c8c1;border-radius:13px;background:#fbefec;color:#9b3f32;font:inherit;font-size:12px;text-align:right;font-weight:800"><span style="font-size:21px">🚪</span>خروج از حساب</button>
+<a id="rasta-admin-menu-link" href="./admin.html" style="display:none;align-items:center;gap:10px;padding:11px 12px;margin:4px 0;border-radius:10px;color:#fff;background:#1d3b2c;text-decoration:none;font-weight:800"><span class="ico">🛡️</span>پنل مدیریت</a>
+<button data-view="download"><span class="ico">⬇️</span>دانلود آخرین نسخه <small id="rasta-update-menu-badge" class="rasta-update-badge" hidden>نسخه جدید</small></button>
+<button data-view="changelog"><span class="ico">🆕</span>آخرین تغییرات</button></nav>
 <div class="side-note"><b>🌱 برنامه برای زندگی توست</b><br>تمرین و غذا را با هدف، زمان، امکانات و ذائقه خودت هماهنگ کن؛ نه برعکس.</div>
 </aside>
 <main class="main">
@@ -334,7 +361,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 <div class="searchrow"><input class="search" id="exsearch" placeholder="نام حرکت یا عضله را جست‌وجو کن"><select class="search" id="explace" style="max-width:180px;flex:0"><option>همه امکانات</option><option>باشگاه</option><option>خانه</option><option>بدون وسیله</option></select></div><div class="filters" id="exfilters"></div><div class="grid3" id="librarygrid"></div>
 </section>
 <section class="view" id="view-training">
-<div class="sectionhead"><div><h2>برنامه تمرینی من</h2><p>روز، نوع تمرین، مدت و حرکات را آزادانه ویرایش کن.</p></div><div class="actions"><button class="btn ghost" id="addday">+ روز تمرین</button><button class="btn dark" id="startsession">شروع جلسه</button></div></div>
+<div class="sectionhead"><div><h2>باشگاه تمرین رَستا</h2><p>برنامه روزانه، برنامه‌های چند‌هفته‌ای، کشف تمرین و کتابخانه حرکات در یک مسیر هماهنگ.</p></div><div class="actions"><button class="btn ghost" id="addday">+ روز تمرین</button><button class="btn dark" id="startsession">شروع جلسه</button></div></div>
+<div class="rasta-hub-grid" aria-label="بخش‌های مرتبط تمرین">
+<button type="button" class="rasta-hub-card is-current" data-goto="training"><span class="rasta-hub-icon">🏋️</span><span><b>برنامه تمرینی من</b><small>تنظیم روزها و اجرای جلسه</small></span><span class="rasta-hub-arrow">←</span></button>
+<button type="button" class="rasta-hub-card" data-goto="programs"><span class="rasta-hub-icon">🗓️</span><span><b>برنامه‌های چند‌هفته‌ای</b><small>مسیر هدف‌محور و پیگیری هفتگی</small></span><span class="rasta-hub-arrow">←</span></button>
+<button type="button" class="rasta-hub-card" data-goto="explore"><span class="rasta-hub-icon">🔎</span><span><b>کشف تمرین‌ها</b><small>جست‌وجو بر اساس هدف و زمان</small></span><span class="rasta-hub-arrow">←</span></button>
+<button type="button" class="rasta-hub-card" data-goto="library"><span class="rasta-hub-icon">🧍</span><span><b>کتابخانه حرکات</b><small>گروه‌های عضلانی و انواع فعالیت</small></span><span class="rasta-hub-arrow">←</span></button>
+</div>
 <div class="panel" style="margin-bottom:14px"><div class="split"><div><h3 style="margin:0">روش برنامه‌ریزی تمرین</h3><p style="margin:4px 0 0">این تنظیم مستقل از روش برنامه غذایی است.</p></div></div><div class="filters" id="trainingmodes"><button class="filter active" data-trainingmode="auto">خودکار</button><button class="filter" data-trainingmode="hybrid">ترکیبی با تأیید من</button><button class="filter" data-trainingmode="manual">دستی</button></div><p id="trainingmodehint" style="margin:0">در حالت خودکار، رَستا بر اساس هدف و محل تمرین برنامه پیشنهاد می‌کند.</p></div>
 <div class="filters" id="dayfilters"></div><div class="grid2"><div class="panel"><div class="split"><div><h3 id="daytitle">تمرین قدرتی</h3><p id="daymeta" style="margin:0">سطح و زمان قابل تنظیم</p></div><button class="mini" id="editday">ویرایش روز</button></div><div class="exercise-list" id="plannedex" style="margin-top:13px"></div><div class="actions" style="margin-top:12px"><button class="btn soft" id="addexercise">+ افزودن حرکت</button><button class="btn ghost" id="replaceall">جایگزینی یک حرکت</button></div></div>
 <div style="display:grid;gap:12px"><div class="panel"><h3>تنظیمات تمرین</h3><div class="formgrid"><label class="field">هدف اصلی<select id="goal"><option>تناسب اندام و سلامتی</option><option>چربی‌سوزی و کاهش وزن</option><option>عضله‌سازی و افزایش حجم</option><option>قدرت و عملکرد</option><option>انعطاف و تحرک</option><option>آمادگی جسمانی عمومی</option><option>بازگشت تدریجی به ورزش</option></select></label><label class="field">محل تمرین<select id="place"><option>باشگاه</option><option>خانه</option><option>هر دو</option><option>فضای باز</option></select></label><label class="field">سطح فعلی<select id="level"><option>مبتدی</option><option>متوسط</option><option>پیشرفته</option></select></label><label class="field">مدت جلسه<select id="duration"><option>۱۵ دقیقه</option><option>۲۰ دقیقه</option><option>۳۰ دقیقه</option><option>۴۵ دقیقه</option><option>۶۰ دقیقه</option><option>۷۵ دقیقه</option><option>۹۰ دقیقه</option></select></label></div>
@@ -360,6 +393,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </section>
 
 <section class="view" id="view-nutrition">
+<div class="rasta-hub-grid rasta-nutrition-hub" aria-label="بخش‌های مرتبط تغذیه">
+<a class="rasta-hub-card" href="./nutrition-bank.html"><span class="rasta-hub-icon">📚</span><span><b>بانک جامع غذاهای ایرانی</b><small>جست‌وجو، دسته‌بندی و انتخاب غذا</small></span><span class="rasta-hub-arrow">←</span></a>
+<button type="button" class="rasta-hub-card" data-goto="history"><span class="rasta-hub-icon">📈</span><span><b>سابقه و پیگیری</b><small>بررسی ثبت‌های روزانه و روند فعالیت</small></span><span class="rasta-hub-arrow">←</span></button>
+<button type="button" class="rasta-hub-card" data-goto="profile"><span class="rasta-hub-icon">⚙️</span><span><b>هدف‌ها و ترجیحات</b><small>هماهنگ‌سازی رَستا با نیازهای تو</small></span><span class="rasta-hub-arrow">←</span></button>
+</div>
 <div class="panel" id="rasta-nutrition-builder" style="margin-bottom:16px;border-color:#cbd9c5">
  <div class="split"><div><h3 style="margin-bottom:4px">🧠 رژیم‌ساز هوشمند و اختصاصی رستا</h3><p style="margin:0">هدف، کاهش وزن، افزایش عضله، تنوع غذاهای ایرانی، بودجه، ذائقه و محدودیت‌ها در پیشنهاد هفت‌روزه لحاظ می‌شوند.</p></div><span class="pill" style="background:#f3e8bf;color:#6c531b">🔒 پرداخت جداگانه برای هر برنامه</span></div>
  <div class="tip" style="margin-top:12px"><b>تعرفه مستقل از پریمیوم</b>ساخت هر برنامه اختصاصی ۷ روزه یک خرید جداگانه دارد؛ خرید پریمیوم این هزینه را پوشش نمی‌دهد. قیمت فعلی و روش پرداخت را از اینجا ببین: <button type="button" class="btn dark" data-plan-request="custom_nutrition" style="margin:5px 0">مشاهده قیمت و خرید ساخت برنامه غذایی</button></div>
@@ -722,7 +760,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 </div>
 </section>
 </main></div>
-<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>تمرین</button><button data-view="programs"><span>🗓️</span>برنامه‌ها</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button type="button" data-open-all-menus aria-expanded="false" onclick="(function(){var m=document.getElementById('rasta-all-menus');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false')}document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded','true')});var a=document.getElementById('rasta-admin-mobile-link');if(a)a.style.display='flex';var l=document.getElementById('rasta-allmenus-logout');if(l)l.style.display=(window.__RASTA_AUTH_USER?'flex':'none')})()"><span>☰</span>همه منوها</button></nav>
+<nav class="mobilebar" aria-label="منوی اصلی گوشی"><button class="active" data-view="today"><span>☀️</span>امروز</button><button data-view="training"><span>🏋️</span>باشگاه تمرین</button><button data-view="nutrition"><span>🥗</span>تغذیه</button><button data-view="history"><span>📈</span>پیشرفت</button><button type="button" data-open-all-menus aria-expanded="false" onclick="(function(){var m=document.getElementById('rasta-all-menus');if(m){m.classList.add('open');m.setAttribute('aria-hidden','false')}document.querySelectorAll('[data-open-all-menus]').forEach(function(b){b.setAttribute('aria-expanded','true')});var a=document.getElementById('rasta-admin-mobile-link');if(a)a.style.display='flex';var l=document.getElementById('rasta-allmenus-logout');if(l)l.style.display=(window.__RASTA_AUTH_USER?'flex':'none')})()"><span>☰</span>همه منوها</button></nav>
 <div id="rasta-all-menus" class="rasta-all-menus" aria-hidden="true">
  <div class="rasta-all-menus-backdrop" data-close-all-menus></div>
  <section class="rasta-all-menus-sheet" role="dialog" aria-modal="true" aria-label="همه بخش‌های رستا">
