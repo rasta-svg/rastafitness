@@ -54,21 +54,25 @@ Deno.serve(async (req: Request) => {
     const { data, error } = await db.from("payment_settings")
       .select("card_number,cardholder_name,instructions").eq("id", true).maybeSingle();
     if (error) return json({ error: "دریافت اطلاعات کارت ممکن نشد." }, 500);
-    const { data: plan } = await db.from("subscription_plans").select("price_irr").eq("id", "premium").maybeSingle();
-    return json({ config: data ? {
-      card_number: data.card_number || "",
-      cardholder_name: data.cardholder_name || "",
-      instructions: data.instructions || "",
-      enabled: /^\d{16}$/.test(data.card_number || "") && Boolean(data.cardholder_name),
+    const [{ data: plan }, { data: customNutritionPlan }] = await Promise.all([
+      db.from("subscription_plans").select("price_irr").eq("id", "premium").maybeSingle(),
+      db.from("subscription_plans").select("price_irr").eq("id", "custom_nutrition").maybeSingle(),
+    ]);
+    return json({ config: {
+      card_number: data?.card_number || "",
+      cardholder_name: data?.cardholder_name || "",
+      instructions: data?.instructions || "",
+      enabled: /^\d{16}$/.test(data?.card_number || "") && Boolean(data?.cardholder_name),
       price_toman: Math.round(Number(plan?.price_irr || 0) / 10),
-    } : { card_number: "", cardholder_name: "", instructions: "", enabled: false, price_toman: Math.round(Number(plan?.price_irr || 0) / 10) } });
+      custom_nutrition_price_toman: Math.round(Number(customNutritionPlan?.price_irr || 0) / 10),
+    } });
   }
 
   if (action === "submit") {
     const planId = String(body.plan_id || "");
     const reference = String(body.transfer_reference || "").trim().slice(0, 100);
     const transferTime = String(body.transfer_time || "").trim().slice(0, 80);
-    if (planId !== "premium") return json({ error: "در حال حاضر فقط اشتراک ویژه ورزشکار قابل خرید است." }, 400);
+    if (planId !== "premium" && planId !== "custom_nutrition") return json({ error: "نوع خرید معتبر نیست." }, 400);
     if (reference.length < 3) return json({ error: "شماره پیگیری یا شناسه واریز را وارد کنید." }, 400);
     const { data: config } = await db.from("payment_settings").select("card_number,cardholder_name").eq("id", true).maybeSingle();
     if (!config || !/^\d{16}$/.test(config.card_number || "") || !config.cardholder_name) {
@@ -76,11 +80,15 @@ Deno.serve(async (req: Request) => {
     }
     const { data: plan, error: planError } = await db.from("subscription_plans")
       .select("id,price_irr,is_active,billing_interval").eq("id", "premium").maybeSingle();
-    if (planError || !plan || !plan.is_active || Number(plan.price_irr) <= 0 || plan.billing_interval !== "month") {
-      return json({ error: "تعرفه اشتراک ویژه در دسترس نیست." }, 409);
+    const validPlan = planId === "premium"
+      ? plan?.billing_interval === "month"
+      : plan?.billing_interval === "none";
+    if (planError || !plan || !plan.is_active || Number(plan.price_irr) <= 0 || !validPlan) {
+      return json({ error: planId === "premium" ? "تعرفه اشتراک ویژه در دسترس نیست." : "تعرفه ساخت اختصاصی برنامه غذایی در دسترس نیست." }, 409);
     }
     const { data: existing } = await db.from("payment_transactions")
-      .select("id,status").eq("user_id", user.id).eq("status", "pending").limit(1).maybeSingle();
+      .select("id,status").eq("user_id", user.id).eq("status", "pending")
+      .eq("provider_response->>plan_id", planId).limit(1).maybeSingle();
     if (existing) return json({ error: "یک درخواست پرداخت در انتظار بررسی دارید.", transaction_id: existing.id }, 409);
 
     const { data: transaction, error: insertError } = await db.from("payment_transactions").insert({
@@ -119,12 +127,13 @@ Deno.serve(async (req: Request) => {
     return json({ ok: true, enabled: /^\d{16}$/.test(cardNumber) && Boolean(cardholderName) });
   }
 
-  if (action === "set_price") {
+  if (action === "set_price" || action === "set_custom_nutrition_price") {
     const toman = Number(body.price_toman);
     if (!Number.isSafeInteger(toman) || toman < 1000 || toman > 100000000) return json({ error: "مبلغ باید بین ۱٬۰۰۰ تا ۱۰۰٬۰۰۰٬۰۰۰ تومان باشد." }, 400);
-    const { data: plan, error } = await db.from("subscription_plans").update({ price_irr: toman * 10, updated_at: new Date().toISOString() }).eq("id", "premium").select("id,price_irr").single();
-    if (error || !plan) return json({ error: "ذخیره مبلغ اشتراک انجام نشد." }, 500);
-    return json({ ok: true, price_toman: Math.round(Number(plan.price_irr) / 10) });
+    const planId = action === "set_custom_nutrition_price" ? "custom_nutrition" : "premium";
+    const { data: plan, error } = await db.from("subscription_plans").update({ price_irr: toman * 10, updated_at: new Date().toISOString() }).eq("id", planId).select("id,price_irr").single();
+    if (error || !plan) return json({ error: planId === "premium" ? "ذخیره مبلغ اشتراک انجام نشد." : "ذخیره مبلغ ساخت اختصاصی برنامه غذایی انجام نشد." }, 500);
+    return json({ ok: true, plan_id: planId, price_toman: Math.round(Number(plan.price_irr) / 10) });
   }
 
   if (action === "grant_complimentary") {
