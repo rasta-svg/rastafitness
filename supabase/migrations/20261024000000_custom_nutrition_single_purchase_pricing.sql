@@ -15,6 +15,23 @@ GRANT SELECT ON public.custom_nutrition_purchases TO authenticated;
 REVOKE INSERT, UPDATE, DELETE ON public.custom_nutrition_purchases FROM anon, authenticated;
 GRANT ALL ON public.custom_nutrition_purchases TO service_role;
 
+ALTER TABLE public.nutrition_plan_snapshots
+  ADD COLUMN IF NOT EXISTS purchase_id uuid UNIQUE
+  REFERENCES public.custom_nutrition_purchases(id) ON DELETE SET NULL;
+DROP POLICY IF EXISTS nutrition_plan_snapshots_insert_own ON public.nutrition_plan_snapshots;
+CREATE POLICY nutrition_plan_snapshots_insert_own ON public.nutrition_plan_snapshots
+  FOR INSERT TO authenticated
+  WITH CHECK (
+    (SELECT auth.uid()) = owner_id
+    AND purchase_id IS NOT NULL
+    AND EXISTS (
+      SELECT 1 FROM public.custom_nutrition_purchases p
+      WHERE p.id = purchase_id
+        AND p.user_id = (SELECT auth.uid())
+        AND p.status = 'used'
+    )
+  );
+
 INSERT INTO public.subscription_plans
   (id, name_fa, description_fa, price_irr, billing_interval, features, sort_order, is_active)
 VALUES
