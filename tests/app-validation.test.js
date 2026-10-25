@@ -238,3 +238,25 @@ if (!manualPaymentsFunction.includes('set_nutrition_consultation_price') || !man
 if (!consultationMigration.includes("'nutrition_consultation'") || !consultationMigration.includes("'none'")) {
   throw new Error('Advanced consultation must have a separate one-time plan in the additive migration.');
 }
+
+
+const announcementFunction = fs.readFileSync(path.join(root, 'supabase/functions/rasta-admin-users/index.ts'), 'utf8');
+const announcementMigration = fs.readFileSync(path.join(root, 'supabase/migrations/20261025170000_admin_home_announcement.sql'), 'utf8');
+const adminHtml = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+if (!html.includes('id="rasta-admin-announcement"') || !html.includes("from('app_announcements')")) {
+  throw new Error('Home page must render the current admin announcement from the database.');
+}
+if (!adminHtml.includes('id="announcement-form"') || !announcementFunction.includes('requestBody.action === "save_announcement"') || !announcementFunction.includes('requestBody.action === "get_announcement"')) {
+  throw new Error('Admin panel must be able to manage the global home announcement.');
+}
+if (!announcementMigration.includes('CREATE TABLE IF NOT EXISTS public.app_announcements') || !announcementMigration.includes('Public can read current active announcement')) {
+  throw new Error('Global announcements require a table with active-only public read policy.');
+}
+const allMenusStart = html.indexOf('<div id="rasta-all-menus"');
+const allMenusEnd = html.indexOf('</section>\\n</div>', allMenusStart);
+if (allMenusStart < 0 || allMenusEnd < 0) throw new Error('All menus popup must exist.');
+const allMenusHtml = html.slice(allMenusStart, allMenusEnd);
+const allMenuViews = [...allMenusHtml.matchAll(/data-view="([^"]+)"/g)].map(match => match[1]);
+if (new Set(allMenuViews).size !== allMenuViews.length) {
+  throw new Error('All menus popup must not list the same destination more than once.');
+}
