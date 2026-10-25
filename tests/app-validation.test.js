@@ -112,8 +112,8 @@ for (const page of ['nutrition-bank.html', 'recipe-detail.html', 'admin.html']) 
   if (!checked) throw new Error('No inline scripts were validated in ' + page);
 }
 const admin = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
-if (!admin.includes('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>')) {
-  throw new Error('Admin refresh timer must run in an inline script, not inside an external script tag.');
+if (!admin.includes('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"') || !admin.includes('<script src="./rasta-core.js">') || !admin.includes('<script src="./rasta-search.js">') || !/<script>[^]*?__rastaAdminRefreshTimer\s*=\s*setInterval/.test(admin)) {
+  throw new Error('Admin refresh timer must run in an inline script after the shared core and search engine are loaded.');
 }
 if (!foodBank.includes("dependencies:['food-bank']")) {
   throw new Error('Food bank data service must depend on the page module id registered by Rasta Core.');
