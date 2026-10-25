@@ -172,7 +172,7 @@ if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => String(icon.s
 if (!html.includes('ورزش و تغذیه‌ی حرفه‌ای‌ها') || html.includes('ورزش و رژیم پریمیوم')) {
   throw new Error('All-menus navigation and page title must use the approved professional-fitness label consistently.');
 }
-if (!html.includes("const RASTA_APP_VERSION='2.0.4';")) throw new Error('App version constant must match the current release.');
+if (!html.includes("const RASTA_APP_VERSION='2.0.6';")) throw new Error('App version constant must match the current release.');
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
 
 const adminPageForPricing = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
