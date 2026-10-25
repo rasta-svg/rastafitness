@@ -44,7 +44,7 @@
 <input name="days" type="number" min="1" max="3650" step="1" value="30" required>
 </label>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:10px 0 16px">
-<label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="premium" style="width:18px;height:18px;accent-color:var(--green)"><span><b>اشتراک ویژه ورزشکار (Premium)</b><small style="display:block;color:var(--muted);margin-top:4px">فعال‌سازی به مدت انتخاب‌شده</small></span></label>
+<label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="premium" style="width:18px;height:18px;accent-color:var(--green)"><span><b>ورزش و رژیم غذایی پریمیوم</b><small style="display:block;color:var(--muted);margin-top:4px">دسترسی پریمیوم تمرین و تغذیه؛ به مدت انتخاب‌شده</small></span></label>
 <label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="trainer" style="width:18px;height:18px;accent-color:var(--green)"><span><b>اشتراک مربی (Trainer)</b><small style="display:block;color:var(--muted);margin-top:4px">فعال‌سازی به مدت انتخاب‌شده</small></span></label>
 <label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="gym" style="width:18px;height:18px;accent-color:var(--green)"><span><b>اشتراک باشگاه (Gym)</b><small style="display:block;color:var(--muted);margin-top:4px">فعال‌سازی به مدت انتخاب‌شده</small></span></label>
 <label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="custom_nutrition" style="width:18px;height:18px;accent-color:var(--green)"><span><b>یک اعتبار ساخت برنامه غذایی اختصاصی</b><small style="display:block;color:var(--muted);margin-top:4px">یک برنامه؛ بدون فعال‌کردن Premium</small></span></label>
@@ -105,7 +105,7 @@ $('complimentary-grants-form').addEventListener('submit',async e=>{
  const email=String(form.elements.email.value||'').trim().replace(/[。．｡]/g,'.').toLowerCase();
  const days=Number(form.elements.days.value);
  const selected=[...form.querySelectorAll('input[name="grant"]:checked')].map(x=>x.value);
- const labels={premium:'اشتراک ویژه ورزشکار (Premium)',trainer:'اشتراک مربی (Trainer)',gym:'اشتراک باشگاه (Gym)',custom_nutrition:'یک اعتبار ساخت برنامه غذایی اختصاصی'};
+ const labels={premium:'ورزش و رژیم غذایی پریمیوم',trainer:'اشتراک مربی (Trainer)',gym:'اشتراک باشگاه (Gym)',custom_nutrition:'یک اعتبار ساخت برنامه غذایی اختصاصی'};
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.textContent='ایمیل معتبر وارد کنید.';return}
  if(!selected.length){status.textContent='حداقل یک مورد را با تیک انتخاب کنید.';return}
  if(!Number.isInteger(days)||days<1||days>3650){status.textContent='مدت اشتراک باید بین ۱ تا ۳۶۵۰ روز باشد.';return}
