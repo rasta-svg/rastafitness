@@ -2230,14 +2230,18 @@ function startRastaSession(ids,title,mins,format='self',programId=null){
 function toggleFavorite(id){const i=rastaFavorites.indexOf(id);if(i>=0)rastaFavorites.splice(i,1);else rastaFavorites.push(id);localStorage.setItem('rasta-favorites',JSON.stringify(rastaFavorites));renderLibrary();if($('view-explore').classList.contains('active'))renderExplore();toast(i>=0?'از علاقه‌مندی‌ها حذف شد.':'به علاقه‌مندی‌ها اضافه شد.');}
 // Existing views are enhanced without removing the original training/nutrition workflows.
 const oldGoto=goto;goto=function(v,skipHistory=false){oldGoto(v,skipHistory);if(v==='programs')renderPrograms();if(v==='explore')renderExplore();};
-window.history.replaceState({rastaView:'today'},'',window.location.href);
+window.history.replaceState({rastaView:document.querySelector('.view.active')?.id?.replace('view-','')||'today'},'',window.location.href);
 window.addEventListener('popstate',function(event){
  const current=document.querySelector('.view.active')?.id?.replace('view-','')||'today';
- if($('modalback')?.classList.contains('open')){closemodal();if(current!=='today')goto('today',true);return;}
- if(current!=='today'){goto('today',true);window.history.pushState({rastaView:'today'},'',window.location.href);return;}
- const previousView=event.state&&event.state.rastaView;if(previousView&&previousView!=='today')goto('today',true);
- });
- document.addEventListener('backbutton',function(event){const current=document.querySelector('.view.active')?.id?.replace('view-','')||'today';if($('modalback')?.classList.contains('open')){event.preventDefault?.();closemodal();return;}if(current!=='today'){event.preventDefault?.();goto('today');window.history.replaceState({rastaView:'today'},'',window.location.href);}});
+ if($('modalback')?.classList.contains('open')){closemodal();return;}
+ const route=event.state&&typeof event.state.rastaView==='string'?event.state.rastaView:'today';
+ if(route!==current)goto(route,true);
+});
+document.addEventListener('backbutton',function(event){
+ const current=document.querySelector('.view.active')?.id?.replace('view-','')||'today';
+ if($('modalback')?.classList.contains('open')){event.preventDefault?.();closemodal();return;}
+ if(current!=='today'){event.preventDefault?.();goto('today');}
+});
  document.addEventListener('keydown',function(event){if(event.key==='Escape'&&$('modalback')?.classList.contains('open'))closemodal();});
 
 document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
