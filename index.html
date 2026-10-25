@@ -551,6 +551,11 @@ details,summary{color:#eee8d7!important}
 <button type="button" class="rasta-hub-card" data-goto="history"><span class="rasta-hub-icon">📈</span><span><b>سابقه و پیگیری</b><small>بررسی ثبت‌های روزانه و روند فعالیت</small></span><span class="rasta-hub-arrow">←</span></button>
 <button type="button" class="rasta-hub-card" data-goto="profile"><span class="rasta-hub-icon">⚙️</span><span><b>هدف‌ها و ترجیحات</b><small>هماهنگ‌سازی رَستا با نیازهای تو</small></span><span class="rasta-hub-arrow">←</span></button>
 </div>
+<div class="panel" id="rasta-nutrition-consultation" style="margin:0 0 16px;border:1px solid #c8a75c;background:linear-gradient(135deg,#fffdf6,#f7f0dc)">
+ <div class="split"><div><h3 style="margin-bottom:4px">🩺 استاد مشاوره تغذیه</h3><p style="margin:0">مشاوره پایه رایگان است؛ دسترسی به مشاوره هوشمند پیشرفته با خرید جداگانه فعال می‌شود و جزو اشتراک پریمیوم یا خرید برنامه غذایی نیست.</p></div><span class="pill" style="background:#f3e8bf;color:#6c531b">تعرفه مستقل</span></div>
+ <div class="actions" style="margin-top:12px"><button type="button" class="btn ghost" id="rasta-basic-nutrition-advice">راهنمایی پایه رایگان</button><button type="button" class="btn dark" data-plan-request="nutrition_consultation">مشاهده تعرفه و خرید مشاوره پیشرفته</button></div>
+ <div id="rasta-basic-nutrition-result" class="tip" role="status" aria-live="polite" style="margin-top:10px">راهنمایی پایه، اطلاعات عمومی است و جایگزین ارزیابی متخصص تغذیه نیست.</div>
+</div>
 <div class="panel" id="rasta-nutrition-builder" style="margin-bottom:16px;border-color:#cbd9c5">
  <div class="split"><div><h3 style="margin-bottom:4px">🧠 رژیم‌ساز هوشمند و اختصاصی رستا</h3><p style="margin:0">هدف، کاهش وزن، افزایش عضله، تنوع غذاهای ایرانی، بودجه، ذائقه و محدودیت‌ها در پیشنهاد هفت‌روزه لحاظ می‌شوند.</p></div><span class="pill" style="background:#f3e8bf;color:#6c531b">🔒 پرداخت جداگانه برای هر برنامه</span></div>
  <div class="tip" style="margin-top:12px"><b>تعرفه مستقل از پریمیوم</b>ساخت هر برنامه اختصاصی ۷ روزه یک خرید جداگانه دارد؛ خرید پریمیوم این هزینه را پوشش نمی‌دهد. قیمت فعلی و روش پرداخت را از اینجا ببین: <button type="button" class="btn dark" data-plan-request="custom_nutrition" style="margin:5px 0">مشاهده قیمت و خرید ساخت برنامه غذایی</button></div>
@@ -1551,14 +1556,15 @@ async function renderPlans(){
 }
 function escapeHtml(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
 async function openManualPayment(planId){
- if(!['premium','custom_nutrition'].includes(planId)){toast('این نوع خرید در حال حاضر در دسترس نیست.');return}
+ if(!['premium','custom_nutrition','nutrition_consultation'].includes(planId)){toast('این نوع خرید در حال حاضر در دسترس نیست.');return}
  const custom=planId==='custom_nutrition';
- const productTitle=custom?'ساخت اختصاصی برنامه غذایی':'اشتراک پریمیوم';
+ const consultation=planId==='nutrition_consultation';
+ const productTitle=custom?'ساخت اختصاصی برنامه غذایی':consultation?'مشاوره هوشمند پیشرفته تغذیه':'اشتراک پریمیوم';
  const client=window.__rastaSupabaseClient;
  if(!client){toast('اتصال حساب کاربری برقرار نیست.');return}
  const {data:{user}}=await client.auth.getUser();
  if(!user){toast('برای خرید ابتدا وارد حساب رستا شوید.');return}
- modal(custom?'خرید ساخت اختصاصی برنامه غذایی':'درخواست اشتراک پریمیوم', '<div class="empty">در حال دریافت اطلاعات کارت و تعرفه…</div>');
+ modal(custom?'خرید ساخت اختصاصی برنامه غذایی':consultation?'خرید مشاوره هوشمند پیشرفته تغذیه':'درخواست اشتراک پریمیوم', '<div class="empty">در حال دریافت اطلاعات کارت و تعرفه…</div>');
  try{
   const {data,error}=await client.functions.invoke('rasta-manual-payments',{body:{action:'config'}});
   if(error)throw error;
@@ -1566,10 +1572,10 @@ async function openManualPayment(planId){
   if(!cfg?.enabled){$('modalbody').innerHTML='<div class="tip"><b>اطلاعات کارت هنوز ثبت نشده است</b>مدیر رستا باید شماره کارت و نام صاحب کارت را در پنل مدیریت وارد کند.</div>';return}
   const {data:pending}=await client.from('payment_transactions').select('id,status,amount_irr,created_at,provider_response').eq('user_id',user.id).eq('status','pending').eq('provider_response->>plan_id',planId).limit(1).maybeSingle();
   if(pending){$('modalbody').innerHTML='<div class="tip"><b>درخواست شما در انتظار بررسی است</b>یک درخواست پرداخت برای همین خدمت قبلاً ثبت شده است. پس از بررسی مدیر، وضعیت آن در پنل پرداخت به‌روزرسانی می‌شود.</div>';return}
-  const amount=Number(custom?cfg.custom_nutrition_price_toman:cfg.price_toman)||0;
+  const amount=Number(custom?cfg.custom_nutrition_price_toman:consultation?cfg.nutrition_consultation_price_toman:cfg.price_toman)||0;
   if(amount<1000){$('modalbody').innerHTML='<div class="tip"><b>تعرفه هنوز تنظیم نشده است</b>مدیر باید قیمت این خدمت را در پنل مدیریت وارد کند.</div>';return}
   const card=String(cfg.card_number||'');
-  const description=custom?'این پرداخت فقط یک نوبت ساخت برنامه غذایی اختصاصی ۷ روزه را فعال می‌کند و اشتراک پریمیوم را فعال نمی‌کند.':'پرداخت یک‌باره است و پس از تأیید مدیر، اشتراک ۳۰ روزه فعال می‌شود؛ تمدید خودکار ندارد.';
+  const description=consultation?'این پرداخت برای دسترسی ۳۰ روزه به مشاوره هوشمند پیشرفته تغذیه است و مستقل از پریمیوم و ساخت برنامه غذایی است.':custom?'این پرداخت فقط یک نوبت ساخت برنامه غذایی اختصاصی ۷ روزه را فعال می‌کند و اشتراک پریمیوم را فعال نمی‌کند.':'پرداخت یک‌باره است و پس از تأیید مدیر، اشتراک ۳۰ روزه فعال می‌شود؛ تمدید خودکار ندارد.';
   $('modalbody').innerHTML='<div class="panel" style="margin:0 0 12px"><p style="margin-top:0">'+escapeHtml(productTitle)+'</p><h2 style="font-size:26px">'+escapeHtml(amount.toLocaleString('fa-IR'))+' تومان</h2><p class="rasta-payment-note">'+escapeHtml(description)+'</p><p>به نام: <b>'+escapeHtml(cfg.cardholder_name)+'</b></p><div class="split" style="margin-top:10px;gap:8px;flex-wrap:wrap"><strong dir="ltr" style="font-size:18px;letter-spacing:1px">'+escapeHtml(card.replace(/(\d{4})(?=\d)/g,'$1-'))+'</strong><button type="button" class="btn secondary" id="copy-rasta-card">کپی شماره کارت</button></div></div><div class="tip" style="margin-bottom:12px">'+escapeHtml(cfg.instructions||'پس از واریز، شماره پیگیری را ثبت کنید.')+'</div><form id="manual-payment-form"><label class="field">شماره پیگیری / شناسه واریز<input id="transfer-reference" required minlength="3" maxlength="100" autocomplete="off" placeholder="شماره پیگیری درج‌شده در رسید"></label><label class="field">زمان واریز (اختیاری)<input id="transfer-time" maxlength="80" placeholder="مثلاً امروز ساعت ۱۴:۳۰"></label><div class="tip">پس از ثبت، درخواست در انتظار بررسی مدیر می‌ماند. فعال‌سازی فقط پس از بررسی و تأیید واقعی واریز انجام می‌شود.</div><button class="btn dark" id="submit-manual-payment" type="submit" style="width:100%;margin-top:12px">ثبت درخواست بررسی پرداخت</button></form>';
   $('copy-rasta-card').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(card);toast('شماره کارت کپی شد.')}catch{toast('کپی خودکار ممکن نیست؛ شماره کارت را دستی کپی کنید.')}});
   $('manual-payment-form').addEventListener('submit',async e=>{e.preventDefault();const btn=$('submit-manual-payment');btn.disabled=true;btn.textContent='در حال ثبت…';try{const {data:result,error:submitError}=await client.functions.invoke('rasta-manual-payments',{body:{action:'submit',plan_id:planId,transfer_reference:$('transfer-reference').value.trim(),transfer_time:$('transfer-time').value.trim()}});if(submitError)throw submitError;if(result?.error)throw new Error(result.error);$('modalbody').innerHTML='<div class="tip"><b>درخواست پرداخت ثبت شد</b>درخواست '+escapeHtml(productTitle)+' ثبت شد؛ تا تأیید مدیر فعال نمی‌شود. شناسه درخواست: <span dir="ltr">'+escapeHtml(result?.transaction?.id||'ثبت‌شده')+'</span></div>';toast('درخواست پرداخت ثبت شد.')}catch(err){toast(err.message||'ثبت درخواست انجام نشد.');btn.disabled=false;btn.textContent='ثبت درخواست بررسی پرداخت'}});
