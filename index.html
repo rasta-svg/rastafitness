@@ -3021,4 +3021,84 @@ hr,.divider{border-color:#304839!important}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 
+
+<!-- rasta-basic-consultation-functional-v1: free, local educational guidance; not an AI/medical diagnosis -->
+<style>
+#rasta-basic-consult-modal{position:fixed;inset:0;z-index:10050;background:#102018a8;display:none;align-items:center;justify-content:center;padding:14px}
+#rasta-basic-consult-modal.open{display:flex}
+#rasta-basic-consult-modal .rbc-card{width:min(620px,100%);max-height:90vh;overflow:auto;background:var(--paper,#fffefa);color:var(--ink,#242c24);border:1px solid var(--line,#e4e5da);border-radius:20px;padding:20px;box-shadow:0 20px 70px #0004}
+#rasta-basic-consult-modal .rbc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#rasta-basic-consult-modal label{display:grid;gap:6px;font-size:12px;font-weight:700}
+#rasta-basic-consult-modal select,#rasta-basic-consult-modal textarea{width:100%;padding:10px;border:1px solid var(--line,#e4e5da);border-radius:10px;background:var(--paper,#fffefa);color:inherit}
+#rasta-basic-consult-modal .rbc-result{white-space:pre-line;line-height:2;font-size:13px;background:var(--pale,#dce9d5);padding:13px;border-radius:12px;margin-top:12px}
+@media(max-width:480px){#rasta-basic-consult-modal .rbc-grid{grid-template-columns:1fr}}
+</style>
+<div id="rasta-basic-consult-modal" role="dialog" aria-modal="true" aria-labelledby="rbc-title">
+ <div class="rbc-card">
+  <div class="split" style="gap:12px"><h2 id="rbc-title" style="font-size:19px;margin:0">🩺 راهنمایی پایه تغذیه</h2><button type="button" id="rbc-close" class="btn ghost" aria-label="بستن">✕ بستن</button></div>
+  <p style="font-size:12px;line-height:1.9;color:var(--muted,#7a8278)">چند انتخاب کوتاه انجام بده تا راهنمای عمومی متناسب‌تری بگیری. این نسخه رایگان و قاعده‌محور است؛ هنوز از هوش مصنوعی آنلاین یا متخصص انسانی استفاده نمی‌کند و اطلاعات فرم در سرور ذخیره نمی‌شود.</p>
+  <form id="rbc-form">
+   <div class="rbc-grid">
+    <label>هدف اصلی
+     <select id="rbc-goal"><option value="health">سلامت و عادت‌های بهتر</option><option value="loss">کاهش وزن تدریجی</option><option value="muscle">افزایش عضله و قدرت</option><option value="energy">انرژی بیشتر در طول روز</option></select>
+    </label>
+    <label>وعده‌های اصلی روزانه
+     <select id="rbc-meals"><option value="1-2">۱ تا ۲ وعده</option><option value="3" selected>۳ وعده</option><option value="4+">۴ وعده یا بیشتر</option><option value="irregular">نامنظم / متغیر</option></select>
+    </label>
+    <label>مصرف آب معمول
+     <select id="rbc-water"><option value="low">معمولاً کم</option><option value="ok" selected>در طول روز و متناسب با تشنگی</option><option value="high">زیاد یا بسیار زیاد</option></select>
+    </label>
+    <label>مهم‌ترین دشواری
+     <select id="rbc-challenge"><option value="sweets">میل به شیرینی و تنقلات</option><option value="time">کمبود وقت برای آماده‌سازی غذا</option><option value="protein">سختی دریافت پروتئین کافی</option><option value="portion">کنترل اندازه وعده‌ها</option><option value="none">مورد خاصی ندارم</option></select>
+    </label>
+   </div>
+   <label style="margin-top:12px">حساسیت یا محدودیت غذایی (اختیاری؛ فقط برای همین پاسخ)
+    <textarea id="rbc-restrictions" rows="2" maxlength="300" placeholder="مثلاً حساسیت به بادام‌زمینی یا رژیم گیاه‌خواری"></textarea>
+   </label>
+   <div class="actions" style="margin-top:14px"><button class="btn dark" type="submit">دریافت راهنمایی رایگان</button></div>
+  </form>
+  <div id="rbc-result" class="rbc-result" role="status" aria-live="polite" hidden></div>
+  <p style="font-size:11px;line-height:1.8;color:var(--muted,#7a8278);margin-bottom:0">اگر بیماری، بارداری/شیردهی، سابقه اختلال خوردن یا حساسیت شدید داری، برای توصیه شخصی با پزشک یا متخصص تغذیه مشورت کن. در این ابزار رژیم درمانی یا تشخیص پزشکی ارائه نمی‌شود.</p>
+ </div>
+</div>
+<script>
+(function(){
+ const trigger=document.getElementById('rasta-basic-nutrition-advice');
+ const dialog=document.getElementById('rasta-basic-consult-modal');
+ const form=document.getElementById('rbc-form');
+ const result=document.getElementById('rbc-result');
+ if(!trigger||!dialog||!form||trigger.dataset.rbcReady==='1')return;
+ trigger.dataset.rbcReady='1';
+ const close=()=>{dialog.classList.remove('open');trigger.focus()};
+ trigger.addEventListener('click',()=>{dialog.classList.add('open');result.hidden=true;document.getElementById('rbc-goal').focus()});
+ document.getElementById('rbc-close').addEventListener('click',close);
+ dialog.addEventListener('click',e=>{if(e.target===dialog)close()});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&dialog.classList.contains('open'))close()});
+ form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const goal=document.getElementById('rbc-goal').value;
+  const meals=document.getElementById('rbc-meals').value;
+  const water=document.getElementById('rbc-water').value;
+  const challenge=document.getElementById('rbc-challenge').value;
+  const restrictions=document.getElementById('rbc-restrictions').value.trim();
+  const lines=['راهنمایی پایه رَستا',''];
+  if(goal==='loss')lines.push('• برای کاهش وزن، تغییرات کوچک و پایدار را انتخاب کن؛ وعده‌ها را حذف نکن و از رژیم‌های بسیار محدودکننده پرهیز کن.');
+  else if(goal==='muscle')lines.push('• برای عضله‌سازی، تمرین مقاومتی منظم، خواب کافی و وجود منبع پروتئین در وعده‌های اصلی را در نظر بگیر.');
+  else if(goal==='energy')lines.push('• برای انرژی پایدار، وعده‌های متعادل شامل غلات/کربوهیدرات، سبزی یا میوه و منبع پروتئین را امتحان کن و خواب را هم بررسی کن.');
+  else lines.push('• یک الگوی متعادل و قابل‌تداوم بساز: سبزی و میوه، منابع پروتئین، غلات یا نان/برنج متناسب با نیاز و چربی‌های مفید.');
+  if(meals==='1-2')lines.push('• اگر فاصله وعده‌ها باعث ضعف یا گرسنگی شدید می‌شود، یک میان‌وعده ساده و متعادل به برنامه اضافه کن.');
+  if(meals==='irregular')lines.push('• برای شروع، زمان تقریبی دو یا سه وعده را ثابت‌تر کن و یک گزینه سریع و سالم در دسترس داشته باش.');
+  if(water==='low')lines.push('• آب را در چند نوبت روز پخش کن؛ نیاز به مایعات با فعالیت، آب‌وهوا و شرایط بدنی فرق می‌کند.');
+  if(water==='high')lines.push('• نوشیدن آب بسیار زیاد را به‌زور ادامه نده؛ اگر تشنگی شدید یا مداوم داری، ارزیابی پزشکی مناسب است.');
+  if(challenge==='sweets')lines.push('• به‌جای ممنوعیت کامل شیرینی، مقدار و دفعات را مدیریت کن و میان‌وعده‌ای مثل میوه و ماست را در دسترس بگذار.');
+  if(challenge==='time')lines.push('• از آماده‌سازی ساده استفاده کن: تخم‌مرغ، حبوبات پخته، ماست، سبزی خردشده یا غذای خانگیِ از قبل آماده‌شده.');
+  if(challenge==='protein')lines.push('• در وعده‌ها از گزینه‌های در دسترس مانند تخم‌مرغ، ماست، حبوبات، مرغ، ماهی یا توفو متناسب با ترجیحاتت استفاده کن.');
+  if(challenge==='portion')lines.push('• غذا را آرام‌تر بخور و ابتدا یک وعده معمولی بکش؛ در صورت باقی‌ماندن گرسنگی، دوباره اضافه کن.');
+  if(restrictions)lines.push('• محدودیت ثبت‌شده: '+restrictions+'. این ابزار نمی‌تواند ایمنی حساسیت یا تداخل پزشکی را تأیید کند؛ برچسب مواد غذایی را بررسی کن و در حساسیت شدید از متخصص کمک بگیر.');
+  lines.push('','این پیشنهاد عمومی است و بر پایه ارزیابی بالینی یا هوش مصنوعی تولید نشده است. برای توصیه شخصی، متخصص تغذیه مناسب‌تر است.');
+  result.textContent=lines.join('\n');result.hidden=false;result.scrollIntoView({block:'nearest',behavior:'smooth'});
+ });
+})();
+</script>
+
 </body></html>
