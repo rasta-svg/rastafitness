@@ -197,8 +197,8 @@ if (!html.includes("if(v==='programs')v='training'") || !html.includes("training
 if (html.includes("if(typeof window.goto==='function')window.goto(view)") || html.includes("new CustomEvent('rasta:navigate'")) {
   throw new Error('All-menus must not intercept navigation through window.goto or an unhandled custom event.');
 }
-if (!html.includes("const item=e.target.closest('button[data-view]')") || !html.includes("try{goto(view)}catch(err)")) {
-  throw new Error('All data-view buttons must use the central lexical goto router.');
+if (!html.includes("const item=e.target.closest('button[data-view],button[data-goto],a[data-view],a[data-goto]')") || !html.includes("try{goto(view)}catch(err)")) {
+  throw new Error('All menu links and buttons must use the central lexical goto router.');
 }
 
 /* Menu-to-view mapping: each label must target the section it describes. */
