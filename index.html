@@ -454,8 +454,9 @@ details,summary{color:#eee8d7!important}
 </aside>
 <main class="main">
 <header class="top"><div><div class="eyebrow">حرکت کن، خوب بخور، حال بهتری بساز</div><h1 id="viewtitle">امروز من</h1></div><div class="auth-userbar" id="rasta-userbar" style="display:none"><div class="auth-user-chip"><span class="auth-user-avatar" id="rasta-user-avatar">ر</span><span class="auth-user-email" id="rasta-user-email"></span></div><button class="auth-logout" id="rasta-logout" type="button">خروج</button><a id="rasta-admin-link" href="./admin.html" style="display:none;color:#fff;background:#294e3b;border-radius:9px;padding:8px 10px;text-decoration:none;font-size:12px;font-weight:bold">پنل مدیریت</a><div class="datepill" id="todaydate"></div></div></header>
-<section class="view active" id="view-today">
 <div id="rasta-admin-announcement" role="status" aria-live="polite" hidden style="margin:0 0 14px;padding:14px 16px;border:1px solid #d5b86c;border-radius:15px;background:linear-gradient(120deg,#fff9e7,#fffdf6);color:#4c401f;box-shadow:0 5px 18px #6d58200d"><div style="display:flex;gap:10px;align-items:flex-start"><span aria-hidden="true" style="font-size:21px">📢</span><div style="min-width:0;flex:1"><strong style="display:block;font-size:13px;margin-bottom:4px">اطلاعیهٔ رستا فیتنس</strong><p id="rasta-admin-announcement-text" style="margin:0;font-size:12px;line-height:1.9;white-space:pre-line;overflow-wrap:anywhere"></p></div></div></div>
+<section class="view active" id="view-today">
+
 <div id="rasta-update-banner" role="status" aria-live="polite" hidden style="margin:0 0 14px;padding:16px;border:1px solid #c7d8a5;border-radius:16px;background:linear-gradient(120deg,#eef6df,#fffefa);color:#294e3b">
  <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
   <div style="font-size:28px" aria-hidden="true">🎉</div>
@@ -1017,18 +1018,23 @@ try{
  if(!window.supabase?.createClient)throw new Error('کتابخانه ورود بارگذاری نشد. اتصال اینترنت را بررسی و صفحه را دوباره باز کن.');
  client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storage:originalStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
  window.__rastaSupabaseClient=client;
-try{
+const loadRastaAnnouncement=async()=>{
  const announcementBanner=document.getElementById('rasta-admin-announcement');
  const announcementText=document.getElementById('rasta-admin-announcement-text');
- if(announcementBanner&&announcementText){
-  client.from('app_announcements').select('message,is_active,expires_at').eq('id',1).maybeSingle().then(({data,error})=>{
-   if(error||!data||!data.is_active||!String(data.message||'').trim())return;
-   if(data.expires_at&&new Date(data.expires_at).getTime()<=Date.now())return;
-   announcementText.textContent=String(data.message).slice(0,1200);
-   announcementBanner.hidden=false;
-  }).catch(()=>{});
- }
-}catch(_announcementError){}
+ if(!announcementBanner||!announcementText||!client)return;
+ try{
+  const {data,error}=await client.from('app_announcements').select('message,is_active,expires_at,updated_at').eq('id',1).maybeSingle();
+  if(error)throw error;
+  const message=String(data?.message||'').trim();
+  const active=!!data?.is_active&&message.length>0&&(!data?.expires_at||new Date(data.expires_at).getTime()>Date.now());
+  if(!active){announcementBanner.hidden=true;announcementText.textContent='';return;}
+  announcementText.textContent=message.slice(0,1200);
+  announcementBanner.hidden=false;
+ }catch(error){console.warn('[Rasta announcement] Could not load announcement:',error);}
+};
+loadRastaAnnouncement();
+window.addEventListener('focus',loadRastaAnnouncement);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)loadRastaAnnouncement();});
 
  window.RastaCore.registerModule('supabase-client',{kind:'service',version:'2',source:'index.html'});
 }catch(e){notice(e.message||'راه‌اندازی ورود با خطا روبه‌رو شد.');}
