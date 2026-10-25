@@ -44,9 +44,10 @@
 <div class="tablewrap"><table><thead><tr><th>نام</th><th>ایمیل</th><th>شماره تلفن</th><th>وضعیت آنلاین</th><th>آخرین فعالیت</th><th>تاریخ ثبت‌نام</th><th>تأیید ایمیل</th><th>مدیریت حساب</th></tr></thead><tbody id="users"><tr><td colspan="8">برای دریافت فهرست وارد شوید.</td></tr></tbody></table></div>
 <p class="foot">حریم خصوصی: این پنل تنها اطلاعات ثبت‌شده در حساب‌های رستا را نمایش می‌دهد. شماره تلفن ممکن است خالی باشد اگر کاربر آن را ثبت نکرده باشد. برای جلوگیری از دسترسی غیرمجاز، بررسی مجوز مدیر در سرور انجام می‌شود.</p></div></section>
 </main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" onerror="var s=document.createElement('script');s.src='https://unpkg.com/@supabase/supabase-js@2';document.head.appendChild(s)"></script>
 <script src="./rasta-core.js"></script><script src="./rasta-search.js"></script>
 <script>
+const loginForm=document.getElementById('login-form');loginForm?.addEventListener('submit',e=>{e.preventDefault();if(!window.supabase?.createClient){const n=document.getElementById('notice');n.textContent='کتابخانه ورود از اینترنت بارگذاری نشد. اتصال اینترنت را بررسی کن و دوباره تلاش کن.';n.className='notice show error';}});
 const {url:SUPABASE_URL,publishableKey:SUPABASE_KEY}=window.RastaCore.config.supabase;
 const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 window.RastaCore.registerModule('supabase-client',{kind:'service',version:'2',source:'admin.html'});
