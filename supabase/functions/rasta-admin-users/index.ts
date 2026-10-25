@@ -28,6 +28,27 @@ Deno.serve(async (req: Request) => {
 
   let requestBody: Record<string, unknown> = {};
   try { requestBody = await req.json(); } catch { requestBody = {}; }
+  if (requestBody.action === "save_announcement") {
+    const message = String(requestBody.message || "").trim();
+    const isActive = requestBody.is_active === true;
+    const expiresRaw = requestBody.expires_at ? String(requestBody.expires_at) : "";
+    const expiresAt = expiresRaw ? new Date(expiresRaw) : null;
+    if (message.length > 1200) return new Response(JSON.stringify({ error: "متن پیام حداکثر ۱۲۰۰ نویسه باشد." }), { status: 400, headers: cors });
+    if (isActive && !message) return new Response(JSON.stringify({ error: "برای انتشار، متن پیام را وارد کنید." }), { status: 400, headers: cors });
+    if (expiresAt && (!Number.isFinite(expiresAt.getTime()) || expiresAt.getTime() <= Date.now())) return new Response(JSON.stringify({ error: "زمان پایان باید در آینده باشد." }), { status: 400, headers: cors });
+    const { data: saved, error: saveError } = await adminClient.from("app_announcements").upsert({
+      id: 1, message, is_active: isActive, expires_at: expiresAt ? expiresAt.toISOString() : null,
+      updated_at: new Date().toISOString(), updated_by: user.id
+    }, { onConflict: "id" }).select("id,message,is_active,expires_at,updated_at").single();
+    if (saveError || !saved) return new Response(JSON.stringify({ error: "ذخیره پیام همگانی انجام نشد." }), { status: 500, headers: cors });
+    return new Response(JSON.stringify({ ok: true, announcement: saved }), { status: 200, headers: cors });
+  }
+  if (requestBody.action === "get_announcement") {
+    const { data: announcement, error: announcementError } = await adminClient.from("app_announcements").select("id,message,is_active,expires_at,updated_at").eq("id", 1).maybeSingle();
+    if (announcementError) return new Response(JSON.stringify({ error: "دریافت پیام همگانی انجام نشد." }), { status: 500, headers: cors });
+    return new Response(JSON.stringify({ announcement: announcement || { id: 1, message: "", is_active: false, expires_at: null } }), { status: 200, headers: cors });
+  }
+
   if (requestBody.action === "delete_user") {
     const targetId = String(requestBody.user_id || "");
     const confirmEmail = String(requestBody.confirm_email || "").trim().toLowerCase();

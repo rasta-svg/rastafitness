@@ -13,7 +13,20 @@
 <form id="login-form"><div class="field"><label for="email">ایمیل مدیر</label><input id="email" type="email" autocomplete="username" required value="elida600000@gmail.com"></div><div class="field"><label for="password">رمز عبور حساب رستا</label><input id="password" type="password" autocomplete="current-password" required></div><button id="login-btn" class="btn" type="submit" style="width:100%">ورود امن</button></form>
 <p class="foot">اطلاعات ورود فقط برای احراز هویت استفاده می‌شود. رمز عبور شما در این صفحه ذخیره نمی‌شود.</p></section>
 <section id="dashboard" class="hidden"><div class="panel wide"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h2>فهرست کاربران</h2><p class="muted">ایمیل و شماره تلفن ثبت‌شده در حساب‌ها</p></div><button id="logout" class="btn red">خروج از پنل</button></div>
-<div id="dash-notice" class="notice"></div><div class="stats"><div class="stat"><small>کل کاربران دریافت‌شده</small><strong id="total">—</strong></div><div class="stat"><small>کاربران آنلاین</small><strong id="online-count">—</strong></div><div class="stat"><small>دارای ایمیل</small><strong id="email-count">—</strong></div><div class="stat"><small>دارای شماره تلفن</small><strong id="phone-count">—</strong></div></div><p class="muted">آنلاین یعنی ضربان حضور در ۹۰ ثانیهٔ اخیر ثبت شده و برنامه در حالت فعال بوده است. فقط فهرست کاربران هر ۵ ثانیه تازه می‌شود؛ فرم‌های نوشتاری و ذخیره‌سازی محدودیت زمانی ندارند.</p><h3 style="margin:20px 0 10px">وضعیت درآمدزایی</h3><div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(145px,1fr))"><div class="stat"><small>پلن‌های فعال</small><strong id="billing-plans">—</strong></div><div class="stat"><small>اشتراک‌های فعال</small><strong id="billing-active">—</strong></div><div class="stat"><small>اشتراک‌های رایگان فعال</small><strong id="billing-free">—</strong></div><div class="stat"><small>پرداخت‌های در انتظار</small><strong id="billing-pending">—</strong></div><div class="stat"><small>پرداخت‌های موفق</small><strong id="billing-success">—</strong></div><div class="stat"><small>درآمد ناخالص ثبت‌شده (تومان)</small><strong id="billing-revenue">—</strong></div></div>
+<div id="dash-notice" class="notice"></div>
+<h3 style="margin:20px 0 10px">پیام همگانی صفحهٔ اصلی</h3>
+<div class="panel" style="max-width:none;margin:0 0 16px;padding:16px;box-shadow:none">
+<p class="muted">پیام ذخیره‌شده در بالای صفحهٔ اصلی همهٔ کاربران نمایش داده می‌شود. می‌توانی زمان پایان تعیین کنی یا پیام را فوراً غیرفعال کنی.</p>
+<form id="announcement-form">
+<label class="field">متن پیام برای همهٔ کاربران<textarea id="announcement-message" rows="3" maxlength="1200" placeholder="متن اطلاعیه، پیام به‌روزرسانی یا خبر مهم..." style="width:100%" required></textarea></label>
+<div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:10px">
+<label class="field" style="min-width:220px">زمان پایان (اختیاری)<input id="announcement-expires" type="datetime-local"></label>
+<label style="display:flex;gap:8px;align-items:center;padding:10px"><input id="announcement-active" type="checkbox" checked> انتشار برای همهٔ کاربران</label>
+<button id="save-announcement" class="btn" type="submit">ذخیره و انتشار پیام</button>
+<button id="disable-announcement" class="btn red" type="button">غیرفعال‌کردن پیام</button>
+</div>
+<p id="announcement-status" class="muted" role="status" aria-live="polite"></p>
+</form></div><div class="stats"><div class="stat"><small>کل کاربران دریافت‌شده</small><strong id="total">—</strong></div><div class="stat"><small>کاربران آنلاین</small><strong id="online-count">—</strong></div><div class="stat"><small>دارای ایمیل</small><strong id="email-count">—</strong></div><div class="stat"><small>دارای شماره تلفن</small><strong id="phone-count">—</strong></div></div><p class="muted">آنلاین یعنی ضربان حضور در ۹۰ ثانیهٔ اخیر ثبت شده و برنامه در حالت فعال بوده است. فقط فهرست کاربران هر ۵ ثانیه تازه می‌شود؛ فرم‌های نوشتاری و ذخیره‌سازی محدودیت زمانی ندارند.</p><h3 style="margin:20px 0 10px">وضعیت درآمدزایی</h3><div class="stats" style="grid-template-columns:repeat(auto-fit,minmax(145px,1fr))"><div class="stat"><small>پلن‌های فعال</small><strong id="billing-plans">—</strong></div><div class="stat"><small>اشتراک‌های فعال</small><strong id="billing-active">—</strong></div><div class="stat"><small>اشتراک‌های رایگان فعال</small><strong id="billing-free">—</strong></div><div class="stat"><small>پرداخت‌های در انتظار</small><strong id="billing-pending">—</strong></div><div class="stat"><small>پرداخت‌های موفق</small><strong id="billing-success">—</strong></div><div class="stat"><small>درآمد ناخالص ثبت‌شده (تومان)</small><strong id="billing-revenue">—</strong></div></div>
 <h3 style="margin:22px 0 10px">تنظیمات کارت‌به‌کارت</h3>
 <div class="panel" style="max-width:none;margin:0 0 16px;padding:16px;box-shadow:none">
 <p class="muted">شماره کارت مقصد برای کاربران واردشده در رستا نمایش داده می‌شود. برای غیرفعال‌کردن پرداخت کارت‌به‌کارت، شماره کارت را خالی ذخیره کنید.</p>
@@ -105,7 +118,46 @@ async function loadContactMessages(){
 }
 
 async function loadUsers(listOnly=false){$('refresh').disabled=true;$('refresh').textContent='در حال دریافت…';try{const {data:{session}}=await client.auth.getSession();if(!session)throw new Error('نشست شما پایان یافته است؛ دوباره وارد شوید.');const {data,error}=await client.functions.invoke('rasta-admin-users',{headers:{Authorization:'Bearer '+session.access_token},body:{}});if(error)throw error;if(data?.error)throw new Error(data.error);hideNote($('dash-notice'));allUsers=data.users||[];$('total').textContent=data.total??allUsers.length;$('online-count').textContent=Number(data.onlineTotal??allUsers.filter(u=>u.online).length).toLocaleString('fa-IR');$('email-count').textContent=allUsers.filter(u=>u.email).length;$('phone-count').textContent=allUsers.filter(u=>u.phone).length;const billing=data.billing||{};$('billing-plans').textContent=Number(billing.activePlans||0).toLocaleString('fa-IR');$('billing-free').textContent=Number(billing.freeSubscriptions||0).toLocaleString('fa-IR');$('billing-active').textContent=Number(billing.activeSubscriptions||0).toLocaleString('fa-IR');$('billing-pending').textContent=Number(billing.pendingPayments||0).toLocaleString('fa-IR');$('billing-success').textContent=Number(billing.successfulPayments||0).toLocaleString('fa-IR');$('billing-revenue').textContent=Math.round(Number(billing.grossRevenueIrr||0)/10).toLocaleString('fa-IR');render();if(!listOnly){loadPaymentSettings();loadManualPayments();loadContactMessages();}}catch(e){const message=await readableFunctionError(e);note($('dash-notice'),'خطا در دریافت اطلاعات: '+message+' — پیام تا زمان موفقیت به‌روزرسانی باقی می‌ماند.');if(/دسترسی غیرمجاز|ورود مدیر الزامی|نشست شما/.test(message)){await client.auth.signOut();showLogin()}}finally{$('refresh').disabled=false;$('refresh').textContent='به‌روزرسانی فهرست'}}
-$('login-form').addEventListener('submit',async e=>{e.preventDefault();hideNote($('notice'));const btn=$('login-btn');btn.disabled=true;btn.textContent='در حال بررسی…';try{const email=$('email').value.trim().toLowerCase();const password=$('password').value;const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;if((data.user?.email||'').toLowerCase()!=='elida600000@gmail.com'){await client.auth.signOut();throw new Error('این حساب اجازهٔ ورود به پنل مدیریت را ندارد.')}showDashboard();await loadUsers()}catch(e){note($('notice'),e.message||'ورود انجام نشد.')}finally{btn.disabled=false;btn.textContent='ورود امن'}});
+async function invokeAdminUsers(body){
+ const {data:{session}}=await client.auth.getSession();
+ if(!session)throw new Error('نشست مدیر منقضی شده است؛ دوباره وارد شوید.');
+ const {data,error}=await client.functions.invoke('rasta-admin-users',{headers:{Authorization:'Bearer '+session.access_token},body});
+ if(error)throw new Error(await readableFunctionError(error));
+ if(data?.error)throw new Error(data.error);
+ return data;
+}
+async function loadAnnouncement(){
+ const status=$('announcement-status');
+ try{
+  const r=await invokeAdminUsers({action:'get_announcement'});
+  const a=r.announcement||{};
+  $('announcement-message').value=a.message||'';
+  $('announcement-active').checked=!!a.is_active;
+  $('announcement-expires').value=a.expires_at?new Date(a.expires_at).toISOString().slice(0,16):'';
+  status.textContent=a.is_active?'پیام فعال است'+(a.expires_at?'؛ پایان: '+dateTimeText(a.expires_at):'؛ بدون زمان پایان'):'در حال حاضر پیام فعالی منتشر نشده است.';
+ }catch(e){status.textContent='دریافت وضعیت پیام ناموفق بود: '+(e.message||'خطای ارتباط')}
+}
+$('announcement-form').addEventListener('submit',async e=>{
+ e.preventDefault();const b=$('save-announcement'),status=$('announcement-status');
+ const message=$('announcement-message').value.trim(),active=$('announcement-active').checked,raw=$('announcement-expires').value;
+ if(active&&!message){status.textContent='برای انتشار، متن پیام را وارد کنید.';return}
+ if(raw&&new Date(raw).getTime()<=Date.now()){status.textContent='زمان پایان باید در آینده باشد.';return}
+ b.disabled=true;b.textContent='در حال ذخیره…';
+ try{
+  const r=await invokeAdminUsers({action:'save_announcement',message,is_active:active,expires_at:raw?new Date(raw).toISOString():null});
+  status.textContent=r.announcement?.is_active?'پیام با موفقیت برای همهٔ کاربران منتشر شد.':'پیام ذخیره شد و نمایش آن غیرفعال است.';
+  note($('dash-notice'),status.textContent,'ok');
+ }catch(err){status.textContent=err.message||'ذخیره پیام انجام نشد.';note($('dash-notice'),status.textContent)}
+ finally{b.disabled=false;b.textContent='ذخیره و انتشار پیام'}
+});
+$('disable-announcement').addEventListener('click',async()=>{
+ const b=$('disable-announcement'),status=$('announcement-status');
+ b.disabled=true;
+ try{await invokeAdminUsers({action:'save_announcement',message:$('announcement-message').value.trim(),is_active:false,expires_at:null});$('announcement-active').checked=false;status.textContent='پیام غیرفعال شد و دیگر برای کاربران نمایش داده نمی‌شود.';note($('dash-notice'),status.textContent,'ok')}
+ catch(err){status.textContent=err.message||'غیرفعال‌سازی پیام ناموفق بود.';note($('dash-notice'),status.textContent)}
+ finally{b.disabled=false}
+});
+$('login-form').addEventListener('submit',async e=>{e.preventDefault();hideNote($('notice'));const btn=$('login-btn');btn.disabled=true;btn.textContent='در حال بررسی…';try{const email=$('email').value.trim().toLowerCase();const password=$('password').value;const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;if((data.user?.email||'').toLowerCase()!=='elida600000@gmail.com'){await client.auth.signOut();throw new Error('این حساب اجازهٔ ورود به پنل مدیریت را ندارد.')}showDashboard();await loadAnnouncement();await loadUsers()}catch(e){note($('notice'),e.message||'ورود انجام نشد.')}finally{btn.disabled=false;btn.textContent='ورود امن'}});
 async function invokeManualPayments(body){const {data:{session}}=await client.auth.getSession();if(!session)throw new Error('نشست مدیر منقضی شده است؛ دوباره وارد شوید.');const {data,error}=await client.functions.invoke('rasta-manual-payments',{headers:{Authorization:'Bearer '+session.access_token},body});if(error)throw error;if(data?.error)throw new Error(data.error);return data}
 async function loadComplimentaryHistory(){
  const rows=$('complimentary-history-rows'),status=$('complimentary-history-status');
