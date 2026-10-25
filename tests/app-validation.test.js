@@ -200,3 +200,17 @@ if (html.includes("if(typeof window.goto==='function')window.goto(view)") || htm
 if (!html.includes("const item=e.target.closest('button[data-view]')") || !html.includes("try{goto(view)}catch(err)")) {
   throw new Error('All data-view buttons must use the central lexical goto router.');
 }
+
+/* Menu-to-view mapping: each label must target the section it describes. */
+for (const route of ['today','training','explore','nutrition','history','profile','plans','premium-fitness','guide','contact','download','changelog']) {
+  if (!html.includes('id="view-' + route + '"')) throw new Error('Menu route has no matching view: ' + route);
+}
+if (!html.includes('data-view="training"><span>🏋️</span>برنامه تمرینی من</button>')) {
+  throw new Error('Training menu must point to the training planner, not the movement discovery view.');
+}
+if (!html.includes('data-view="explore"><span>🔎</span>کشف حرکات و کتابخانه تمرین</button>')) {
+  throw new Error('Movement discovery needs its own menu entry pointing to view-explore.');
+}
+if (!html.includes('data-view="nutrition"><span>🥗</span>برنامه غذایی و رژیم‌ساز هوشمند</button>')) {
+  throw new Error('Nutrition menu must point to view-nutrition.');
+}
