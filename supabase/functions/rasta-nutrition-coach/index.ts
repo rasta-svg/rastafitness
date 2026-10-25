@@ -23,6 +23,18 @@ Deno.serve(async (req: Request) => {
   const message = typeof body.message === "string" ? body.message.trim().slice(0, 4000) : "";
   const mode = ["general", "meal_ideas", "food_substitution", "plan_review"].includes(String(body.mode)) ? String(body.mode) : "general";
   if (!message) return new Response(JSON.stringify({ error: "message_required" }), { status: 400, headers: cors });
+  const { data: entitlement, error: entitlementError } = await supabase
+    .from("subscriptions")
+    .select("id,ends_at")
+    .eq("user_id", user.id)
+    .eq("plan_id", "nutrition_consultation")
+    .eq("status", "active")
+    .gt("ends_at", new Date().toISOString())
+    .order("ends_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (entitlementError) return new Response(JSON.stringify({ error: "entitlement_check_failed" }), { status: 503, headers: cors });
+  if (!entitlement) return new Response(JSON.stringify({ error: "nutrition_consultation_purchase_required", message: "برای استفاده از مشاوره هوشمند پیشرفته، خرید جداگانه و تأیید مدیر لازم است." }), { status: 403, headers: cors });
   const flags: string[] = [];
   if (/(سریع لاغر|گرسنگی شدید|روزه.{0,8}(طولانی|چند روز)|استفراغ|ملین|خودکشی|آسیب به خود)/i.test(message)) flags.push("sensitive_request");
   const apiKey = Deno.env.get("OPENAI_API_KEY");

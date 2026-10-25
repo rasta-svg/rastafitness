@@ -54,9 +54,10 @@ Deno.serve(async (req: Request) => {
     const { data, error } = await db.from("payment_settings")
       .select("card_number,cardholder_name,instructions").eq("id", true).maybeSingle();
     if (error) return json({ error: "دریافت اطلاعات کارت ممکن نشد." }, 500);
-    const [{ data: plan }, { data: customNutritionPlan }] = await Promise.all([
+    const [{ data: plan }, { data: customNutritionPlan }, { data: consultationPlan }] = await Promise.all([
       db.from("subscription_plans").select("price_irr").eq("id", "premium").maybeSingle(),
       db.from("subscription_plans").select("price_irr").eq("id", "custom_nutrition").maybeSingle(),
+      db.from("subscription_plans").select("price_irr").eq("id", "nutrition_consultation").maybeSingle(),
     ]);
     return json({ config: {
       card_number: data?.card_number || "",
@@ -65,6 +66,7 @@ Deno.serve(async (req: Request) => {
       enabled: /^\d{16}$/.test(data?.card_number || "") && Boolean(data?.cardholder_name),
       price_toman: Math.round(Number(plan?.price_irr || 0) / 10),
       custom_nutrition_price_toman: Math.round(Number(customNutritionPlan?.price_irr || 0) / 10),
+      nutrition_consultation_price_toman: Math.round(Number(consultationPlan?.price_irr || 0) / 10),
     } });
   }
 
@@ -72,7 +74,7 @@ Deno.serve(async (req: Request) => {
     const planId = String(body.plan_id || "");
     const reference = String(body.transfer_reference || "").trim().slice(0, 100);
     const transferTime = String(body.transfer_time || "").trim().slice(0, 80);
-    if (planId !== "premium" && planId !== "custom_nutrition") return json({ error: "نوع خرید معتبر نیست." }, 400);
+    if (!["premium", "custom_nutrition", "nutrition_consultation"].includes(planId)) return json({ error: "نوع خرید معتبر نیست." }, 400);
     if (reference.length < 3) return json({ error: "شماره پیگیری یا شناسه واریز را وارد کنید." }, 400);
     const { data: config } = await db.from("payment_settings").select("card_number,cardholder_name").eq("id", true).maybeSingle();
     if (!config || !/^\d{16}$/.test(config.card_number || "") || !config.cardholder_name) {
@@ -128,12 +130,12 @@ Deno.serve(async (req: Request) => {
     return json({ ok: true, enabled: /^\d{16}$/.test(cardNumber) && Boolean(cardholderName) });
   }
 
-  if (action === "set_price" || action === "set_custom_nutrition_price") {
+  if (action === "set_price" || action === "set_custom_nutrition_price" || action === "set_nutrition_consultation_price") {
     const toman = Number(body.price_toman);
     if (!Number.isSafeInteger(toman) || toman < 1000 || toman > 100000000) return json({ error: "مبلغ باید بین ۱٬۰۰۰ تا ۱۰۰٬۰۰۰٬۰۰۰ تومان باشد." }, 400);
-    const planId = action === "set_custom_nutrition_price" ? "custom_nutrition" : "premium";
+    const planId = action === "set_custom_nutrition_price" ? "custom_nutrition" : action === "set_nutrition_consultation_price" ? "nutrition_consultation" : "premium";
     const { data: plan, error } = await db.from("subscription_plans").update({ price_irr: toman * 10, updated_at: new Date().toISOString() }).eq("id", planId).select("id,price_irr").single();
-    if (error || !plan) return json({ error: planId === "premium" ? "ذخیره مبلغ اشتراک انجام نشد." : "ذخیره مبلغ ساخت اختصاصی برنامه غذایی انجام نشد." }, 500);
+    if (error || !plan) return json({ error: planId === "premium" ? "ذخیره مبلغ اشتراک انجام نشد." : planId === "custom_nutrition" ? "ذخیره مبلغ ساخت اختصاصی برنامه غذایی انجام نشد." : "ذخیره مبلغ مشاوره هوشمند پیشرفته انجام نشد." }, 500);
     return json({ ok: true, plan_id: planId, price_toman: Math.round(Number(plan.price_irr) / 10) });
   }
 

@@ -172,7 +172,7 @@ if (!Array.isArray(manifest.icons) || !manifest.icons.some(icon => String(icon.s
 if (!html.includes('ورزش و تغذیه‌ی حرفه‌ای‌ها') || html.includes('ورزش و رژیم پریمیوم')) {
   throw new Error('All-menus navigation and page title must use the approved professional-fitness label consistently.');
 }
-if (!html.includes("const RASTA_APP_VERSION='2.0.4';")) throw new Error('App version constant must match the current release.');
+if (!html.includes("const RASTA_APP_VERSION='2.0.6';")) throw new Error('App version constant must match the current release.');
 console.log('Application validation passed: ' + inlineCount + ' inline scripts, shared core, science engine, and service worker syntax checked.');
 
 const adminPageForPricing = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
@@ -221,4 +221,20 @@ if (!html.includes("const route=event.state&&typeof event.state.rastaView==='str
 }
 if (html.includes("if(current!=='today'){goto('today',true);window.history.pushState({rastaView:'today'}")) {
   throw new Error('Popstate must not force every route back to Today.');
+}
+
+
+const coachFunction = fs.readFileSync(path.join(root, 'supabase/functions/rasta-nutrition-coach/index.ts'), 'utf8');
+const consultationMigration = fs.readFileSync(path.join(root, 'supabase/migrations/20261025150000_nutrition_consultation_paid_plan.sql'), 'utf8');
+if (!html.includes('id="rasta-ai-coach-form"') || !html.includes("functions.invoke('rasta-nutrition-coach'")) {
+  throw new Error('Advanced nutrition consultation UI must call the real nutrition coach Edge Function.');
+}
+if (!coachFunction.includes('nutrition_consultation_purchase_required') || !coachFunction.includes('.eq("plan_id", "nutrition_consultation")') || !coachFunction.includes('OPENAI_API_KEY')) {
+  throw new Error('Nutrition coach must enforce paid access server-side and keep the AI key in server secrets.');
+}
+if (!manualPaymentsFunction.includes('set_nutrition_consultation_price') || !manualPaymentsFunction.includes('nutrition_consultation_price_toman') || !manualPaymentsFunction.includes('"nutrition_consultation"')) {
+  throw new Error('Manual payment service must support consultation purchase and independent admin pricing.');
+}
+if (!consultationMigration.includes("'nutrition_consultation'") || !consultationMigration.includes("'none'")) {
+  throw new Error('Advanced consultation must have a separate one-time plan in the additive migration.');
 }

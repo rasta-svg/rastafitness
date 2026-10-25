@@ -431,7 +431,7 @@ details,summary{color:#eee8d7!important}
 
 <div class="layout" id="rasta-app-shell" style="display:none">
 <aside class="sidebar">
-<div class="brand"><div class="brandmark">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو · نسخه ۲٫۰٫۳</small></div></div>
+<div class="brand"><div class="brandmark">ر</div><div><b>رَستا</b><small>تندرستی، به انتخاب تو · نسخه ۲٫۰٫۶</small></div></div>
 <div class="nav-label">شروع</div><nav class="nav">
 <button class="active" data-view="today"><span class="ico">☀️</span>امروز من</button>
 <div class="nav-label">باشگاه تمرین</div>
@@ -555,6 +555,17 @@ details,summary{color:#eee8d7!important}
  <div class="split"><div><h3 style="margin-bottom:4px">🩺 استاد مشاوره تغذیه</h3><p style="margin:0">مشاوره پایه رایگان است؛ دسترسی به مشاوره هوشمند پیشرفته با خرید جداگانه فعال می‌شود و جزو اشتراک پریمیوم یا خرید برنامه غذایی نیست.</p></div><span class="pill" style="background:#f3e8bf;color:#6c531b">تعرفه مستقل</span></div>
  <div class="actions" style="margin-top:12px"><button type="button" class="btn ghost" id="rasta-basic-nutrition-advice">راهنمایی پایه رایگان</button><button type="button" class="btn dark" data-plan-request="nutrition_consultation">مشاهده تعرفه و خرید مشاوره پیشرفته</button></div>
  <div id="rasta-basic-nutrition-result" class="tip" role="status" aria-live="polite" style="margin-top:10px">راهنمایی پایه، اطلاعات عمومی است و جایگزین ارزیابی متخصص تغذیه نیست.</div>
+ <div id="rasta-ai-nutrition-coach" class="rasta-ai-coach" style="margin-top:14px">
+  <div class="split"><h3 style="margin:0">🧠 گفت‌وگوی هوشمند تغذیه</h3><span class="pill" style="background:#f3e8bf;color:#6c531b">دسترسی پولی مستقل · ۳۰ روز</span></div>
+  <p class="muted" style="margin:5px 0 10px">برای پرسش درباره وعده‌ها، جایگزینی غذا و بازبینی الگوی غذایی. پاسخ‌ها آموزشی‌اند و تشخیص یا درمان پزشکی نیستند.</p>
+  <form id="rasta-ai-coach-form">
+   <label class="field">نوع راهنمایی<select id="rasta-ai-coach-mode"><option value="general">پرسش عمومی تغذیه</option><option value="meal_ideas">ایده برای وعده غذایی</option><option value="food_substitution">جایگزین‌کردن یک غذا</option><option value="plan_review">بازبینی الگوی غذایی</option></select></label>
+   <label class="field">پرسش شما<textarea id="rasta-ai-coach-message" rows="3" maxlength="4000" required placeholder="هدف، ترجیحات غذایی و پرسش خود را بنویسید؛ اطلاعات شناسایی یا جزئیات پزشکی حساس وارد نکنید."></textarea></label>
+   <div class="actions"><button class="btn dark" id="rasta-ai-coach-submit" type="submit">بررسی دسترسی و ارسال پرسش</button></div>
+  </form>
+  <div id="rasta-ai-coach-status" class="tip" role="status" aria-live="polite" style="margin-top:10px">برای استفاده از مشاوره هوشمند، خرید جداگانه باید توسط مدیر تأیید شده باشد.</div>
+  <div id="rasta-ai-coach-answer" class="tip" role="status" aria-live="polite" hidden style="margin-top:10px;white-space:pre-line"></div>
+ </div>
 </div>
 <div class="panel" id="rasta-nutrition-builder" style="margin-bottom:16px;border-color:#cbd9c5">
  <div class="split"><div><h3 style="margin-bottom:4px">🧠 رژیم‌ساز هوشمند و اختصاصی رستا</h3><p style="margin:0">هدف، کاهش وزن، افزایش عضله، تنوع غذاهای ایرانی، بودجه، ذائقه و محدودیت‌ها در پیشنهاد هفت‌روزه لحاظ می‌شوند.</p></div><span class="pill" style="background:#f3e8bf;color:#6c531b">🔒 پرداخت جداگانه برای هر برنامه</span></div>
@@ -685,7 +696,7 @@ details,summary{color:#eee8d7!important}
 </div>
 <div class="panel" style="margin-top:14px"><h3>برای مربیان و باشگاه‌ها</h3><p>پنل‌های مربی و باشگاه در مرحله آماده‌سازی هستند. پیش از فروش، مدیریت شاگردان، دسترسی اعضا و پرداخت امن باید آزمایش شوند.</p><a class="btn ghost" href="mailto:elida600000@gmail.com?subject=درخواست%20اطلاعات%20رستا" style="display:inline-block;text-decoration:none">درخواست اطلاعات</a></div>
 </section>
-<footer style="text-align:center;color:var(--muted);font-size:9px;line-height:1.9;margin-top:28px">رَستا · تمرین و تغذیه با مسیر شخصی · نسخه ۲٫۰٫۳ · پرداخت کارت‌به‌کارت با تأیید مدیر</footer>
+<footer style="text-align:center;color:var(--muted);font-size:9px;line-height:1.9;margin-top:28px">رَستا · تمرین و تغذیه با مسیر شخصی · نسخه ۲٫۰٫۶ · پرداخت کارت‌به‌کارت با تأیید مدیر</footer>
 <section class="view" id="view-guide">
 <div class="card" style="padding:clamp(16px,3vw,28px)">
 <div class="eyebrow">آموزش قدم‌به‌قدم رَستا</div>
@@ -1365,7 +1376,7 @@ if(contactForm)contactForm.addEventListener('submit',async e=>{
 });
 const contactRefresh=$('rasta-contact-refresh');if(contactRefresh)contactRefresh.addEventListener('click',renderContactMessages);
 
-const RASTA_APP_VERSION='2.0.4';
+const RASTA_APP_VERSION='2.0.6';
 let rastaUpdateCheckInFlight=false;
 async function checkRastaForUpdate(){
  if(rastaUpdateCheckInFlight||!navigator.onLine)return;
@@ -3101,4 +3112,38 @@ hr,.divider{border-color:#304839!important}
 })();
 </script>
 
+<script>
+(function(){
+ const form=document.getElementById('rasta-ai-coach-form');
+ const status=document.getElementById('rasta-ai-coach-status');
+ const answer=document.getElementById('rasta-ai-coach-answer');
+ const submit=document.getElementById('rasta-ai-coach-submit');
+ if(!form||form.dataset.ready==='1')return;
+ form.dataset.ready='1';
+ form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const client=window.__rastaSupabaseClient;
+  const message=document.getElementById('rasta-ai-coach-message').value.trim();
+  const mode=document.getElementById('rasta-ai-coach-mode').value;
+  answer.hidden=true;
+  if(!message){status.textContent='ابتدا پرسش خود را بنویسید.';return}
+  if(!client){status.textContent='اتصال حساب برقرار نیست؛ صفحه را دوباره باز کنید و وارد حساب شوید.';return}
+  submit.disabled=true;submit.textContent='در حال بررسی…';status.textContent='در حال بررسی دسترسی و آماده‌سازی پاسخ…';
+  try{
+   const {data:{user},error:authError}=await client.auth.getUser();
+   if(authError||!user){status.textContent='برای استفاده از مشاوره پیشرفته ابتدا وارد حساب شوید.';return}
+   const {data:access,error:accessError}=await client.from('subscriptions').select('id,ends_at').eq('user_id',user.id).eq('plan_id','nutrition_consultation').eq('status','active').gt('ends_at',new Date().toISOString()).order('ends_at',{ascending:false}).limit(1).maybeSingle();
+   if(accessError)throw accessError;
+   if(!access){status.textContent='دسترسی فعال مشاوره پیدا نشد. خرید را ثبت کنید؛ پس از تأیید مدیر، مشاوره فعال می‌شود.';return}
+   const {data,error}=await client.functions.invoke('rasta-nutrition-coach',{body:{message,mode}});
+   if(error)throw error;
+   if(data?.error){status.textContent=data.message||'سرویس مشاوره فعلاً آماده پاسخ‌گویی نیست.';return}
+   answer.textContent=data?.answer||'پاسخی دریافت نشد.';answer.hidden=false;status.textContent='پاسخ آموزشی آماده شد. در تصمیم‌های درمانی با متخصص واجد صلاحیت مشورت کنید.';
+  }catch(err){
+   const detail=String(err?.message||'');
+   status.textContent=/ai_provider_not_configured|503/.test(detail)?'کلید سرویس هوش مصنوعی هنوز در Secrets سرور تنظیم نشده است.':detail||'ارتباط با سرویس مشاوره انجام نشد؛ بعداً دوباره تلاش کنید.';
+  }finally{submit.disabled=false;submit.textContent='بررسی دسترسی و ارسال پرسش'}
+ });
+})();
+</script>
 </body></html>
