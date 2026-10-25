@@ -130,12 +130,12 @@ Deno.serve(async (req: Request) => {
     return json({ ok: true, enabled: /^\d{16}$/.test(cardNumber) && Boolean(cardholderName) });
   }
 
-  if (action === "set_price" || action === "set_custom_nutrition_price") {
+  if (action === "set_price" || action === "set_custom_nutrition_price" || action === "set_nutrition_consultation_price") {
     const toman = Number(body.price_toman);
     if (!Number.isSafeInteger(toman) || toman < 1000 || toman > 100000000) return json({ error: "مبلغ باید بین ۱٬۰۰۰ تا ۱۰۰٬۰۰۰٬۰۰۰ تومان باشد." }, 400);
-    const planId = action === "set_custom_nutrition_price" ? "custom_nutrition" : "premium";
+    const planId = action === "set_custom_nutrition_price" ? "custom_nutrition" : action === "set_nutrition_consultation_price" ? "nutrition_consultation" : "premium";
     const { data: plan, error } = await db.from("subscription_plans").update({ price_irr: toman * 10, updated_at: new Date().toISOString() }).eq("id", planId).select("id,price_irr").single();
-    if (error || !plan) return json({ error: planId === "premium" ? "ذخیره مبلغ اشتراک انجام نشد." : "ذخیره مبلغ ساخت اختصاصی برنامه غذایی انجام نشد." }, 500);
+    if (error || !plan) return json({ error: planId === "premium" ? "ذخیره مبلغ اشتراک انجام نشد." : planId === "custom_nutrition" ? "ذخیره مبلغ ساخت اختصاصی برنامه غذایی انجام نشد." : "ذخیره مبلغ مشاوره هوشمند پیشرفته انجام نشد." }, 500);
     return json({ ok: true, plan_id: planId, price_toman: Math.round(Number(plan.price_irr) / 10) });
   }
 
