@@ -2900,4 +2900,113 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 </style>
 
+
+<style id="rasta-signature-luxury-v3">
+/* RASTA signature luxury: deep evergreen, warm ivory, restrained champagne */
+:root{
+ --rasta-bg:#0d1712;--rasta-surface:#14231a;--rasta-surface-2:#1a2d21;
+ --rasta-surface-3:#20392a;--rasta-line:#304839;--rasta-text:#f2f0e6;
+ --rasta-muted:#b0bcae;--rasta-gold:#d2bd83;--rasta-gold-soft:#a99562;
+ --rasta-glow:rgba(210,189,131,.12);
+}
+html{background:var(--rasta-bg)!important}
+body{
+ color:var(--rasta-text)!important;
+ background:radial-gradient(ellipse at 85% -10%,rgba(57,105,68,.32),transparent 38%),
+ radial-gradient(ellipse at -10% 45%,rgba(37,75,49,.22),transparent 35%),var(--rasta-bg)!important;
+ font-feature-settings:"kern";
+}
+#rasta-app-shell{color:var(--rasta-text)}
+/* Cleaner visual hierarchy */
+.top{background:linear-gradient(180deg,rgba(13,23,18,.96),rgba(13,23,18,.76))!important;border-bottom:1px solid #304839!important;backdrop-filter:blur(14px)}
+.top h1,.sectionhead h2,.panel h3,.card h3,.hero h2{letter-spacing:-.025em}
+.top .eyebrow,.sectionhead p,.muted,.stat label{color:var(--rasta-muted)!important}
+.hero{
+ position:relative;overflow:hidden;
+ background:linear-gradient(118deg,#193d29 0%,#245238 54%,#173b28 100%)!important;
+ border:1px solid #41684a!important;border-radius:24px!important;
+ box-shadow:0 18px 42px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.06)!important;
+}
+.hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 42%,rgba(221,205,157,.065) 72%,transparent 100%)}
+.hero h2{color:#faf7eb!important}.hero p{color:#d7e0d4!important}
+.panel,.card,.stat,.workout-card,.meal,.foodcard,.exercise-row,.rasta-hub-card,.modal,.dialog,.dropdown-menu{
+ border:1px solid var(--rasta-line)!important;border-radius:18px!important;
+ background:linear-gradient(150deg,#1a2d21 0%,#14241a 100%)!important;
+ box-shadow:0 8px 24px rgba(0,0,0,.15),inset 0 1px rgba(255,255,255,.025)!important;
+}
+.panel h3,.card h3,.workout-card h3,.meal h3,.foodcard h3{color:#f2f0e6!important}
+.panel p,.card p,.workout-card p,.meal p,.foodcard p{color:#b8c4b6!important}
+.stat{background:linear-gradient(145deg,#203a29,#17291e)!important}
+.stat strong{color:var(--rasta-gold)!important;font-variant-numeric:tabular-nums}
+.btn{border-radius:13px!important;font-weight:750!important;transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+.btn.primary,.hero .btn.primary{
+ background:linear-gradient(135deg,#e0d09d,#c5ac6d)!important;color:#1a2b1e!important;
+ border:1px solid #ebdcae!important;box-shadow:0 6px 18px rgba(0,0,0,.18)!important
+}
+.btn.dark{background:linear-gradient(135deg,#2b5a3d,#1b412c)!important;color:#f4f3e8!important;border:1px solid #456c4c!important}
+.btn.ghost,.mini,.filter{background:#203729!important;color:#e9eddf!important;border:1px solid #3a5541!important}
+button:active,.btn:active{transform:scale(.985)}
+/* Navigation: restrained gold active marker, never a bright white block */
+.sidebar{background:linear-gradient(180deg,#12251a,#102017)!important;border-right:1px solid #304839!important}
+.sidebar .nav button{background:transparent!important;color:#d6e0d3!important;border:1px solid transparent!important;border-radius:12px!important}
+.sidebar .nav button.active{background:linear-gradient(100deg,rgba(210,189,131,.13),rgba(210,189,131,.025))!important;color:#f7e8b6!important;border-color:#8d7b4b55!important;box-shadow:inset -3px 0 #d2bd83!important}
+.sidebar .nav button.active .ico{background:rgba(210,189,131,.12)!important;color:#e2ce91!important}
+.side-note{background:#ffffff06!important;border:1px solid #ffffff12!important;border-radius:14px!important}
+.rasta-hub-card{background:linear-gradient(145deg,#1b3022,#14251b)!important}
+.rasta-hub-icon,.rasta-hub-arrow{background:#263f2d!important;color:#dfcc91!important;border:1px solid #405a43!important}
+.rasta-hub-card.is-current{border-color:#a18b55!important;box-shadow:0 0 0 1px rgba(210,189,131,.12)!important}
+/* All menus: one unified surface, subdued category headers, balanced card spacing */
+.rasta-all-menus-backdrop{background:rgba(3,9,5,.76)!important;backdrop-filter:blur(10px)}
+.rasta-all-menus-sheet{background:linear-gradient(155deg,#192d20,#122219 78%)!important;border:1px solid #3b5540!important;border-radius:24px!important;box-shadow:0 28px 90px rgba(0,0,0,.48)!important}
+.rasta-all-menus-heading{border-bottom:1px solid #304839!important}
+.rasta-all-menus-heading b{color:#f2f0e6!important}
+.rasta-all-menus-heading p{color:#aebbad!important}
+.rasta-all-menus-close{background:#263d2b!important;color:#e1cf96!important;border:1px solid #415a43!important;border-radius:12px!important}
+.rasta-all-menus-grid{gap:12px!important}
+.rasta-all-menus-grid .rasta-menu-group{
+ background:linear-gradient(90deg,#20392a,#1b3022)!important;color:#d4c18a!important;
+ border:1px solid #314a36!important;border-right:3px solid #b39b61!important;
+ border-radius:11px!important;padding:10px 13px!important;margin:10px 0 1px!important;
+ letter-spacing:-.01em
+}
+.rasta-all-menus-grid button{
+ min-height:76px;background:linear-gradient(145deg,#203829,#182b1e)!important;
+ color:#eef0e6!important;border:1px solid #334c38!important;border-radius:16px!important;
+ box-shadow:0 5px 14px rgba(0,0,0,.12)!important;padding:12px!important;
+}
+.rasta-all-menus-grid button span{background:#2b4531!important;color:#e0cf95!important;border:1px solid #3e5841!important;border-radius:12px!important}
+.rasta-all-menus-grid button.active{background:linear-gradient(145deg,#2a4831,#213b29)!important;border-color:#a18b55!important;color:#fff1c8!important;box-shadow:inset 0 0 0 1px rgba(210,189,131,.15)!important}
+.rasta-all-menus-grid button:focus-visible,.rasta-all-menus-close:focus-visible{outline:2px solid #d2bd83!important;outline-offset:3px}
+/* Search and form controls */
+input,select,textarea,.input,.form-control,.rasta-all-menus-sheet input{
+ background:#101f16!important;color:#f0f1e7!important;border:1px solid #3b5740!important;border-radius:13px!important;
+}
+input::placeholder,textarea::placeholder,.rasta-all-menus-sheet input::placeholder{color:#8fa091!important}
+input:focus,select:focus,textarea:focus{border-color:#b29d65!important;box-shadow:0 0 0 3px rgba(210,189,131,.1)!important;outline:none!important}
+label{color:#dce5d8!important}
+table{color:#e9eee4!important;border-color:#304839!important}
+th{background:#20392a!important;color:#dfcc91!important}
+td{border-color:#304839!important}tr:nth-child(even){background:#17291e!important}
+.toast{background:#203b2a!important;color:#f4f1e6!important;border:1px solid #48664b!important;border-radius:14px!important}
+.badge,.tag,.pill,.datepill{background:#243b2a!important;color:#ddcc94!important;border:1px solid #3d5740!important;border-radius:999px!important}
+a{color:#d7c58d}
+hr,.divider{border-color:#304839!important}
+.mobilebar{background:rgba(16,31,22,.94)!important;border:1px solid #3b5740!important;box-shadow:0 12px 35px rgba(0,0,0,.38)!important;backdrop-filter:blur(18px)}
+#rasta-app-shell .mobilebar button{color:#aebcad!important;border-radius:12px!important}
+#rasta-app-shell .mobilebar button.active{background:#2b4530!important;color:#f1dda0!important;border:1px solid #4b6545!important}
+@media(hover:hover) and (pointer:fine){
+ .panel:hover,.card:hover,.stat:hover,.rasta-hub-card:hover{border-color:#4b684b!important;box-shadow:0 12px 28px rgba(0,0,0,.2)!important;transform:translateY(-2px);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+ .rasta-all-menus-grid button:hover{background:#29432f!important;border-color:#887849!important;transform:translateY(-2px)}
+}
+@media(max-width:700px){
+ .hero{border-radius:20px!important}
+ .panel,.card,.stat,.workout-card,.meal,.foodcard{border-radius:16px!important}
+ .rasta-all-menus-sheet{border-radius:22px 0 0 22px!important}
+ .rasta-all-menus-grid{gap:10px!important}
+ .rasta-all-menus-grid button{min-height:70px;padding:10px!important}
+ .mobilebar{background:rgba(16,31,22,.97)!important}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+
 </body></html>
