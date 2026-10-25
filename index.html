@@ -1830,7 +1830,7 @@ async function rastaNutritionGenerate(){
  try{const auth=await client.auth.getUser();if(auth.error)throw auth.error;user=auth.data?.user||null}catch(e){nutritionStatus('بررسی حساب کاربری انجام نشد؛ اتصال را بررسی و دوباره تلاش کن.');return}
  if(!user){nutritionStatus('ساخت برنامه اختصاصی پولی است؛ برای خرید و فعال‌شدن نوبت ساخت، ابتدا وارد حساب رستا شو.');return}
  let availablePurchase=null;
- try{const {data,error}=await client.from('custom_nutrition_purchases').select('id,created_at').eq('status','paid').order('created_at',{ascending:true}).limit(1);if(error)throw error;availablePurchase=data?.[0]||null}
+ try{const {data,error}=await client.from('custom_nutrition_purchases').select('id,created_at,expires_at').eq('status','paid').or('expires_at.is.null,expires_at.gt.'+new Date().toISOString()).order('created_at',{ascending:true}).limit(1);if(error)throw error;availablePurchase=data?.[0]||null}
  catch(e){nutritionStatus('بررسی خرید برنامه غذایی انجام نشد؛ لطفاً دوباره تلاش کن.');return}
  if(!availablePurchase){nutritionStatus('برای ساخت برنامه اختصاصی، ابتدا یک نوبت ساخت خریداری کن.');const status=$('nf-status');if(status)status.innerHTML='این خدمت جدا از پریمیوم است و برای هر برنامه ۷ روزه یک خرید لازم دارد. <button class="btn dark" type="button" data-plan-request="custom_nutrition" style="margin-top:8px">مشاهده قیمت و خرید</button>';return}
  const saved=await rastaNutritionSaveAssessment(a,true);if(saved===false)return;
