@@ -214,3 +214,11 @@ if (!html.includes('data-view="explore"><span>🔎</span>کشف حرکات و ک
 if (!html.includes('data-view="nutrition"><span>🥗</span>برنامه غذایی و رژیم‌ساز هوشمند</button>')) {
   throw new Error('Nutrition menu must point to view-nutrition.');
 }
+
+/* Back/forward must restore the requested route instead of forcing the home view. */
+if (!html.includes("const route=event.state&&typeof event.state.rastaView==='string'?event.state.rastaView:'today'") || !html.includes("if(route!==current)goto(route,true)")) {
+  throw new Error('Browser back/forward must restore the route recorded in history.');
+}
+if (html.includes("if(current!=='today'){goto('today',true);window.history.pushState({rastaView:'today'}")) {
+  throw new Error('Popstate must not force every route back to Today.');
+}
