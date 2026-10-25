@@ -40,9 +40,10 @@
 <label class="field" style="max-width:520px">ایمیل دقیق کاربر
 <input name="email" type="text" inputmode="email" autocapitalize="none" spellcheck="false" required autocomplete="off" placeholder="name@example.com">
 </label>
-<label class="field" style="max-width:240px">مدت اشتراک‌ها (روز)
-<input name="days" type="number" min="1" max="3650" step="1" value="30" required>
+<label class="field" style="max-width:300px">تاریخ انقضای دسترسی و اعتبار (شامل پایان همان روز)
+<input name="expires_at" type="date" required>
 </label>
+<p class="muted">تاریخ را خودت تعیین کن؛ هر سه اشتراک و اعتبار ساخت برنامه غذایی انتخاب‌شده در پایان همین تاریخ منقضی می‌شوند.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:10px 0 16px">
 <label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="premium" style="width:18px;height:18px;accent-color:var(--green)"><span><b>ورزش و رژیم غذایی پریمیوم</b><small style="display:block;color:var(--muted);margin-top:4px">دسترسی پریمیوم تمرین و تغذیه؛ به مدت انتخاب‌شده</small></span></label>
 <label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="trainer" style="width:18px;height:18px;accent-color:var(--green)"><span><b>اشتراک مربی (Trainer)</b><small style="display:block;color:var(--muted);margin-top:4px">فعال‌سازی به مدت انتخاب‌شده</small></span></label>
@@ -108,7 +109,7 @@ async function loadComplimentaryHistory(){
  try{
   const data=await invokeManualPayments({action:'list_complimentary_grants'});
   const grants=Array.isArray(data.grants)?data.grants:[];
-  rows.innerHTML=grants.length?grants.map(g=>'<tr><td>'+esc(g.user?.name||g.user?.email||'کاربر نامشخص')+(g.user?.name&&g.user?.email?'<br><small dir="ltr">'+esc(g.user.email)+'</small>':'')+'</td><td>'+esc(g.item||'—')+'</td><td>'+esc(dateTimeText(g.created_at))+'</td><td>'+esc(g.ends_at?dateTimeText(g.ends_at):g.type==='custom_nutrition'?'یک اعتبار؛ بدون تاریخ انقضا':'—')+'</td></tr>').join(''):'<tr><td colspan="4">هنوز سابقه‌ای از اعطای رایگان ثبت نشده است.</td></tr>';
+  rows.innerHTML=grants.length?grants.map(g=>'<tr><td>'+esc(g.user?.name||g.user?.email||'کاربر نامشخص')+(g.user?.name&&g.user?.email?'<br><small dir="ltr">'+esc(g.user.email)+'</small>':'')+'</td><td>'+esc(g.item||'—')+'</td><td>'+esc(dateTimeText(g.created_at))+'</td><td>'+esc(g.ends_at?dateTimeText(g.ends_at):'—')+'</td></tr>').join(''):'<tr><td colspan="4">هنوز سابقه‌ای از اعطای رایگان ثبت نشده است.</td></tr>';
   status.textContent='تعداد موارد ثبت‌شده: '+grants.length.toLocaleString('fa-IR');
  }catch(err){status.textContent=err.message||'دریافت سوابق ناموفق بود';rows.innerHTML='<tr><td colspan="4">دریافت سوابق انجام نشد. دوباره تلاش کنید.</td></tr>'}
 }
@@ -123,20 +124,20 @@ $('complimentary-grants-form').addEventListener('submit',async e=>{
  e.preventDefault();
  const form=e.currentTarget,b=$('grant-selected-complimentary'),status=$('complimentary-grants-status');
  const email=String(form.elements.email.value||'').trim().replace(/[。．｡]/g,'.').toLowerCase();
- const days=Number(form.elements.days.value);
+ const expiresAt=String(form.elements.expires_at.value||'');
  const selected=[...form.querySelectorAll('input[name="grant"]:checked')].map(x=>x.value);
  const labels={premium:'ورزش و رژیم غذایی پریمیوم',trainer:'اشتراک مربی (Trainer)',gym:'اشتراک باشگاه (Gym)',custom_nutrition:'یک اعتبار ساخت برنامه غذایی اختصاصی'};
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.textContent='ایمیل معتبر وارد کنید.';return}
  if(!selected.length){status.textContent='حداقل یک مورد را با تیک انتخاب کنید.';return}
- if(!Number.isInteger(days)||days<1||days>3650){status.textContent='مدت اشتراک باید بین ۱ تا ۳۶۵۰ روز باشد.';return}
- if(!confirm('موارد انتخاب‌شده برای '+email+' اعطا شوند؟\n'+selected.map(x=>'• '+labels[x]+(x==='custom_nutrition'?'':' ('+days+' روز)')).join('\n')))return;
+ if(!/^\d{4}-\d{2}-\d{2}$/.test(expiresAt)||new Date(expiresAt+'T23:59:59.999Z').getTime()<=Date.now()){status.textContent='تاریخ انقضا باید یک تاریخ معتبر در آینده باشد.';return}
+ if(!confirm('موارد انتخاب‌شده برای '+email+' اعطا شوند؟\n'+selected.map(x=>'• '+labels[x]+' (انقضا: '+expiresAt+')').join('\n')))return;
  b.disabled=true;b.textContent='در حال اعطا…';status.textContent='در حال پردازش موارد انتخاب‌شده…';
  const results=[];
  try{
   for(const plan of selected){
    try{
-    if(plan==='custom_nutrition'){await invokeManualPayments({action:'grant_custom_nutrition_credit',email});}
-    else{await invokeManualPayments({action:'grant_complimentary',email,days:String(days),plan_id:plan});}
+    if(plan==='custom_nutrition'){await invokeManualPayments({action:'grant_custom_nutrition_credit',email,expires_at:expiresAt});}
+    else{await invokeManualPayments({action:'grant_complimentary',email,expires_at:expiresAt,plan_id:plan});}
     results.push('✓ '+labels[plan]+' — موفق');
    }catch(err){results.push('✗ '+labels[plan]+' — '+(err.message||'ناموفق'))}
   }
