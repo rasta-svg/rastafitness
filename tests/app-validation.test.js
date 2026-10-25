@@ -253,7 +253,7 @@ if (!announcementMigration.includes('CREATE TABLE IF NOT EXISTS public.app_annou
   throw new Error('Global announcements require a table with active-only public read policy.');
 }
 const allMenusStart = html.indexOf('<div id="rasta-all-menus"');
-const allMenusEnd = html.indexOf('</section>\\n</div>', allMenusStart);
+const allMenusEnd = html.indexOf('<div class="modalback"', allMenusStart);
 if (allMenusStart < 0 || allMenusEnd < 0) throw new Error('All menus popup must exist.');
 const allMenusHtml = html.slice(allMenusStart, allMenusEnd);
 const allMenuViews = [...allMenusHtml.matchAll(/data-view="([^"]+)"/g)].map(match => match[1]);
