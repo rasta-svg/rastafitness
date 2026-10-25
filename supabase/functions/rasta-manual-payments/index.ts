@@ -139,6 +139,8 @@ Deno.serve(async (req: Request) => {
 
   if (action === "grant_complimentary") {
     const email = String(body.email || "").trim().toLowerCase();
+    const planId = String(body.plan_id || "premium");
+    if (!["premium", "trainer", "gym"].includes(planId)) return json({ error: "نوع پلن برای اعطای رایگان معتبر نیست." }, 400);
     const days = Number(body.days ?? 30);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "ایمیل معتبر کاربر را وارد کنید." }, 400);
     if (!Number.isInteger(days) || days < 1 || days > 3650) return json({ error: "مدت اشتراک باید بین ۱ تا ۳۶۵۰ روز باشد." }, 400);
@@ -150,7 +152,7 @@ Deno.serve(async (req: Request) => {
       if (target || (data.users || []).length < 1000) break;
     }
     if (!target) return json({ error: "کاربری با این ایمیل پیدا نشد؛ ابتدا باید در رستا ثبت‌نام کند." }, 404);
-    const { data: current, error: currentError } = await db.from("subscriptions").select("id,ends_at").eq("user_id", target.id).eq("status", "active");
+    const { data: current, error: currentError } = await db.from("subscriptions").select("id,ends_at").eq("user_id", target.id).eq("plan_id", planId).eq("status", "active");
     if (currentError) return json({ error: "بررسی اشتراک فعلی کاربر انجام نشد." }, 500);
     const now = new Date();
     const valid = (current || []).filter((s) => !s.ends_at || new Date(s.ends_at) > now);
@@ -161,9 +163,9 @@ Deno.serve(async (req: Request) => {
       const { error } = await db.from("subscriptions").update({ status: "expired", ends_at: now.toISOString(), updated_at: now.toISOString() }).in("id", valid.map((s) => s.id));
       if (error) return json({ error: "به‌روزرسانی اشتراک قبلی ناموفق بود." }, 500);
     }
-    const { data: granted, error: grantError } = await db.from("subscriptions").insert({ user_id: target.id, plan_id: "premium", status: "active", starts_at: start.toISOString(), ends_at: end.toISOString(), updated_at: now.toISOString() }).select("id,starts_at,ends_at").single();
+    const { data: granted, error: grantError } = await db.from("subscriptions").insert({ user_id: target.id, plan_id: planId, status: "active", starts_at: start.toISOString(), ends_at: end.toISOString(), updated_at: now.toISOString() }).select("id,starts_at,ends_at").single();
     if (grantError) return json({ error: "اعطای اشتراک رایگان انجام نشد." }, 500);
-    return json({ ok: true, user: { email: target.email || email, name: String(target.user_metadata?.full_name || target.user_metadata?.name || "") }, subscription: granted, days, message: "اشتراک رایگان ویژه با موفقیت اعطا شد." });
+    return json({ ok: true, user: { email: target.email || email, name: String(target.user_metadata?.full_name || target.user_metadata?.name || "") }, subscription: granted, days, plan_id: planId, message: "اشتراک رایگان با موفقیت اعطا شد." });
   }
 
   if (action === "admin_list") {
