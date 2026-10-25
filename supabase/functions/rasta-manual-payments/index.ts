@@ -137,11 +137,27 @@ Deno.serve(async (req: Request) => {
     return json({ ok: true, plan_id: planId, price_toman: Math.round(Number(plan.price_irr) / 10) });
   }
 
+  if (action === "grant_custom_nutrition_credit") {
+    const email = String(body.email || "").trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "ایمیل معتبر کاربر را وارد کنید." }, 400);
+    let target = null;
+    for (let page = 1; page <= 10; page++) {
+      const { data, error } = await db.auth.admin.listUsers({ page, perPage: 1000 });
+      if (error) return json({ error: "جست‌وجوی کاربران انجام نشد." }, 500);
+      target = (data.users || []).find((u) => (u.email || "").toLowerCase() === email) || null;
+      if (target || (data.users || []).length < 1000) break;
+    }
+    if (!target) return json({ error: "کاربری با این ایمیل پیدا نشد؛ ابتدا باید در رستا ثبت‌نام کند." }, 404);
+    const { data: credit, error } = await db.from("custom_nutrition_purchases").insert({ user_id: target.id, transaction_id: null, status: "paid", grant_source: "admin_complimentary" }).select("id,status,created_at").single();
+    if (error || !credit) return json({ error: "اعطای رایگان اعتبار برنامه غذایی انجام نشد." }, 500);
+    return json({ ok: true, user: { email: target.email || email }, credit, message: "یک اعتبار رایگان ساخت برنامه غذایی اختصاصی اعطا شد." });
+  }
+
   if (action === "grant_complimentary") {
     const email = String(body.email || "").trim().toLowerCase();
-    const planId = String(body.plan_id || "premium");
-    if (!["premium", "trainer", "gym"].includes(planId)) return json({ error: "نوع پلن برای اعطای رایگان معتبر نیست." }, 400);
     const days = Number(body.days ?? 30);
+    const planId = String(body.plan_id || "");
+    if (!["premium", "trainer", "gym"].includes(planId)) return json({ error: "نوع دسترسی رایگان معتبر نیست." }, 400);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "ایمیل معتبر کاربر را وارد کنید." }, 400);
     if (!Number.isInteger(days) || days < 1 || days > 3650) return json({ error: "مدت اشتراک باید بین ۱ تا ۳۶۵۰ روز باشد." }, 400);
     let target = null;
@@ -163,9 +179,25 @@ Deno.serve(async (req: Request) => {
       const { error } = await db.from("subscriptions").update({ status: "expired", ends_at: now.toISOString(), updated_at: now.toISOString() }).in("id", valid.map((s) => s.id));
       if (error) return json({ error: "به‌روزرسانی اشتراک قبلی ناموفق بود." }, 500);
     }
-    const { data: granted, error: grantError } = await db.from("subscriptions").insert({ user_id: target.id, plan_id: planId, status: "active", starts_at: start.toISOString(), ends_at: end.toISOString(), updated_at: now.toISOString() }).select("id,starts_at,ends_at").single();
+    const { data: granted, error: grantError } = await db.from("subscriptions").insert({ user_id: target.id, plan_id: planId, status: "active", starts_at: start.toISOString(), ends_at: end.toISOString(), grant_source: "admin_complimentary", updated_at: now.toISOString() }).select("id,starts_at,ends_at").single();
     if (grantError) return json({ error: "اعطای اشتراک رایگان انجام نشد." }, 500);
-    return json({ ok: true, user: { email: target.email || email, name: String(target.user_metadata?.full_name || target.user_metadata?.name || "") }, subscription: granted, days, plan_id: planId, message: "اشتراک رایگان با موفقیت اعطا شد." });
+    return json({ ok: true, user: { email: target.email || email, name: String(target.user_metadata?.full_name || target.user_metadata?.name || "") }, subscription: granted, plan_id: planId, days, message: "دسترسی رایگان با موفقیت اعطا شد." });
+  }
+
+  if (action === "list_complimentary_grants") {
+    const [{ data: subscriptions, error: subscriptionsError }, { data: credits, error: creditsError }, { data: userPage, error: usersError }] = await Promise.all([
+      db.from("subscriptions").select("id,user_id,plan_id,starts_at,ends_at,created_at,grant_source").eq("grant_source", "admin_complimentary").order("created_at", { ascending: false }).limit(500),
+      db.from("custom_nutrition_purchases").select("id,user_id,created_at,status,grant_source").eq("grant_source", "admin_complimentary").order("created_at", { ascending: false }).limit(500),
+      db.auth.admin.listUsers({ page: 1, perPage: 1000 }),
+    ]);
+    if (subscriptionsError || creditsError || usersError) return json({ error: "دریافت سوابق اعطای رایگان انجام نشد." }, 500);
+    const users = new Map((userPage.users || []).map((u) => [u.id, { email: u.email || "", name: String(u.user_metadata?.full_name || u.user_metadata?.name || "") }]));
+    const planNames: Record<string, string> = { premium: "ورزش و رژیم غذایی پریمیوم", trainer: "اشتراک مربی (Trainer)", gym: "اشتراک باشگاه (Gym)" };
+    const grants = [
+      ...(subscriptions || []).map((s) => ({ id: s.id, user: users.get(s.user_id) || { email: "", name: "" }, item: planNames[s.plan_id] || s.plan_id, type: "subscription", created_at: s.created_at, starts_at: s.starts_at, ends_at: s.ends_at })),
+      ...(credits || []).map((c) => ({ id: c.id, user: users.get(c.user_id) || { email: "", name: "" }, item: "یک اعتبار ساخت برنامه غذایی اختصاصی", type: "custom_nutrition", created_at: c.created_at, status: c.status })),
+    ].sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
+    return json({ grants });
   }
 
   if (action === "admin_list") {
