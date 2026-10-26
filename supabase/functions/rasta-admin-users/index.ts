@@ -40,7 +40,7 @@ Deno.serve(async (req: Request) => {
       id: 1, message, is_active: isActive, expires_at: expiresAt ? expiresAt.toISOString() : null,
       updated_at: new Date().toISOString(), updated_by: user.id
     }, { onConflict: "id" }).select("id,message,is_active,expires_at,updated_at").single();
-    if (saveError || !saved) return new Response(JSON.stringify({ error: "ذخیره پیام همگانی انجام نشد." }), { status: 500, headers: cors });
+    if (saveError || !saved) return new Response(JSON.stringify({ error: "ذخیره پیام همگانی انجام نشد." + (saveError?.message ? " جزئیات: " + saveError.message : "") }), { status: 500, headers: cors });
     return new Response(JSON.stringify({ ok: true, announcement: saved }), { status: 200, headers: cors });
   }
   if (requestBody.action === "get_announcement") {
