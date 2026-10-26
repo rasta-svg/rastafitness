@@ -260,3 +260,13 @@ const allMenuViews = [...allMenusHtml.matchAll(/data-view="([^"]+)"/g)].map(matc
 if (new Set(allMenuViews).size !== allMenuViews.length) {
   throw new Error('All menus popup must not list the same destination more than once.');
 }
+
+
+const jalaliAdmin = fs.readFileSync(path.join(root, 'admin.html'), 'utf8');
+const announcementWriteMigration = fs.readFileSync(path.join(root, 'supabase/migrations/20261026100000_grant_service_role_app_announcements.sql'), 'utf8');
+if (!announcementWriteMigration.includes('TO service_role') || !jalaliAdmin.includes('function parseJalaliDate') || !jalaliAdmin.includes('fa-IR-u-ca-persian') || !jalaliAdmin.includes('۱۴۰۵/۰۷/۰۴ ۱۴:۳۰')) {
+  throw new Error('Admin announcement writes need service-role grants and Jalali date inputs/formatting.');
+}
+if (!jalaliAdmin.includes('const parsedGrantExpiry=parseJalaliDate(jalaliExpiry,false)') || !jalaliAdmin.includes('expires_at:parsedExpiry?parsedExpiry.date.toISOString():null')) {
+  throw new Error('Admin expiry dates must be converted from Jalali input before sending to the server.');
+}
