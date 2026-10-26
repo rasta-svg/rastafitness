@@ -248,7 +248,7 @@ $('complimentary-grants-form').addEventListener('submit',async e=>{
  const labels={premium:'ورزش و رژیم غذایی پریمیوم',trainer:'اشتراک مربی (Trainer)',gym:'اشتراک باشگاه (Gym)',custom_nutrition:'یک اعتبار ساخت برنامه غذایی اختصاصی'};
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.textContent='ایمیل معتبر وارد کنید.';return}
  if(!selected.length){status.textContent='حداقل یک مورد را با تیک انتخاب کنید.';return}
- if(!/^\d{4}-\d{2}-\d{2}$/.test(expiresAt)||new Date(expiresAt+'T23:59:59.999Z').getTime()<=Date.now()){status.textContent='تاریخ انقضا باید یک تاریخ معتبر در آینده باشد.';return}
+ if(!parsedGrantExpiry||new Date(parsedGrantExpiry.date.getFullYear(),parsedGrantExpiry.date.getMonth(),parsedGrantExpiry.date.getDate(),23,59,59,999).getTime()<=Date.now()){status.textContent='تاریخ انقضا را به شکل شمسی سال/ماه/روز و در آینده وارد کنید؛ نمونه ۱۴۰۵/۰۷/۳۰';return}
  if(!confirm('موارد انتخاب‌شده برای '+email+' اعطا شوند؟\n'+selected.map(x=>'• '+labels[x]+' (انقضا: '+jalaliExpiry+')').join('\n')))return;
  b.disabled=true;b.textContent='در حال اعطا…';status.textContent='در حال پردازش موارد انتخاب‌شده…';
  const results=[];
