@@ -2317,7 +2317,7 @@ async function rastaRunFullSync(){
   if(!exRes.error){localStorage.setItem('rasta-cloud-exercises-cache',JSON.stringify(exRes.data||[]));notes.push('حرکات ورزشی')}else notes.push('فهرست حرکات در دسترس نبود');
   if(!foodRes.error){localStorage.setItem('rasta-cloud-foods-cache',JSON.stringify(foodRes.data||[]));notes.push('غذاهای عمومی')}else notes.push('فهرست غذاها در دسترس نبود');
   if(status)status.textContent=conflicts.length?'تعارض‌ها حفظ شدند':'همگام‌سازی انجام شد';if(detail)detail.textContent=conflicts.length?'نسخه ابری و نسخه محلی متفاوت‌اند؛ نسخه محلی جداگانه حفظ شد: '+conflicts.join('، '):'اطلاعات ادغام شد. محتوای دریافت‌شده: '+notes.join(' و ')+'.';
-  if(last)last.textContent='آخرین تلاش: '+new Intl.DateTimeFormat('fa-IR',{dateStyle:'medium',timeStyle:'short'}).format(new Date());toast(conflicts.length?'همگام‌سازی انجام شد؛ تعارض‌ها حفظ شدند.':'همگام‌سازی با موفقیت انجام شد.');
+  if(last)last.textContent='آخرین تلاش: '+new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-arabext',{dateStyle:'medium',timeStyle:'short'}).format(new Date());toast(conflicts.length?'همگام‌سازی انجام شد؛ تعارض‌ها حفظ شدند.':'همگام‌سازی با موفقیت انجام شد.');
  }catch(e){if(status)status.textContent='همگام‌سازی ناموفق';if(detail)detail.textContent='اتصال یا دسترسی دیتابیس انجام نشد؛ اطلاعات محلی حفظ شده است. '+(e&&e.message||'');toast('همگام‌سازی انجام نشد؛ اطلاعات محلی حفظ شد.')}
  finally{if(button){button.disabled=false;button.textContent='همگام‌سازی اطلاعات و محتوا'}}
 }
@@ -2427,7 +2427,7 @@ async function rastaAutoRefresh(){
  const status=$('auto-sync-status');if(!status||document.visibilityState==='hidden')return;
  const client=window.__rastaSupabaseClient,user=window.__RASTA_AUTH_USER;
  if(!client||!user){status.textContent='برای به‌روزرسانی خودکار باید وارد حساب رستا باشی.';return}
- const stamp=new Intl.DateTimeFormat('fa-IR',{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date());
+ const stamp=new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-arabext',{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date());
  try{
   const [exRes,foodRes,plansRes,subRes,payRes]=await Promise.all([
    client.from('exercises').select('*').limit(500),
@@ -2544,7 +2544,7 @@ function startRastaOnboarding(){
  paint();overlay.classList.add('show');
 }
 
-profileLoad();rastaNutritionLoadAssessment();startRastaOnboarding();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR',{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderTraining();renderLibrary();renderNutrition();renderHistory();renderToday();renderPrograms();renderExplore();
+profileLoad();rastaNutritionLoadAssessment();startRastaOnboarding();$('todaydate').textContent=new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-arabext',{weekday:'long',day:'numeric',month:'long'}).format(new Date());renderTraining();renderLibrary();renderNutrition();renderHistory();renderToday();renderPrograms();renderExplore();
 try{
  const saved=JSON.parse(sessionStorage.getItem('rasta-update-ui-state')||'null');
  if(saved){sessionStorage.removeItem('rasta-update-ui-state');Object.entries(saved.fields||{}).forEach(([id,state])=>{const el=$(id);if(!el)return;if(state&&Object.prototype.hasOwnProperty.call(state,'checked'))el.checked=state.checked;else if(state&&Object.prototype.hasOwnProperty.call(state,'value'))el.value=state.value});if(saved.activeView&&saved.activeView!=='today')goto(saved.activeView);if(Number.isFinite(saved.scrollY))setTimeout(()=>scrollTo(0,saved.scrollY),100)}
