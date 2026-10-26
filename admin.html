@@ -45,7 +45,7 @@ body{font-family:Vazirmatn,Tahoma,Arial,sans-serif;background:radial-gradient(el
 <form id="announcement-form">
 <label class="field">متن پیام برای همهٔ کاربران<textarea id="announcement-message" rows="3" maxlength="1200" placeholder="متن اطلاعیه، پیام به‌روزرسانی یا خبر مهم..." style="width:100%" required></textarea></label>
 <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-top:10px">
-<label class="field" style="min-width:220px">زمان پایان (اختیاری)<input id="announcement-expires" type="datetime-local"></label>
+<label class="field" style="min-width:220px">زمان پایان (اختیاری)<input id="announcement-expires" type="text" inputmode="numeric" autocomplete="off" placeholder="۱۴۰۵/۰۷/۰۴ ۱۴:۳۰" aria-describedby="announcement-date-help"></label><small id="announcement-date-help" class="muted" style="display:block;flex-basis:100%">فرمت شمسی: سال/ماه/روز ساعت:دقیقه؛ نمونه ۱۴۰۵/۰۷/۰۴ ۱۴:۳۰</small>
 <label style="display:flex;gap:8px;align-items:center;padding:10px"><input id="announcement-active" type="checkbox" checked> انتشار برای همهٔ کاربران</label>
 <button id="save-announcement" class="btn" type="submit">ذخیره و انتشار پیام</button>
 <button id="disable-announcement" class="btn red" type="button">غیرفعال‌کردن پیام</button>
@@ -84,8 +84,8 @@ body{font-family:Vazirmatn,Tahoma,Arial,sans-serif;background:radial-gradient(el
 <input name="email" type="text" inputmode="email" autocapitalize="none" spellcheck="false" required autocomplete="off" placeholder="name@example.com">
 </label>
 <label class="field" style="max-width:300px">تاریخ انقضای دسترسی و اعتبار (شامل پایان همان روز)
-<input name="expires_at" type="date" required>
-</label>
+<input name="expires_at" type="text" inputmode="numeric" autocomplete="off" placeholder="۱۴۰۵/۰۷/۰۴" required aria-describedby="grant-date-help">
+</label><small id="grant-date-help" class="muted" style="display:block;margin-top:-8px">تاریخ شمسی به شکل سال/ماه/روز وارد شود؛ نمونه ۱۴۰۵/۰۷/۳۰</small>
 <p class="muted">تاریخ را خودت تعیین کن؛ هر سه اشتراک و اعتبار ساخت برنامه غذایی انتخاب‌شده در پایان همین تاریخ منقضی می‌شوند.</p>
 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:10px 0 16px">
 <label style="display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;cursor:pointer"><input type="checkbox" name="grant" value="premium" style="width:18px;height:18px;accent-color:var(--green)"><span><b>ورزش و رژیم غذایی پریمیوم</b><small style="display:block;color:var(--muted);margin-top:4px">دسترسی پریمیوم تمرین و تغذیه؛ به مدت انتخاب‌شده</small></span></label>
@@ -131,7 +131,39 @@ async function readableFunctionError(error){
 }
 function showLogin(){ $('login-panel').classList.remove('hidden');$('dashboard').classList.add('hidden')}
 function showDashboard(){ $('login-panel').classList.add('hidden');$('dashboard').classList.remove('hidden')}
-function dateText(v){if(!v)return'—';try{return new Date(v).toLocaleDateString('fa-IR')}catch{return v}}function dateTimeText(v){if(!v)return'هنوز ثبت نشده';try{return new Date(v).toLocaleString('fa-IR',{dateStyle:'short',timeStyle:'short'})}catch{return v}}
+
+// Persian calendar helpers. Store dates as Gregorian ISO on the server, show and accept Jalali dates in admin UI.
+const jalaliPartsFormatter=new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric',timeZone:'UTC'});
+function normalizedDigits(value){return String(value??'').replace(/[۰-۹]/g,c=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(c))).replace(/[٠-٩]/g,c=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(c))).replace(/\u200f/g,'').trim()}
+function jalaliToGregorianParts(jy,jm,jd){
+ if(!Number.isInteger(jy)||!Number.isInteger(jm)||!Number.isInteger(jd)||jy<1200||jy>1600||jm<1||jm>12||jd<1||jd>(jm<=6?31:jm<=11?30:30))return null;
+ const start=Date.UTC(jy+621,2,19);
+ for(let offset=0;offset<370;offset++){
+  const dt=new Date(start+offset*86400000), parts=Object.fromEntries(jalaliPartsFormatter.formatToParts(dt).map(p=>[p.type,p.value]));
+  if(Number(parts.year)===jy&&Number(parts.month)===jm&&Number(parts.day)===jd)return {gy:dt.getUTCFullYear(),gm:dt.getUTCMonth()+1,gd:dt.getUTCDate()};
+ }
+ return null;
+}
+function parseJalaliDate(value,withTime=false){
+ const raw=normalizedDigits(value);
+ const match=withTime?raw.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?$/):raw.match(/^(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})$/);
+ if(!match)return null;
+ const [,ys,ms,ds,hs='0',mins='0']=match, jy=Number(ys),jm=Number(ms),jd=Number(ds),hour=Number(hs),minute=Number(mins);
+ if(hour>23||minute>59|| (withTime&&match[4]!==undefined&&!/^\d{1,2}:\d{2}$/.test(raw.split(/\s+/)[1]||'')))return null;
+ const g=jalaliToGregorianParts(jy,jm,jd);if(!g)return null;
+ const date=new Date(g.gy,g.gm-1,g.gd,hour,minute,0,0);
+ if(date.getFullYear()!==g.gy||date.getMonth()!==g.gm-1||date.getDate()!==g.gd)return null;
+ return {date,gregorianDate:g.gy+'-'+String(g.gm).padStart(2,'0')+'-'+String(g.gd).padStart(2,'0')};
+}
+function jalaliDateTimeInput(value){
+ if(!value)return'';
+ const d=new Date(value);if(Number.isNaN(d.getTime()))return'';
+ const f=new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+ const p=Object.fromEntries(f.formatToParts(d).map(x=>[x.type,x.value]));
+ return p.year+'/'+p.month+'/'+p.day+' '+p.hour+':'+p.minute;
+}
+
+function dateText(v){if(!v)return'—';try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-arabext',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(v))}catch{return v}}function dateTimeText(v){if(!v)return'هنوز ثبت نشده';try{return new Intl.DateTimeFormat('fa-IR-u-ca-persian-nu-arabext',{dateStyle:'short',timeStyle:'short'}).format(new Date(v))}catch{return v}}
 function render(){const q=$('search').value.trim();let users=allUsers.filter(u=>window.RastaSearch?window.RastaSearch.matches(q,u.name,u.email,u.phone):[u.name,u.email,u.phone].join(' ').toLocaleLowerCase().includes(q.toLocaleLowerCase()));if(window.RastaSearch&&q)users=window.RastaSearch.rank(users,q,u=>[u.name,u.email,u.phone]);$('users').innerHTML=users.length?users.map(u=>'<tr><td>'+esc(u.name||'—')+'</td><td dir="ltr">'+esc(u.email||'—')+'</td><td dir="ltr">'+esc(u.phone||'—')+'</td><td><span class="status" style="'+(u.online?'':'background:#f7e7e3;color:#9d4b3d')+'">'+(u.online?'آنلاین':'آفلاین')+'</span></td><td>'+esc(dateTimeText(u.last_seen))+'</td><td>'+esc(dateText(u.created_at))+'</td><td><span class="status">'+(u.email_confirmed_at?'تأیید شده':'تأیید نشده')+'</span></td><td><button class="btn red" data-delete-user="'+esc(u.id)+'" data-user-email="'+esc(u.email||'')+'" style="padding:7px 9px">حذف کامل</button></td></tr>').join(''):'<tr><td colspan="8">کاربری مطابق جست‌وجو پیدا نشد.</td></tr>'}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 async function loadContactMessages(){
@@ -158,18 +190,20 @@ async function loadAnnouncement(){
   const a=r.announcement||{};
   $('announcement-message').value=a.message||'';
   $('announcement-active').checked=!!a.is_active;
-  $('announcement-expires').value=a.expires_at?new Date(a.expires_at).toISOString().slice(0,16):'';
+  $('announcement-expires').value=jalaliDateTimeInput(a.expires_at);
   status.textContent=a.is_active?'پیام فعال است'+(a.expires_at?'؛ پایان: '+dateTimeText(a.expires_at):'؛ بدون زمان پایان'):'در حال حاضر پیام فعالی منتشر نشده است.';
  }catch(e){status.textContent='دریافت وضعیت پیام ناموفق بود: '+(e.message||'خطای ارتباط')}
 }
 $('announcement-form').addEventListener('submit',async e=>{
  e.preventDefault();const b=$('save-announcement'),status=$('announcement-status');
- const message=$('announcement-message').value.trim(),active=$('announcement-active').checked,raw=$('announcement-expires').value;
+ const message=$('announcement-message').value.trim(),active=$('announcement-active').checked,raw=$('announcement-expires').value.trim();
  if(active&&!message){status.textContent='برای انتشار، متن پیام را وارد کنید.';return}
- if(raw&&new Date(raw).getTime()<=Date.now()){status.textContent='زمان پایان باید در آینده باشد.';return}
+ const parsedExpiry=raw?parseJalaliDate(raw,true):null;
+ if(raw&&!parsedExpiry){status.textContent='زمان پایان را به شکل شمسی سال/ماه/روز ساعت:دقیقه وارد کنید؛ نمونه ۱۴۰۵/۰۷/۳۰ ۱۸:۳۰';return}
+ if(parsedExpiry&&parsedExpiry.date.getTime()<=Date.now()){status.textContent='زمان پایان باید در آینده باشد.';return}
  b.disabled=true;b.textContent='در حال ذخیره…';
  try{
-  const r=await invokeAdminUsers({action:'save_announcement',message,is_active:active,expires_at:raw?new Date(raw).toISOString():null});
+  const r=await invokeAdminUsers({action:'save_announcement',message,is_active:active,expires_at:parsedExpiry?parsedExpiry.date.toISOString():null});
   status.textContent=r.announcement?.is_active?'پیام با موفقیت برای همهٔ کاربران منتشر شد.':'پیام ذخیره شد و نمایش آن غیرفعال است.';
   note($('dash-notice'),status.textContent,'ok');
  }catch(err){status.textContent=err.message||'ذخیره پیام انجام نشد.';note($('dash-notice'),status.textContent)}
@@ -207,13 +241,15 @@ $('complimentary-grants-form').addEventListener('submit',async e=>{
  e.preventDefault();
  const form=e.currentTarget,b=$('grant-selected-complimentary'),status=$('complimentary-grants-status');
  const email=String(form.elements.email.value||'').trim().replace(/[。．｡]/g,'.').toLowerCase();
- const expiresAt=String(form.elements.expires_at.value||'');
+ const jalaliExpiry=String(form.elements.expires_at.value||'').trim();
+ const parsedGrantExpiry=parseJalaliDate(jalaliExpiry,false);
+ const expiresAt=parsedGrantExpiry?.gregorianDate||'';
  const selected=[...form.querySelectorAll('input[name="grant"]:checked')].map(x=>x.value);
  const labels={premium:'ورزش و رژیم غذایی پریمیوم',trainer:'اشتراک مربی (Trainer)',gym:'اشتراک باشگاه (Gym)',custom_nutrition:'یک اعتبار ساخت برنامه غذایی اختصاصی'};
  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.textContent='ایمیل معتبر وارد کنید.';return}
  if(!selected.length){status.textContent='حداقل یک مورد را با تیک انتخاب کنید.';return}
  if(!/^\d{4}-\d{2}-\d{2}$/.test(expiresAt)||new Date(expiresAt+'T23:59:59.999Z').getTime()<=Date.now()){status.textContent='تاریخ انقضا باید یک تاریخ معتبر در آینده باشد.';return}
- if(!confirm('موارد انتخاب‌شده برای '+email+' اعطا شوند؟\n'+selected.map(x=>'• '+labels[x]+' (انقضا: '+expiresAt+')').join('\n')))return;
+ if(!confirm('موارد انتخاب‌شده برای '+email+' اعطا شوند؟\n'+selected.map(x=>'• '+labels[x]+' (انقضا: '+jalaliExpiry+')').join('\n')))return;
  b.disabled=true;b.textContent='در حال اعطا…';status.textContent='در حال پردازش موارد انتخاب‌شده…';
  const results=[];
  try{
