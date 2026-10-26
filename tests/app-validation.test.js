@@ -272,6 +272,6 @@ if (!jalaliAdmin.includes('const parsedGrantExpiry=parseJalaliDate(jalaliExpiry,
 }
 
 
-const serviceWorker = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
-if (!serviceWorker.includes("const CACHE_VERSION='v13'")) throw new Error('A new cache version must force clients to receive the updated admin styles and Persian calendar code.');
+const serviceWorkerForJalali = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+if (!serviceWorkerForJalali.includes("const CACHE_VERSION='v13'")) throw new Error('A new cache version must force clients to receive the updated admin styles and Persian calendar code.');
 if (html.includes("toLocaleDateString('fa-IR')") || html.includes("toLocaleString('fa-IR',{dateStyle")) throw new Error('Visible application dates must explicitly use the Persian calendar.');
